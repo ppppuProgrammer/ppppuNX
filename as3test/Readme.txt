@@ -1,0 +1,1 @@
+as3test was used as a testing grounds to determine a workable (but not necessarily efficient/simple) system for templated animation. Code from here should not be ripped and placed into ppppuNX due to design changes. Due to some design testing that I can't undo, certain body parts don't change as you'd expect. Also due to legal reasons, the sliders that were used are disabled. 

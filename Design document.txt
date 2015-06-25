@@ -1,0 +1,80 @@
+Template based ppppu design document
+
+There are currently 10 different animation templates, with them being: Cowgirl, LeanForward, LeanBack, SideRide, Swivel, ReverseCowgirl, Paizuri, Grind, Blowjob and Anal. Each template has 2 versions in the fla document, a work copy version which contains the fully keyframed 120 frame animation, and the version that's used in the swf, in which every female related layer has a 120 frame long instance. Both versions have the first frame of the layer use a named instance for the body part used(examples: BoobL, Face, HairSideL).
+
+**Template Concepts**
+
+template version:
+This contains a single 120 frame long keyframe for all female body parts. During the initialize phase of the SWF, motion xmls are assigned to the various named body parts through the use of the ProcessMotionStaticClass function (found in Main.as for the as3Test project).
+
+template Work copy version:
+This version is used to animate the various parts of the template and then used to create the motion xmls for the parts, which is used to set various movie clip related properties such as rotation, skew, position and more. The creation of motion xmls is eased by the export multiple motion XMLs script I created, which will create motion xmls for all selected layers.
+
+**Other key concepts**
+Timelines: Currently the GSAP library is used for its timeline and tweening capabilities. Timelines are created when motion xmls are processed and contain all the keyframes for a body part. Each template has a master timeline which contain children timelines. These children timelines are the ones that contain the keyframe data.
+
+
+How template animation works during runtime:
+First, get what template you wish to work on and casting it as a TemplateBase, call SetDefaultTimelines and for parameter 1, give it the result of the ProcessMotionStatiClass function. Here's an sample line:
+
+ TemplateController.getChildByName("Cowgirl") as TemplateBase).SetDefaultTimelines(ProcessMotionStaticClass(DefaultCowgirlMotions, mainClip.TemplateController.getChildByName("Cowgirl")));
+ 
+That sets up the default animation for a template, which is to be based off of Peach's animations. To use different settings for a part (such as Rosalina's animation of having her hand on her hips) it's a bit simpler. Call ProcessMotionStaticClass and specify the proper parameters. Here's a sample line:
+
+this.ProcessMotionStaticClass(RosalinaCowgirlMotions, mainClip.TemplateController.getChildByName("Cowgirl"));
+
+The ProcessMotionStaticClass is made to place the timelines it creates from motion XMLs into a dictionary. The layout for the dictionary is timelinesDict[charName][animName], with charName being "Rosalina" and animName being "Cowgirl".
+
+Now at any time you wanted to use Rosalina's animation, access the template being used (variable "templateInUse" in Main.as for the as3Test project) and call AddTimelines(parameter1:array of timelines to add, Parameter2(optional): what "region" to use. Only 2 specific regions, Hair and Body). Sample line:
+
+templateInUse.AddTimelines(GetMotionTimelinesByType("Rosalina", templateInUse.GetName(), "Body"));
+
+What this does is replace the default timelines used with Rosalina specific timelines, without changing the timelines for hair. The end result is the template animation now has the right arm bent and a hand on the hip.
+
+**The make up of a template**
+All female body parts in a template is a container (or should be, I didn't finish this yet). This container has in it a named Movie clip of a body part. For most body parts, they contain 2 parts, Lines and Skin. The Skin uses a completely black fill, which is to be modified through the use of a ColorTransform. Occasionally, they will use SkinGradient. Due to how much variation can occur due to gradients, I devised a different way of changing SkinGradient through the use of the readGraphicsData and drawGraphicsData functions (Observed in function KeyPressCheck, for keypress Keyboard.SLASH). This allows for the color to be change but not the ration or positioning. The thought of keeping gradient modification simple for users is the primary drive behind handling it this way.
+
+Any container that uses BodyElementContainer as a base class can have up to 2 movie clips overlaying it. A body layer for features (tattoos, piercings, paint, etc.) and a costume layer for clothing that will cover skin and any body layer graphics. This class is undertested and highly prone to visual issues.
+
+The eye container is a rather special one. Contains the Eye movie clip, which itself is comprised of the following movieclips: Eyebrow, Eyelash, eyeMask, eyelid (currently a Container but there's an old leftover. It should not remain a container. Also make sure it uses SkinGradient, not Skin.), sclera (also a container but should not be, just a rename is needed), and innerEyeContainer (this actually is a container). The inner eye container is comprised of 3 movie clips, Highlight (light reflection), Iris (uses the same color modification concept as a body part's Skin), and pupil (which has variations such as normal, heart, and cat).
+
+The elements of the eye container, due to preceding the work with the motion xmls, currently must be adjusted manually through the use of tweens. There are some preset positions the Eye object can use to ease this. The idea was to have an "expression" timeline that would be used to contain the tweens for facial features but this has not been realized at the time of writing.
+
+Final thing to note with the eyes is that when working on a freshly converted template (single keyframe version) is that the sclera should be replaced with the eye container. 
+
+Menus:
+Just started working on better menus and I'll be honest, I have no idea what I'm doing. I feel menus for character modifications are needed before the rest of the program should be worked on. The character edit menu needs to have a way to change skin color, gradients for various body parts (eyelid, face, hand, vulvas, anus and any others I missed). More in depth changes such as hair swapping and accessory swapping can postponed.
+
+Helper scripts:
+I've created a few scripts to help cut down on the time used for more tedious tasks.
+Export Multiple Motion XMLs.jsfl: All selected layers will have a motion xml created for it. Requires a modified version of Export Motion XML.jfsl, so back up the original.
+CreateEmbedMotion.py: Takes all motion xmls in a folder and creates a static class that embeds all the xml files.
+Remove Frames After First.jsfl: Used on the fully keyframed version of a template to reduced all unlocked layers to a single 120 frame length keyframe. Optimal use for this is to create a copy of the work copy, name it appropriately, bring it up onto the flash authoring stage then run the script. Be aware that as of the time of writing, the male does not use the motion xml based system, meaning if you don't lock layers associated with the male then it will cease to animate.
+
+
+To-do list:
+---Needed--- Minimum features necessary for a "complete" release
+*Finish converting all animations to template form
+*Implement expression timeline (each animation director has one). This is where tweens that'll allow changes to the mouth (don't allow movement changes?) and eyes containers (allow movement changes only to the container's children) will be contained.
+*Add extra layers  
+	-front & back layers:1 minimum, though possibly a max of 3. <- Isabelle needs this for her white fur patterns - Roughly implemented, 2 for each side
+	-Hair front L/R <- Daisy needs this
+*Export all motionXMLs needed for all characters
+*as3:change body parts base class to a container class that allows for another object to overlay the body part. - Rough implementation done
+- should allow 2 at most, one for costumes/clothing(top) and one for body part additions (tattoos)
+
+
+---Optional - mid priority---
+*swappable hair/other parts
+	-Hair motion xmls position changes in tween orders need to be relative, not absolute. Hair also needs an anchor point on the face
+*variation for templates (can support 2+ different versions of the same template)
+*Hair/skin/wear/nails/other color modifications 
+*UI for color modifications (RGB and HSV "windows")
+*beepless version of beep block skyway from the Official OST release added
+* Add template for the licking animation and a necessary changes to facilitate modifications for the second character
+
+---Optional - low priority--- these features are absolutely unneeded but would be extremely nice to have in.
+changable breast sizes (need flat and huge variations and in-betweens from flat to medium to huge via morphshape usage)
+breast physics (Breasts need to use a controller that is set to an anchor point to chest, need to keep track of position changes since last frame, and proper use of skewing to "sell" the motion). 
+can use graphics loaded from external files
+Cum shots

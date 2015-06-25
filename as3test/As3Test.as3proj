@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<project version="2">
+  <!-- Output SWF options -->
+  <output>
+    <movie outputType="Application" />
+    <movie input="" />
+    <movie path="bin\ppppuTest.swf" />
+    <movie fps="30" />
+    <movie width="680" />
+    <movie height="720" />
+    <movie version="16" />
+    <movie minorVersion="0" />
+    <movie platform="Flash Player" />
+    <movie background="#FFFFFF" />
+  </output>
+  <!-- Other classes to be compiled into your SWF -->
+  <classpaths>
+    <class path="src" />
+    <class path="lib" />
+  </classpaths>
+  <!-- Build options -->
+  <build>
+    <option accessible="False" />
+    <option advancedTelemetry="True" />
+    <option allowSourcePathOverlap="False" />
+    <option benchmark="False" />
+    <option es="False" />
+    <option inline="False" />
+    <option locale="" />
+    <option loadConfig="" />
+    <option optimize="False" />
+    <option omitTraces="True" />
+    <option showActionScriptWarnings="False" />
+    <option showBindingWarnings="True" />
+    <option showInvalidCSS="True" />
+    <option showDeprecationWarnings="True" />
+    <option showUnusedTypeSelectorWarnings="True" />
+    <option strict="True" />
+    <option useNetwork="False" />
+    <option useResourceBundleMetadata="True" />
+    <option warnings="True" />
+    <option verboseStackTraces="False" />
+    <option linkReport="" />
+    <option loadExterns="" />
+    <option staticLinkRSL="True" />
+    <option additional="" />
+    <option compilerConstants="" />
+    <option minorVersion="" />
+  </build>
+  <!-- SWC Include Libraries -->
+  <includeLibraries>
+    <element path="lib\As3Test.swc" />
+    <element path="lib\FlashComponents.swc" />
+  </includeLibraries>
+  <!-- SWC Libraries -->
+  <libraryPaths>
+    <element path="" />
+  </libraryPaths>
+  <!-- External Libraries -->
+  <externalLibraryPaths>
+    <!-- example: <element path="..." /> -->
+  </externalLibraryPaths>
+  <!-- Runtime Shared Libraries -->
+  <rslPaths>
+    <!-- example: <element path="..." /> -->
+  </rslPaths>
+  <!-- Intrinsic Libraries -->
+  <intrinsics>
+    <element path="Library\AS3\frameworks\FlashIDE" />
+    <element path="Library\AS3\Frameworks\Flex3" />
+  </intrinsics>
+  <!-- Assets to embed into the output SWF -->
+  <library>
+    <!-- example: <asset path="..." id="..." update="..." glyphs="..." mode="..." place="..." sharepoint="..." /> -->
+  </library>
+  <!-- Class files to compile (other referenced classes will automatically be included) -->
+  <compileTargets>
+    <compile path="src\Main.as" />
+  </compileTargets>
+  <!-- Paths to exclude from the Project Explorer tree -->
+  <hiddenPaths>
+    <hidden path="obj" />
+  </hiddenPaths>
+  <!-- Executed before build -->
+  <preBuildCommand />
+  <!-- Executed after build -->
+  <postBuildCommand alwaysRun="False" />
+  <!-- Other project options -->
+  <options>
+    <option showHiddenPaths="False" />
+    <option testMovie="Default" />
+    <option testMovieCommand="" />
+  </options>
+  <!-- Plugin storage -->
+  <storage />
+</project>
