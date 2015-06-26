@@ -1,6 +1,6 @@
 package menu 
 {
-	import fl.controls.Button;
+	//import fl.controls.Button; //Change to use custom button class since using flash's button creates problems.
 	import flash.display.Sprite;
 	/**
 	 * ...
@@ -8,8 +8,8 @@ package menu
 	 */
 	public class CharacterMenuBase extends Sprite
 	{
-		public var HairButton:Button;
-		public var SkinButton:Button;
+		public var HairButton:Sprite; //Type is a sprite to work around the button issue. Change type to the custom button class when it is ready.
+		public var SkinButton:Sprite; //Read the above line
 		public function CharacterMenuBase() 
 		{
 			
