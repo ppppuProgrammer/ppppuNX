@@ -2,7 +2,7 @@ package
 {
 	import As3Test_fla.Symbol316_1;
 	import com.greensock.data.TweenLiteVars;
-	import fl.motion.AdjustColor;
+	import fl.motion.AdjustColor; /* To use this with flash develop, it is required to change the compiler options to include the flash.swc that comes with flash pro. That can be found in (Adobe Flash directory)\Common\Configuration\ActionScript 3.0\libs\flash.swc */
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
@@ -90,6 +90,12 @@ package
 		var hairValueVLabel:Label = new Label();
 		var hairValueCLabel:Label = new Label();
 		var hairLabelTextField:TextField = new TextField();*/
+		
+		//Using the menus from ppppuNX
+		var hairColorMenu:HSVMenu = new HSVMenu();
+		var scleraColorMenu:RGBMenu = new RGBMenu();
+		var irisColorMenu:RGBMenu = new RGBMenu();
+		var lipsColorMenu:RGBMenu = new RGBMenu();
 		
 		var timelinesDict:Dictionary = new Dictionary();
 		
@@ -195,6 +201,27 @@ package
 			addChild(hairValueSLabel);
 			addChild(hairValueVLabel);
 			addChild(hairValueCLabel);*/
+			
+			hairColorMenu.x = scleraColorMenu.x = irisColorMenu.x = lipsColorMenu.x = 480;
+			hairColorMenu.y = 50;
+			scleraColorMenu.y = 175;
+			irisColorMenu.y = 300;
+			lipsColorMenu.y=425;
+			
+			addChild(hairColorMenu);
+			addChild(scleraColorMenu);
+			addChild(irisColorMenu);
+			addChild(lipsColorMenu);
+			
+			hairColorMenu.addEventListener(Event.CHANGE, HairSlidersChange);
+			scleraColorMenu.addEventListener(Event.CHANGE, ScleraSliderChanged);
+			irisColorMenu.addEventListener(Event.CHANGE, IrisSliderChanged);
+			lipsColorMenu.addEventListener(Event.CHANGE, LipsSliderChanged);
+			
+			/*hairColorMenu;
+			scleraColorMenu;
+			irisColorMenu;
+			lipsColorMenu;*/
 			
 			peachCowgirl = new AnimationDirector(mainClip.TemplateController.getChildByName("Cowgirl"));
 			irisColorTextField.text = eyeColorDisplayText;
@@ -603,6 +630,55 @@ package
 			scleraColorTextField.text = scleraColorDisplayText;
 		}
 		
+		//custom slider version
+		private function LipsSliderChanged(e:Event)
+		{
+			var lipsMenu:RGBMenu = lipsColorMenu;
+			var lipsColor:ColorTransform = new ColorTransform(0, 0, 0, 0, lipsMenu.RedSlider.Value, lipsMenu.GreenSlider.Value, lipsMenu.BlueSlider.Value, lipsMenu.AlphaSlider.Value);
+			templateInUse.Mouth.LipsColor.transform.colorTransform = lipsColor;
+		}
+		private function ScleraSliderChanged(e:Event)
+		{
+			var scleraMenu:RGBMenu = scleraColorMenu;
+			var scleraColor:ColorTransform = new ColorTransform(0, 0, 0, 0, scleraMenu.RedSlider.Value, scleraMenu.GreenSlider.Value, scleraMenu.BlueSlider.Value, scleraMenu.AlphaSlider.Value);
+			templateInUse.EyeL.eye.scleraContainer.scleraColor.transform.colorTransform = scleraColor;
+			templateInUse.EyeR.eye.scleraContainer.scleraColor.transform.colorTransform = scleraColor;
+		}
+		private function IrisSliderChanged(e:Event)
+		{
+			var irisMenu:RGBMenu = irisColorMenu;
+			var irisColor:ColorTransform = new ColorTransform(0, 0, 0, 0, irisMenu.RedSlider.Value, irisMenu.GreenSlider.Value, irisMenu.BlueSlider.Value, irisMenu.AlphaSlider.Value);
+			templateInUse.EyeL.eye.innerEyeContainer.iris.transform.colorTransform = irisColor;
+			templateInUse.EyeR.eye.innerEyeContainer.iris.transform.colorTransform = irisColor;
+		}
+		
+		public function HairSlidersChange(e:Event)
+		{
+			var hue:Number = hairColorMenu.HueSlider.Value;
+			var sat:Number = hairColorMenu.SaturationSlider.Value;
+			var value:Number = hairColorMenu.ValueSlider.Value;
+			var contrast:Number = hairColorMenu.ContrastSlider.Value;
+			
+			//hairValueHLabel.text = hue.toString();
+			//hairValueSLabel.text = sat.toString();
+			//hairValueVLabel.text = value.toString();
+			//hairValueCLabel.text = contrast.toString();
+			
+			if (templateInUse)
+			{
+				var cmf:ColorMatrixFilter = GetColorMatrixFilter(hue, sat, value, contrast);
+				templateInUse.HairSideL.filters = [cmf];
+				templateInUse.HairSide2L.filters = [cmf];
+				templateInUse.HairSide3L.filters = [cmf];
+				templateInUse.HairSideR.filters = [cmf];
+				templateInUse.HairSide2R.filters = [cmf];
+				templateInUse.HairSide3R.filters = [cmf];
+				templateInUse.HairFront.filters = [cmf];
+				templateInUse.HairBack.filters = [cmf];
+			}
+		}
+		
+		//flash sliders version
 		/*public function HairSlidersChange(e:Event)
 		{
 			var hue:Number = hairSliderH.value;
@@ -688,7 +764,7 @@ package
 		}
 		
 		//eyeToSwitch: 0 is both, 1 is lef, 2 is right
-		private function ChangeIrisColor(colorTransform:ColorTransform, eyeToSwitch:uint)
+		private function ChangeIrisColor(colorTransform:ColorTransform, eyeToSwitch:uint = 0)
 		{
 			irisWorkColorTransform = colorTransform;
 			switch(eyeToSwitch)
@@ -708,10 +784,16 @@ package
 			UpdateIrisDisplayText();
 		}
 		
+		
 		private function ChangeLipsColor(colorTransform:ColorTransform)
 		{
 			templateInUse.Mouth.LipsColor.transform.colorTransform = colorTransform;
 		}
+		/*private function ChangeScleraColor()
+		{
+			templateInUse.EyeL.eye.scleraContainer.scleraColor.transform.colorTransform;
+			templateInUse.EyeR.eye.scleraContainer.scleraColor.transform.colorTransform;
+		}*/
 		private function ChangeSkinBase(type:String)
 		{
 			templateInUse.UpperLegL.UpperLeg.Skin.gotoAndStop(type);

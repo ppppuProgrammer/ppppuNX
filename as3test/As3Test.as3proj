@@ -50,11 +50,11 @@
   <!-- SWC Include Libraries -->
   <includeLibraries>
     <element path="lib\As3Test.swc" />
-    <element path="lib\FlashComponents.swc" />
+    <element path="" />
   </includeLibraries>
   <!-- SWC Libraries -->
   <libraryPaths>
-    <element path="" />
+    <element path="C:\Program Files\Adobe\Adobe Flash CS5.5\Common\Configuration\ActionScript 3.0\libs\flash.swc" />
   </libraryPaths>
   <!-- External Libraries -->
   <externalLibraryPaths>
