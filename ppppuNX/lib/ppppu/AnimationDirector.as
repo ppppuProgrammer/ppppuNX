@@ -1,6 +1,5 @@
 package ppppu 
 {
-	import fl.transitions.Tween;
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
