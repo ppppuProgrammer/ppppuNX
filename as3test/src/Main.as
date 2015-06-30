@@ -46,6 +46,9 @@ package
 	import com.greensock.*;
 	import mx.utils.StringUtil;
 	import ppppu.XmlMotionToTweens;
+	import ui.HSVCMenu;
+	import ui.PopupButton;
+	import ui.RGBAMenu;
 	//Can't use unless these components are packed into a swc, which I legally can't distribute. 
 	//import flash.controls.Slider;
 	//import flash.controls.Label;
@@ -63,39 +66,17 @@ package
 		private const SIDEBOOB_SCALE_TO_START_SKEW:Number = 1.0;
 		private const SIDEBOOB_MAX_Y_DISPLACEMENT:Number = 16;
 		
-		private const eyeColorBaseText:String = "Iris Color - R: {0}, G: {1}, B: {2}, A: {3}";
-		private const scleraColorBaseText:String = "Sclera Color - R: {0}, G: {1}, B: {2}, A: {3}";
-		private var eyeColorDisplayText:String = "";
-		private var scleraColorDisplayText:String = "";
-		private var irisColorTextField:TextField = new TextField();
-		private var scleraColorTextField:TextField = new TextField();
-		
 		var peachCowgirl:AnimationDirector;
 		var rosalinaCowgirl:AnimationDirector;
 		var templateInUse:TemplateBase;
 		var irisWorkColorTransform:ColorTransform = new ColorTransform(0,0,0,0,255,255,255,255);
 		var scleraWorkColorTransform:ColorTransform = new ColorTransform(0,0,0,0,255,255,255,255);
 		
-		//Disabled due to legal reasons (can't distribute flash components in swc form, which is how these are usable in flash develop.
-		/*var hairSliderH:Slider = new Slider();
-		var hairSliderC:Slider = new Slider();
-		var hairSliderV:Slider = new Slider();
-		var hairSliderS:Slider = new Slider();
-		var hairHLabel:Label = new Label();
-		var hairSLabel:Label = new Label();
-		var hairVLabel:Label = new Label();
-		var hairCLabel:Label = new Label();
-		var hairValueHLabel:Label = new Label();
-		var hairValueSLabel:Label = new Label();
-		var hairValueVLabel:Label = new Label();
-		var hairValueCLabel:Label = new Label();
-		var hairLabelTextField:TextField = new TextField();*/
-		
-		//Using the menus from ppppuNX
-		var hairColorMenu:HSVMenu = new HSVMenu();
-		var scleraColorMenu:RGBMenu = new RGBMenu();
-		var irisColorMenu:RGBMenu = new RGBMenu();
-		var lipsColorMenu:RGBMenu = new RGBMenu();
+		var hairColorMenu:ui.HSVCMenu = new ui.HSVCMenu("Hair");
+		var skinColorMenu:ui.HSVCMenu = new ui.HSVCMenu("Skin");
+		var scleraColorMenu:ui.RGBAMenu = new ui.RGBAMenu("Sclera");
+		var irisColorMenu:ui.RGBAMenu = new ui.RGBAMenu("Iris");
+		var lipsColorMenu:ui.RGBAMenu = new ui.RGBAMenu("Lips");
 		
 		var timelinesDict:Dictionary = new Dictionary();
 		
@@ -123,124 +104,37 @@ package
 				ProcessMotionStaticClass(DefaultCowgirlMotions, mainClip.TemplateController.getChildByName("Cowgirl")));
 			this.ProcessMotionStaticClass(RosalinaCowgirlMotions, mainClip.TemplateController.getChildByName("Cowgirl"));
 			
-			//Create Sliders for hair adjustment
 			
-			/*hairSliderH.minimum = -180;
-			hairSliderH.maximum = 180;
-			hairSliderH.snapInterval = 1;
-			hairSliderH.tickInterval = 20;
-			hairSliderH.liveDragging = true;
+			var pb_iris:ui.PopupButton = new ui.PopupButton(this, 480, 50, "Iris");
+			pb_iris.bindPopup(irisColorMenu, "leftOuter", "topInner");
 			
-			hairSliderS.minimum = 0.0;
-			hairSliderS.maximum = 6.0;
-			hairSliderS.value = 1.0;
-			hairSliderS.snapInterval = .01;
-			hairSliderS.tickInterval = .25;
-			hairSliderS.liveDragging = true;
+			var pb_hair:ui.PopupButton = new ui.PopupButton(this, 480, 70, "Hair");
+			pb_hair.bindPopup(hairColorMenu, "leftOuter", "topInner");
 			
-			hairSliderV.minimum = 0.0;
-			hairSliderV.value = 1.0;
-			hairSliderV.maximum = 6.0;
-			hairSliderV.snapInterval = .01;
-			hairSliderV.tickInterval = .25;
-			hairSliderV.liveDragging = true;
+			var pb_sclera:ui.PopupButton = new ui.PopupButton(this, 480, 90, "Sclera");
+			pb_sclera.bindPopup(scleraColorMenu, "leftOuter", "topInner");
 			
-			hairSliderC.minimum = 0.0;
-			hairSliderC.value = 1.0;
-			hairSliderC.maximum = 6.0;
-			hairSliderC.snapInterval = .01;
-			hairSliderC.tickInterval = .25;
-			hairSliderC.liveDragging = true;
+			var pb_lips:ui.PopupButton = new ui.PopupButton(this, 480, 110, "Lips");
+			pb_lips.bindPopup(lipsColorMenu, "leftOuter", "topInner");
 			
-			hairSliderH.x = hairSliderS.x = hairSliderV.x = hairSliderC.x = 500;
-			hairSliderH.y = 25;
-			hairSliderS.y = 75;
-			hairSliderV.y = 125;
-			hairSliderC.y = 175;
-			
-			addChild(hairSliderH);
-			addChild(hairSliderS);
-			addChild(hairSliderV);
-			addChild(hairSliderC);
-			
-			var hairSliderAltH:Slider = new Slider();
-			var hairSliderAltS:Slider = new Slider();
-			var hairSliderAltV:Slider = new Slider();
-			var hairSliderAltC:Slider = new Slider();
-			
-			//slider events
-			hairSliderH.addEventListener(Event.CHANGE, HairSlidersChange);
-			hairSliderS.addEventListener(Event.CHANGE, HairSlidersChange);
-			hairSliderV.addEventListener(Event.CHANGE, HairSlidersChange);
-			hairSliderC.addEventListener(Event.CHANGE, HairSlidersChange);
-			
-			//hair labels
-			hairHLabel.x = hairSLabel.x = hairVLabel.x = hairCLabel.x = 485;
-			hairHLabel.y = 5;
-			hairSLabel.y = 55;
-			hairVLabel.y = 105;
-			hairCLabel.y = 155;
-			hairHLabel.autoSize = hairSLabel.autoSize = hairVLabel.autoSize = hairCLabel.autoSize = TextFieldAutoSize.CENTER;
-			hairHLabel.text = "Hue";
-			hairSLabel.text = "Saturation"; 
-			hairVLabel.text = "Brightness"; 
-			hairCLabel.text = "Contrast";
-			hairValueHLabel.x = hairValueSLabel.x = hairValueVLabel.x = hairValueCLabel.x = 550;
-			hairValueHLabel.y = 15;
-			hairValueSLabel.y = 65;
-			hairValueVLabel.y = 115;
-			hairValueCLabel.y = 165;
-			hairValueHLabel.autoSize = hairValueSLabel.autoSize = hairValueVLabel.autoSize = hairValueCLabel.autoSize = TextFieldAutoSize.CENTER;
-			hairValueHLabel.text = "0";
-			hairValueSLabel.text = hairValueVLabel.text = hairValueCLabel.text = "1.0";
-			addChild(hairHLabel);
-			addChild(hairSLabel);
-			addChild(hairVLabel);
-			addChild(hairCLabel);
-			addChild(hairValueHLabel);
-			addChild(hairValueSLabel);
-			addChild(hairValueVLabel);
-			addChild(hairValueCLabel);*/
-			
-			hairColorMenu.x = scleraColorMenu.x = irisColorMenu.x = lipsColorMenu.x = 480;
-			hairColorMenu.y = 50;
-			scleraColorMenu.y = 175;
-			irisColorMenu.y = 300;
-			lipsColorMenu.y=425;
-			
-			addChild(hairColorMenu);
-			addChild(scleraColorMenu);
-			addChild(irisColorMenu);
-			addChild(lipsColorMenu);
+			var pb_skin:ui.PopupButton = new ui.PopupButton(this, 480, 130, "Skin");
+			pb_skin.bindPopup(skinColorMenu, "leftOuter", "topInner");
 			
 			hairColorMenu.addEventListener(Event.CHANGE, HairSlidersChange);
+			skinColorMenu.addEventListener(Event.CHANGE, SkinSlidersChange);
 			scleraColorMenu.addEventListener(Event.CHANGE, ScleraSliderChanged);
 			irisColorMenu.addEventListener(Event.CHANGE, IrisSliderChanged);
 			lipsColorMenu.addEventListener(Event.CHANGE, LipsSliderChanged);
-			
-			/*hairColorMenu;
-			scleraColorMenu;
-			irisColorMenu;
-			lipsColorMenu;*/
-			
+						
 			peachCowgirl = new AnimationDirector(mainClip.TemplateController.getChildByName("Cowgirl"));
-			irisColorTextField.text = eyeColorDisplayText;
-			irisColorTextField.textColor = 0xFFFFFF;
-			irisColorTextField.autoSize = TextFieldAutoSize.LEFT;
-			irisColorTextField.x = 0;
-			irisColorTextField.y = 0;
-			scleraColorTextField.text = scleraColorDisplayText;
-			scleraColorTextField.textColor = 0xFFFFFF;
-			scleraColorTextField.autoSize = TextFieldAutoSize.LEFT;
-			scleraColorTextField.x = 240;
-			scleraColorTextField.y = 0;
-			addChild(irisColorTextField);
-			addChild(scleraColorTextField);
 
+			
+	
 			ChangeSkinBase("Light");
 			ChangeHeadwear("Peach");
 			ChangeHairBase("Peach");
 			ChangeEarring("Peach");
+			ChangeLeggings("Peach");
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, KeyPressCheck);
 			
 		}
@@ -310,253 +204,101 @@ package
 		public function KeyPressCheck(keyEvent:KeyboardEvent):void
 		{
 			var keyPressed:int = keyEvent.keyCode;
-			if(keyPressed == Keyboard.Q)
-			{	
-				++irisWorkColorTransform.redOffset;
-				if (irisWorkColorTransform.redOffset > 255)
-				{
-					irisWorkColorTransform.redOffset = 255;
-				}
-				UpdateIrisDisplayText();
-			}
-			else if(keyPressed == Keyboard.W)
-			{	
-				--irisWorkColorTransform.redOffset;
-				if (irisWorkColorTransform.redOffset < 0)
-				{
-					irisWorkColorTransform.redOffset = 0;
-				}
-				UpdateIrisDisplayText();
-			}
-			if(keyPressed == Keyboard.E)
-			{	
-				++irisWorkColorTransform.greenOffset;
-				if (irisWorkColorTransform.greenOffset > 255)
-				{
-					irisWorkColorTransform.greenOffset = 255;
-				}
-				UpdateIrisDisplayText();
-			}
-			else if(keyPressed == Keyboard.R)
-			{	
-				--irisWorkColorTransform.greenOffset;
-				if (irisWorkColorTransform.greenOffset < 0)
-				{
-					irisWorkColorTransform.greenOffset = 0;
-				}
-				UpdateIrisDisplayText();
-			}
-			if(keyPressed == Keyboard.T)
-			{	
-				++irisWorkColorTransform.blueOffset;
-				if (irisWorkColorTransform.blueOffset > 255)
-				{
-					irisWorkColorTransform.blueOffset = 255;
-				}
-				UpdateIrisDisplayText();
-			}
-			else if(keyPressed == Keyboard.Y)
-			{	
-				--irisWorkColorTransform.blueOffset;
-				if (irisWorkColorTransform.blueOffset < 0)
-				{
-					irisWorkColorTransform.blueOffset = 0;
-				}
-				UpdateIrisDisplayText();
-			}
-			if(keyPressed == Keyboard.U)
-			{	
-				++irisWorkColorTransform.alphaOffset;
-				if (irisWorkColorTransform.alphaOffset > 255)
-				{
-					irisWorkColorTransform.alphaOffset = 255;
-				}
-				UpdateIrisDisplayText();
-			}
-			else if(keyPressed == Keyboard.I)
-			{	
-				--irisWorkColorTransform.alphaOffset;
-				if (irisWorkColorTransform.alphaOffset < 0)
-				{
-					irisWorkColorTransform.alphaOffset = 0;
-				}
-				UpdateIrisDisplayText();
-			}
-			
-			if(keyPressed == Keyboard.A)
-			{	
-				++scleraWorkColorTransform.redOffset;
-				if (scleraWorkColorTransform.redOffset > 255)
-				{
-					scleraWorkColorTransform.redOffset = 255;
-				}
-				UpdateScleraDisplayText();
-			}
-			else if(keyPressed == Keyboard.S)
-			{	
-				--scleraWorkColorTransform.redOffset;
-				if (scleraWorkColorTransform.redOffset < 0)
-				{
-					scleraWorkColorTransform.redOffset = 0;
-				}
-				UpdateScleraDisplayText();
-			}
-			if(keyPressed == Keyboard.D)
-			{	
-				++scleraWorkColorTransform.greenOffset;
-				if (scleraWorkColorTransform.greenOffset > 255)
-				{
-					scleraWorkColorTransform.greenOffset = 255;
-				}
-				UpdateScleraDisplayText();
-			}
-			else if(keyPressed == Keyboard.F)
-			{	
-				--scleraWorkColorTransform.greenOffset;
-				if (scleraWorkColorTransform.greenOffset < 0)
-				{
-					scleraWorkColorTransform.greenOffset = 0;
-				}
-				UpdateScleraDisplayText();
-			}
-			if(keyPressed == Keyboard.G)
-			{	
-				++scleraWorkColorTransform.blueOffset;
-				if (scleraWorkColorTransform.blueOffset > 255)
-				{
-					scleraWorkColorTransform.blueOffset = 255;
-				}
-				UpdateScleraDisplayText();
-			}
-			else if(keyPressed == Keyboard.H)
-			{	
-				--scleraWorkColorTransform.blueOffset;
-				if (scleraWorkColorTransform.blueOffset < 0)
-				{
-					scleraWorkColorTransform.blueOffset = 0;
-				}
-				UpdateScleraDisplayText();
-			}
-			if(keyPressed == Keyboard.J)
-			{	
-				++scleraWorkColorTransform.alphaOffset;
-				if (scleraWorkColorTransform.alphaOffset > 255)
-				{
-					scleraWorkColorTransform.alphaOffset = 255;
-				}
-				UpdateScleraDisplayText();
-			}
-			else if(keyPressed == Keyboard.K)
-			{	
-				--scleraWorkColorTransform.alphaOffset;
-				if (scleraWorkColorTransform.alphaOffset < 0)
-				{
-					scleraWorkColorTransform.alphaOffset = 0;
-				}
-				UpdateScleraDisplayText();
-			}
-			if (keyPressed == Keyboard.Z)
+			switch(keyPressed)
 			{
-				ChangeSkinBase("Light");
-			}
-			else if (keyPressed == Keyboard.X)
-			{
-				ChangeSkinBase("Tan");
-			}
-			else if (keyPressed == Keyboard.C)
-			{
-				ChangeSkinBase("Dark");
-			}
-			else if (keyPressed == Keyboard.P)
-			{
-				templateInUse.AddTimelines(GetMotionTimelinesByType("Rosalina", templateInUse.GetName(), "Body"));
-			}
-			else if (keyPressed == Keyboard.O)
-			{
-				templateInUse.ResetToDefaultTimelines();
-			}
-			else if (keyPressed == Keyboard.V) //Peach
-			{
-				ChangeHairBase("Peach");
-				ChangeEarring("Peach");
-				ChangeHeadwear("Peach");
-				var irisColor:ColorTransform = new ColorTransform(0, 0, 0, 0, 0, 0, 0, 255);
-				irisColor.color = 0x3671C1;
-				ChangeIrisColor(irisColor, 0);
-				var lipsColor:ColorTransform = new ColorTransform(0, 0, 0, 0, 0, 0, 0, 255);
-				lipsColor.color = 0xFF99CC;
-				ChangeLipsColor(lipsColor);
-				//eye stuff
-				templateInUse.EyeL.eye.innerEyeContainer.MoveChildren(0, 0);
-				templateInUse.EyeR.eye.innerEyeContainer.MoveChildren(0, 0);
-				//reset eyelid
-				templateInUse.EyeL.eye.eyelidContainer.eyelid.transform.matrix.identity();
-				templateInUse.EyeR.eye.eyelidContainer.eyelid.transform.matrix.identity();
-				templateInUse.EyeL.eye.gotoAndStop("Open");
-				templateInUse.EyeR.eye.gotoAndStop("Open");
-				
-				templateInUse.ResetToDefaultTimelines();
-			}
-			else if (keyPressed == Keyboard.B) //Rosalina Hair
-			{
-				ChangeHairBase("Rosalina");
-				templateInUse.AddTimelines(GetMotionTimelinesByType("Rosalina", templateInUse.GetName(), "Hair"));
-			}
-			else if (keyPressed == Keyboard.N) //Rosalina Earring
-			{
-				ChangeEarring("Rosalina");
-			}
-			else if (keyPressed == Keyboard.M) //Rosalina Headwear
-			{
-				ChangeHeadwear("Rosalina");
-			}
-			else if (keyPressed == Keyboard.COMMA) //Rosalina Eye
-			{
-				var irisColor:ColorTransform = new ColorTransform(0, 0, 0, 0, 0, 0, 0, 255);
-				irisColor.color = 0x36BDC1;
-				ChangeIrisColor(irisColor, 0);
-				templateInUse.EyeR.eye.gotoAndStop("HalfOpen");
-				templateInUse.EyeR.eye.innerEyeContainer.MoveChildren(0, 2.5);
-				templateInUse.EyeL.eye.gotoAndStop("HalfOpen");
-				templateInUse.EyeL.eye.innerEyeContainer.MoveChildren(0, 2.5);
-				var eyelidMatrix:Matrix = new Matrix();
-				XmlMotionToTweens.SetMatrixScaleY(eyelidMatrix, .6);
-				XmlMotionToTweens.SetMatrixSkewY(eyelidMatrix, 3.3);
-				eyelidMatrix.ty = 15.5;
-				templateInUse.EyeR.eye.eyelidContainer.eyelid.transform.matrix.copyFrom(eyelidMatrix);
-				templateInUse.EyeL.eye.eyelidContainer.eyelid.transform.matrix.copyFrom(eyelidMatrix);
-			}
-			else if (keyPressed == Keyboard.PERIOD) //Rosalina lips
-			{
-				var lipsColor:ColorTransform = new ColorTransform(0, 0, 0, 0, 0, 0, 0, 255);
-				lipsColor.color = 0xFFCFC7;
-				ChangeLipsColor(lipsColor);
-			}
-			else if (keyPressed == Keyboard.SLASH)
-			{
-				var graphicsData:Vector.<IGraphicsData> = (templateInUse.EarL.Ear.Skin.getChildAt(0) as Shape).graphics.readGraphicsData();
-				UsePeachGradient = !UsePeachGradient;
-				for (var i:uint = 0, l:uint = graphicsData.length; i < l; ++i)
-				{
-					if (graphicsData[i] is GraphicsGradientFill)
+				case Keyboard.Z:
+					ChangeSkinBase("Light");
+					break;
+				case Keyboard.X:
+					ChangeSkinBase("Tan");
+					break;
+				case Keyboard.C:
+					ChangeSkinBase("Dark");
+					break;
+				case Keyboard.P:
+					templateInUse.AddTimelines(GetMotionTimelinesByType("Rosalina", templateInUse.GetName(), "Body"));
+					ChangeLeggings("Rosalina");
+					break;
+				case Keyboard.O:
+					templateInUse.ResetToDefaultTimelines();
+					break;
+				case Keyboard.V:
+					ChangeHairBase("Peach");
+					ChangeEarring("Peach");
+					ChangeHeadwear("Peach");
+					ChangeLeggings("Peach");
+					var irisColor:ColorTransform = new ColorTransform(0, 0, 0, 0, 0, 0, 0, 255);
+					irisColor.color = 0x3671C1;
+					ChangeIrisColor(irisColor, 0);
+					var lipsColor:ColorTransform = new ColorTransform(0, 0, 0, 0, 0, 0, 0, 255);
+					lipsColor.color = 0xFF99CC;
+					ChangeLipsColor(lipsColor);
+					//eye stuff
+					templateInUse.EyeL.eye.innerEyeContainer.MoveChildren(0, 0);
+					templateInUse.EyeR.eye.innerEyeContainer.MoveChildren(0, 0);
+					//reset eyelid
+					templateInUse.EyeL.eye.eyelidContainer.eyelid.transform.matrix.identity();
+					templateInUse.EyeR.eye.eyelidContainer.eyelid.transform.matrix.identity();
+					templateInUse.EyeL.eye.gotoAndStop("Open");
+					templateInUse.EyeR.eye.gotoAndStop("Open");
+					
+					templateInUse.ResetToDefaultTimelines();
+					break;
+				case Keyboard.B:
+					ChangeHairBase("Rosalina");
+					templateInUse.AddTimelines(GetMotionTimelinesByType("Rosalina", templateInUse.GetName(), "Hair"));
+					break;
+				case Keyboard.N:
+					ChangeEarring("Rosalina");
+					break;
+				case Keyboard.M:
+					ChangeHeadwear("Rosalina");
+					break;
+				case Keyboard.COMMA:
+					var irisColor:ColorTransform = new ColorTransform(0, 0, 0, 0, 0, 0, 0, 255);
+					irisColor.color = 0x36BDC1;
+					ChangeIrisColor(irisColor, 0);
+					templateInUse.EyeR.eye.gotoAndStop("HalfOpen");
+					templateInUse.EyeR.eye.innerEyeContainer.MoveChildren(0, 2.5);
+					templateInUse.EyeL.eye.gotoAndStop("HalfOpen");
+					templateInUse.EyeL.eye.innerEyeContainer.MoveChildren(0, 2.5);
+					var eyelidMatrix:Matrix = new Matrix();
+					XmlMotionToTweens.SetMatrixScaleY(eyelidMatrix, .6);
+					XmlMotionToTweens.SetMatrixSkewY(eyelidMatrix, 3.3);
+					eyelidMatrix.ty = 15.5;
+					templateInUse.EyeR.eye.eyelidContainer.eyelid.transform.matrix.copyFrom(eyelidMatrix);
+					templateInUse.EyeL.eye.eyelidContainer.eyelid.transform.matrix.copyFrom(eyelidMatrix);
+					break;
+				case Keyboard.PERIOD:
+					var lipsColor:ColorTransform = new ColorTransform(0, 0, 0, 0, 0, 0, 0, 255);
+					lipsColor.color = 0xFFCFC7;
+					ChangeLipsColor(lipsColor);
+					break;
+				case Keyboard.SLASH: //Experiment code for changing the gradient fill of a shape. Only affects the left ear.
+					var graphicsData:Vector.<IGraphicsData> = (templateInUse.EarL.Ear.Skin.getChildAt(0) as Shape).graphics.readGraphicsData();
+					UsePeachGradient = !UsePeachGradient;
+					for (var i:uint = 0, l:uint = graphicsData.length; i < l; ++i)
 					{
-						var gradientFill:GraphicsGradientFill = graphicsData[i] as GraphicsGradientFill;
-						if (UsePeachGradient)
+						if (graphicsData[i] is GraphicsGradientFill)
 						{
-							gradientFill.colors[0] = GetColorUintValue(255, 220, 198);
-							gradientFill.colors[1] = GetColorUintValue(243, 182, 154);
+							var gradientFill:GraphicsGradientFill = graphicsData[i] as GraphicsGradientFill;
+							if (UsePeachGradient)
+							{
+								gradientFill.colors[0] = GetColorUintValue(255, 220, 198);
+								gradientFill.colors[1] = GetColorUintValue(243, 182, 154);
+							}
+							else
+							{
+								gradientFill.colors[0] = GetColorUintValue(209, 149, 97);
+								gradientFill.colors[1] = GetColorUintValue(164, 112, 80);
+							}
+							graphicsData[i] = gradientFill;
+							
 						}
-						else
-						{
-							gradientFill.colors[0] = GetColorUintValue(209, 149, 97);
-							gradientFill.colors[1] = GetColorUintValue(164, 112, 80);
-						}
-						graphicsData[i] = gradientFill;
-						
 					}
-				}
-				(templateInUse.EarL.Ear.Skin.getChildAt(0) as Shape).graphics.clear();
-				(templateInUse.EarL.Ear.Skin.getChildAt(0) as Shape).graphics.drawGraphicsData(graphicsData);
+					(templateInUse.EarL.Ear.Skin.getChildAt(0) as Shape).graphics.clear();
+					(templateInUse.EarL.Ear.Skin.getChildAt(0) as Shape).graphics.drawGraphicsData(graphicsData);
+					break;
 			}
 		}
 		
@@ -613,60 +355,74 @@ package
 			}
 			return timelines;
 		}
-		public function UpdateIrisDisplayText()
-		{
-			templateInUse.EyeL.eye.innerEyeContainer.iris.transform.colorTransform = irisWorkColorTransform;
-			templateInUse.EyeR.eye.innerEyeContainer.iris.transform.colorTransform = irisWorkColorTransform;
-			var irisColorTransform:ColorTransform = templateInUse.EyeL.eye.innerEyeContainer.iris.transform.colorTransform;
-			eyeColorDisplayText = StringUtil.substitute(eyeColorBaseText, irisColorTransform.redOffset.toString(), irisColorTransform.greenOffset.toString(), irisColorTransform.blueOffset.toString(), irisColorTransform.alphaOffset.toString());
-			irisColorTextField.text = eyeColorDisplayText;
-		}
-		public function UpdateScleraDisplayText()
-		{
-			templateInUse.EyeL.eye.scleraContainer.scleraColor.transform.colorTransform = scleraWorkColorTransform;
-			templateInUse.EyeR.eye.scleraContainer.scleraColor.transform.colorTransform = scleraWorkColorTransform;
-			var scleraColorTransform:ColorTransform = templateInUse.EyeL.eye.scleraContainer.scleraColor.transform.colorTransform;
-			scleraColorDisplayText = StringUtil.substitute(scleraColorBaseText, scleraColorTransform.redOffset.toString(), scleraColorTransform.greenOffset.toString(), scleraColorTransform.blueOffset.toString(), scleraColorTransform.alphaOffset.toString());
-			scleraColorTextField.text = scleraColorDisplayText;
-		}
 		
-		//custom slider version
+
 		private function LipsSliderChanged(e:Event)
 		{
-			var lipsMenu:RGBMenu = lipsColorMenu;
-			var lipsColor:ColorTransform = new ColorTransform(0, 0, 0, 0, lipsMenu.RedSlider.Value, lipsMenu.GreenSlider.Value, lipsMenu.BlueSlider.Value, lipsMenu.AlphaSlider.Value);
-			templateInUse.Mouth.LipsColor.transform.colorTransform = lipsColor;
+			var m:ui.RGBAMenu = e.target as ui.RGBAMenu;
+			var ct:ColorTransform = new ColorTransform(0, 0, 0, 0, m.R, m.G, m.B, m.A);
+			templateInUse.Mouth.LipsColor.transform.colorTransform = ct;
 		}
 		private function ScleraSliderChanged(e:Event)
 		{
-			var scleraMenu:RGBMenu = scleraColorMenu;
-			var scleraColor:ColorTransform = new ColorTransform(0, 0, 0, 0, scleraMenu.RedSlider.Value, scleraMenu.GreenSlider.Value, scleraMenu.BlueSlider.Value, scleraMenu.AlphaSlider.Value);
-			templateInUse.EyeL.eye.scleraContainer.scleraColor.transform.colorTransform = scleraColor;
-			templateInUse.EyeR.eye.scleraContainer.scleraColor.transform.colorTransform = scleraColor;
+			var m:ui.RGBAMenu = e.target as ui.RGBAMenu;
+			var ct:ColorTransform = new ColorTransform(0, 0, 0, 0, m.R, m.G, m.B, m.A);
+			templateInUse.EyeL.eye.scleraContainer.scleraColor.transform.colorTransform = ct;
+			templateInUse.EyeR.eye.scleraContainer.scleraColor.transform.colorTransform = ct;
 		}
 		private function IrisSliderChanged(e:Event)
 		{
-			var irisMenu:RGBMenu = irisColorMenu;
-			var irisColor:ColorTransform = new ColorTransform(0, 0, 0, 0, irisMenu.RedSlider.Value, irisMenu.GreenSlider.Value, irisMenu.BlueSlider.Value, irisMenu.AlphaSlider.Value);
-			templateInUse.EyeL.eye.innerEyeContainer.iris.transform.colorTransform = irisColor;
-			templateInUse.EyeR.eye.innerEyeContainer.iris.transform.colorTransform = irisColor;
+			var m:ui.RGBAMenu = e.target as ui.RGBAMenu;
+			var ct:ColorTransform = new ColorTransform(0, 0, 0, 0, m.R, m.G, m.B, m.A);
+			templateInUse.EyeL.eye.innerEyeContainer.iris.transform.colorTransform = ct;
+			templateInUse.EyeR.eye.innerEyeContainer.iris.transform.colorTransform = ct;
+		}
+		
+		public function SkinSlidersChange(e:Event)
+		{
+			var m:ui.HSVCMenu = e.target as ui.HSVCMenu;
+			var cmf:ColorMatrixFilter = GetColorMatrixFilter(m.H, m.S, m.V, m.C);
+			
+			templateInUse.UpperLegL.UpperLeg.Skin.filters = [cmf];
+			templateInUse.UpperLegR.UpperLeg.Skin.filters = [cmf];
+			templateInUse.Groin.Groin.Skin.filters = [cmf];
+			templateInUse.Labia.Labia.Skin.filters = [cmf];
+			templateInUse.Hips.Hips.Skin.filters = [cmf];
+			templateInUse.Chest.Chest.Skin.filters = [cmf];
+			templateInUse.ArmL.Arm.Skin.filters = [cmf];
+			templateInUse.ArmR.Arm.Skin.filters = [cmf];
+			templateInUse.ForearmL.Forearm.Skin.filters = [cmf];
+			templateInUse.ForearmR.Forearm.Skin.filters = [cmf];
+			templateInUse.ShoulderL.Shoulder.Skin.filters = [cmf];
+			templateInUse.ShoulderR.Shoulder.Skin.filters = [cmf];
+			templateInUse.Neck.Neck.Skin.filters = [cmf];
+			templateInUse.FrontButtL.FrontButt.Skin.filters = [cmf];
+			templateInUse.FrontButtR.FrontButt.Skin.filters = [cmf];
+			templateInUse.Navel.Navel.Skin.filters = [cmf];
+			templateInUse.Face.face.Skin.filters = [cmf];
+			templateInUse.AreolaL.Areola.filters = [cmf];
+			templateInUse.AreolaR.Areola.filters = [cmf];
+			templateInUse.NippleL.Nipple.filters = [cmf];
+			templateInUse.NippleR.Nipple.filters = [cmf];
+			templateInUse.EyeL.eye.eyelidContainer.eyelid.filters = [cmf];
+			templateInUse.EyeR.eye.eyelidContainer.eyelid.filters = [cmf];
+			templateInUse.EyeL.eye.scleraContainer.Skin.filters = [cmf];
+			templateInUse.EyeR.eye.scleraContainer.Skin.filters = [cmf];
+			templateInUse.BoobL.Breast.Skin.filters = [cmf];
+			templateInUse.BoobR.Breast.Skin.filters = [cmf];
+			templateInUse.EarL.Ear.Skin.filters = [cmf];
+			templateInUse.EarR.Ear.Skin.filters = [cmf];
+			templateInUse.HandL.Hand.Skin.filters = [cmf];
+			templateInUse.HandR.Hand.Skin.filters = [cmf];
 		}
 		
 		public function HairSlidersChange(e:Event)
 		{
-			var hue:Number = hairColorMenu.HueSlider.Value;
-			var sat:Number = hairColorMenu.SaturationSlider.Value;
-			var value:Number = hairColorMenu.ValueSlider.Value;
-			var contrast:Number = hairColorMenu.ContrastSlider.Value;
-			
-			//hairValueHLabel.text = hue.toString();
-			//hairValueSLabel.text = sat.toString();
-			//hairValueVLabel.text = value.toString();
-			//hairValueCLabel.text = contrast.toString();
+			var m:ui.HSVCMenu = e.target as ui.HSVCMenu;
+			var cmf:ColorMatrixFilter = GetColorMatrixFilter(m.H, m.S, m.V, m.C);
 			
 			if (templateInUse)
 			{
-				var cmf:ColorMatrixFilter = GetColorMatrixFilter(hue, sat, value, contrast);
 				templateInUse.HairSideL.filters = [cmf];
 				templateInUse.HairSide2L.filters = [cmf];
 				templateInUse.HairSide3L.filters = [cmf];
@@ -677,35 +433,7 @@ package
 				templateInUse.HairBack.filters = [cmf];
 			}
 		}
-		
-		//flash sliders version
-		/*public function HairSlidersChange(e:Event)
-		{
-			var hue:Number = hairSliderH.value;
-			var sat:Number = hairSliderS.value;
-			var value:Number = hairSliderV.value;
-			var contrast:Number = hairSliderC.value;
-			
-			hairValueHLabel.text = hue.toString();
-			hairValueSLabel.text = sat.toString();
-			hairValueVLabel.text = value.toString();
-			hairValueCLabel.text = contrast.toString();
-			
-			if (templateInUse)
-			{
-				var cmf:ColorMatrixFilter = GetColorMatrixFilter(hue, sat, value, contrast);
-				templateInUse.HairSideL.filters = [cmf];
-				templateInUse.HairSide2L.filters = [cmf];
-				templateInUse.HairSide3L.filters = [cmf];
-				templateInUse.HairSideR.filters = [cmf];
-				templateInUse.HairSide2R.filters = [cmf];
-				templateInUse.HairSide3R.filters = [cmf];
-				templateInUse.HairFront.filters = [cmf];
-				templateInUse.HairBack.filters = [cmf];
-			}
-		}*/
-		
-		//Source: http://blog.wonderwhy-er.com/as3-hsl-to-rgb/
+
 		private function HSLtoRGB(a:Number, hue:Number, saturation:Number, lightness:Number):uint
 		{
 			a = Math.max(0,Math.min(1,a));
@@ -781,7 +509,6 @@ package
 					break;
 					
 			}
-			UpdateIrisDisplayText();
 		}
 		
 		
@@ -850,6 +577,12 @@ package
 		private function ChangeHeadwear(type:String)
 		{
 			templateInUse.Headwear.gotoAndStop(type);
+		}
+		
+		private function ChangeLeggings(type:String)
+		{
+			templateInUse.LowerLegL.LowerLeg.Color.gotoAndStop(type);
+			templateInUse.LowerLegR.LowerLeg.Color.gotoAndStop(type);
 		}
 	}
 }

@@ -27,8 +27,8 @@
 		{
 			handleWidth = SliderHandle.width / this.scaleX;
 			//Event listener setup
-			addEventListener(MouseEvent.MOUSE_MOVE, MouseMove);
 			SliderHandle.addEventListener(MouseEvent.MOUSE_DOWN, MouseDown);
+			addEventListener(Event.ADDED_TO_STAGE, addMoveListener);
 			addEventListener(MouseEvent.MOUSE_UP, MouseUp);
 			addEventListener(MouseEvent.RELEASE_OUTSIDE, MouseUp);
 			addEventListener(Event.RESIZE, RecalculateHandleWidth);
@@ -38,6 +38,12 @@
 			SetMinValue(0);
 			Value = minimumValue;
 			SliderText.restrict = "0-9.\\-";
+		}
+		
+		private function addMoveListener(e:Event):void 
+		{
+			removeEventListener(Event.ADDED_TO_STAGE, addMoveListener);
+			stage.addEventListener(MouseEvent.MOUSE_MOVE, MouseMove);
 		}
 		
 		
