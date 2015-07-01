@@ -9,9 +9,12 @@ package
 	import flash.events.DataEvent;
 	import flash.events.Event;
 	import com.bit101.components.Slider;
+	import flash.geom.Point;
+	import flash.geom.Rectangle;
 	import ui.HSVCMenu;
 	import ui.PopupButton;
 	import ui.RGBAMenu;
+	import ui.SlidingPanel;
 	public class UITest extends Sprite 
 	{
 		
@@ -26,8 +29,9 @@ package
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			
 
-			var p:Panel = new Panel(this, 100, 100);
-			p.setSize(340, 140)
+			var p:Panel = new Panel(null, 0, 0);
+			p.setSize(130, 80)
+			
 			
 			
 			var rgba_iris:ui.RGBAMenu = new ui.RGBAMenu("Iris:");
@@ -40,6 +44,11 @@ package
 			hsvc_hair.addEventListener(Event.CHANGE, handler);
 			var pb_hair:ui.PopupButton = new ui.PopupButton(p, 10, 40, "Hair");
 			pb_hair.bindPopup(hsvc_hair, "rightOuter", "topInner");
+			
+			var slidingPanel:SlidingPanel = new SlidingPanel(p, new Rectangle(0, 0, 100, 100), new Point( -100, 0), new Point(0, 0));
+			slidingPanel.x = 200;
+			slidingPanel.y = 200;
+			addChild(slidingPanel);
 		}
 		
 		private function handler(e:Event):void 

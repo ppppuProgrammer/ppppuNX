@@ -23,7 +23,7 @@ package ui
 		private var sliderRangesValue:Vector.<Number> = new <Number>[0, 1, 1, 1];
 		private var sliderRangesTick:Vector.<Number> = new <Number>[1, .1, .1, .1];
 		
-		private const sliderWidth:uint = 100;
+		private const sliderWidth:uint = 130;
 		private const sliderHeight:uint = 20;
 		private const sliderSpacing:uint = 4;
 		

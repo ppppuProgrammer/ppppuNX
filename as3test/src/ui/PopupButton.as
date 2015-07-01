@@ -32,8 +32,8 @@ package ui
 		private function adjustPanel(_visible:Boolean) : void
 		{
 			if (panel == null) return;
-			panel.visible = _visible;
-			panel.mouseEnabled = _visible;
+			if (panel.parent == null && _visible)  parent.addChild(panel);
+			if (panel.parent != null && !_visible) parent.removeChild(panel);
 		}
 		
 		private function togglePopup(e:Event):void 
@@ -78,7 +78,7 @@ package ui
 					panel.y = y + height / 2 - panel.height / 2;
 					break;
 			}
-			adjustPanel(!panel.visible);
+			adjustPanel(panel.parent == null);
 			
 			if (panel.visible) stage.addEventListener(MouseEvent.MOUSE_DOWN, handleClick);
 			else stage.removeEventListener(MouseEvent.MOUSE_DOWN, handleClick);
@@ -90,7 +90,7 @@ package ui
 			panel = new Panel(parent);
 			
 			boundSprite = sprite;
-			panel.visible = false;
+			adjustPanel(false);
 			
 			boundSprite.x = panelPadding;
 			boundSprite.y = panelPadding;

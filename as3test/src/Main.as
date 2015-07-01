@@ -1,6 +1,7 @@
 package
 {
 	import As3Test_fla.Symbol316_1;
+	import com.bit101.components.Panel;
 	import com.greensock.data.TweenLiteVars;
 	import fl.motion.AdjustColor; /* To use this with flash develop, it is required to change the compiler options to include the flash.swc that comes with flash pro. That can be found in (Adobe Flash directory)\Common\Configuration\ActionScript 3.0\libs\flash.swc */
 	import flash.display.Sprite;
@@ -49,6 +50,7 @@ package
 	import ui.HSVCMenu;
 	import ui.PopupButton;
 	import ui.RGBAMenu;
+	import ui.SlidingPanel;
 	//Can't use unless these components are packed into a swc, which I legally can't distribute. 
 	//import flash.controls.Slider;
 	//import flash.controls.Label;
@@ -104,21 +106,26 @@ package
 				ProcessMotionStaticClass(DefaultCowgirlMotions, mainClip.TemplateController.getChildByName("Cowgirl")));
 			this.ProcessMotionStaticClass(RosalinaCowgirlMotions, mainClip.TemplateController.getChildByName("Cowgirl"));
 			
+			var p_Menu:Panel = new Panel(null);
+			p_Menu.setSize(480, 120);
 			
-			var pb_iris:ui.PopupButton = new ui.PopupButton(this, 480, 50, "Iris");
-			pb_iris.bindPopup(irisColorMenu, "leftOuter", "topInner");
+			var sp_Menu:SlidingPanel = new SlidingPanel(p_Menu, new Rectangle(0, 690, 480, 30), new Point(0, 720), new Point(0, 600));
+			addChild(sp_Menu);
 			
-			var pb_hair:ui.PopupButton = new ui.PopupButton(this, 480, 70, "Hair");
-			pb_hair.bindPopup(hairColorMenu, "leftOuter", "topInner");
+			var pb_iris:ui.PopupButton = new ui.PopupButton(p_Menu, 10, 10, "Iris");
+			pb_iris.bindPopup(irisColorMenu, "rightOuter", "topOuter");
 			
-			var pb_sclera:ui.PopupButton = new ui.PopupButton(this, 480, 90, "Sclera");
-			pb_sclera.bindPopup(scleraColorMenu, "leftOuter", "topInner");
+			var pb_hair:ui.PopupButton = new ui.PopupButton(p_Menu, 10, 30, "Hair");
+			pb_hair.bindPopup(hairColorMenu, "rightOuter", "topOuter");
 			
-			var pb_lips:ui.PopupButton = new ui.PopupButton(this, 480, 110, "Lips");
-			pb_lips.bindPopup(lipsColorMenu, "leftOuter", "topInner");
+			var pb_sclera:ui.PopupButton = new ui.PopupButton(p_Menu, 10, 50, "Sclera");
+			pb_sclera.bindPopup(scleraColorMenu, "rightOuter", "topOuter");
 			
-			var pb_skin:ui.PopupButton = new ui.PopupButton(this, 480, 130, "Skin");
-			pb_skin.bindPopup(skinColorMenu, "leftOuter", "topInner");
+			var pb_lips:ui.PopupButton = new ui.PopupButton(p_Menu, 10, 70, "Lips");
+			pb_lips.bindPopup(lipsColorMenu, "rightOuter", "topOuter");
+			
+			var pb_skin:ui.PopupButton = new ui.PopupButton(p_Menu, 10, 90, "Skin");
+			pb_skin.bindPopup(skinColorMenu, "rightOuter", "topOuter");
 			
 			hairColorMenu.addEventListener(Event.CHANGE, HairSlidersChange);
 			skinColorMenu.addEventListener(Event.CHANGE, SkinSlidersChange);
