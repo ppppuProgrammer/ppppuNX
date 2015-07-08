@@ -6,7 +6,7 @@
     <movie input="" />
     <movie path="bin\ppppuTest.swf" />
     <movie fps="30" />
-    <movie width="680" />
+    <movie width="480" />
     <movie height="720" />
     <movie version="16" />
     <movie minorVersion="0" />
