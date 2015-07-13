@@ -71,13 +71,15 @@ package
 		var peachCowgirl:AnimationDirector;
 		var rosalinaCowgirl:AnimationDirector;
 		var templateInUse:TemplateBase;
-		var irisWorkColorTransform:ColorTransform = new ColorTransform(0,0,0,0,255,255,255,255);
+		var irisWorkColorTransform:ColorTransform = new ColorTransform(0,0,0,0,54,113,193,255);
 		var scleraWorkColorTransform:ColorTransform = new ColorTransform(0,0,0,0,255,255,255,255);
+		var lipsWorkColorTransform:ColorTransform = new ColorTransform(0,0,0,0,255,153,204,255);
 		
 		var hairColorMenu:ui.HSVCMenu = new ui.HSVCMenu("Hair");
 		var skinColorMenu:ui.HSVCMenu = new ui.HSVCMenu("Skin");
 		var scleraColorMenu:ui.RGBAMenu = new ui.RGBAMenu("Sclera");
-		var irisColorMenu:ui.RGBAMenu = new ui.RGBAMenu("Iris");
+		var irisLColorMenu:ui.RGBAMenu = new ui.RGBAMenu("IrisL");
+		var irisRColorMenu:ui.RGBAMenu = new ui.RGBAMenu("IrisR");
 		var lipsColorMenu:ui.RGBAMenu = new ui.RGBAMenu("Lips");
 		
 		var timelinesDict:Dictionary = new Dictionary();
@@ -112,27 +114,36 @@ package
 			var sp_Menu:SlidingPanel = new SlidingPanel(p_Menu, new Rectangle(0, 690, 480, 30), new Point(0, 720), new Point(0, 600));
 			addChild(sp_Menu);
 			
+			var con_iris:Sprite = new Sprite();
+			irisRColorMenu.x = 160;
+			con_iris.addChild(irisLColorMenu);
+			con_iris.addChild(irisRColorMenu);
 			var pb_iris:ui.PopupButton = new ui.PopupButton(p_Menu, 10, 10, "Iris");
-			pb_iris.bindPopup(irisColorMenu, "rightOuter", "topOuter");
+			pb_iris.bindPopup(con_iris, "rightOuter", "bottomInner");
 			
 			var pb_hair:ui.PopupButton = new ui.PopupButton(p_Menu, 10, 30, "Hair");
-			pb_hair.bindPopup(hairColorMenu, "rightOuter", "topOuter");
+			pb_hair.bindPopup(hairColorMenu, "rightOuter", "bottomInner");
 			
 			var pb_sclera:ui.PopupButton = new ui.PopupButton(p_Menu, 10, 50, "Sclera");
-			pb_sclera.bindPopup(scleraColorMenu, "rightOuter", "topOuter");
+			pb_sclera.bindPopup(scleraColorMenu, "rightOuter", "bottomInner");
 			
 			var pb_lips:ui.PopupButton = new ui.PopupButton(p_Menu, 10, 70, "Lips");
-			pb_lips.bindPopup(lipsColorMenu, "rightOuter", "topOuter");
+			pb_lips.bindPopup(lipsColorMenu, "rightOuter", "bottomInner");
 			
 			var pb_skin:ui.PopupButton = new ui.PopupButton(p_Menu, 10, 90, "Skin");
-			pb_skin.bindPopup(skinColorMenu, "rightOuter", "topOuter");
+			pb_skin.bindPopup(skinColorMenu, "rightOuter", "bottomInner");
 			
 			hairColorMenu.addEventListener(Event.CHANGE, HairSlidersChange);
 			skinColorMenu.addEventListener(Event.CHANGE, SkinSlidersChange);
 			scleraColorMenu.addEventListener(Event.CHANGE, ScleraSliderChanged);
-			irisColorMenu.addEventListener(Event.CHANGE, IrisSliderChanged);
+			scleraColorMenu.setValue(scleraWorkColorTransform);
 			lipsColorMenu.addEventListener(Event.CHANGE, LipsSliderChanged);
-						
+			lipsColorMenu.setValue(lipsWorkColorTransform);
+			trace(templateInUse.EyeL.eye.innerEyeContainer.iris.transform.colorTransform);
+			irisLColorMenu.addEventListener(Event.CHANGE, IrisLSliderChanged);
+			irisLColorMenu.setValue(irisWorkColorTransform);
+			irisRColorMenu.addEventListener(Event.CHANGE, IrisRSliderChanged);
+			irisRColorMenu.setValue(irisWorkColorTransform);
 			peachCowgirl = new AnimationDirector(mainClip.TemplateController.getChildByName("Cowgirl"));
 
 			
@@ -377,11 +388,16 @@ package
 			templateInUse.EyeL.eye.scleraContainer.scleraColor.transform.colorTransform = ct;
 			templateInUse.EyeR.eye.scleraContainer.scleraColor.transform.colorTransform = ct;
 		}
-		private function IrisSliderChanged(e:Event)
+		private function IrisLSliderChanged(e:Event)
 		{
 			var m:ui.RGBAMenu = e.target as ui.RGBAMenu;
 			var ct:ColorTransform = new ColorTransform(0, 0, 0, 0, m.R, m.G, m.B, m.A);
 			templateInUse.EyeL.eye.innerEyeContainer.iris.transform.colorTransform = ct;
+		}
+		private function IrisRSliderChanged(e:Event)
+		{
+			var m:ui.RGBAMenu = e.target as ui.RGBAMenu;
+			var ct:ColorTransform = new ColorTransform(0, 0, 0, 0, m.R, m.G, m.B, m.A);
 			templateInUse.EyeR.eye.innerEyeContainer.iris.transform.colorTransform = ct;
 		}
 		
@@ -507,12 +523,16 @@ package
 				case 0:
 					templateInUse.EyeL.eye.innerEyeContainer.iris.transform.colorTransform = colorTransform;
 					templateInUse.EyeR.eye.innerEyeContainer.iris.transform.colorTransform = colorTransform;
+					irisRColorMenu.setValue(colorTransform);
+					irisLColorMenu.setValue(colorTransform);
 					break;
 				case 1:
 					templateInUse.EyeL.eye.innerEyeContainer.iris.transform.colorTransform = colorTransform;
+					irisLColorMenu.setValue(colorTransform);
 					break;
 				case 2:
 					templateInUse.EyeR.eye.innerEyeContainer.iris.transform.colorTransform = colorTransform;
+					irisRColorMenu.setValue(colorTransform);
 					break;
 					
 			}
@@ -522,11 +542,13 @@ package
 		private function ChangeLipsColor(colorTransform:ColorTransform)
 		{
 			templateInUse.Mouth.LipsColor.transform.colorTransform = colorTransform;
+			lipsColorMenu.setValue(colorTransform);
 		}
-		/*private function ChangeScleraColor()
+		/*private function ChangeScleraColor(colorTransform:ColorTransform)
 		{
-			templateInUse.EyeL.eye.scleraContainer.scleraColor.transform.colorTransform;
-			templateInUse.EyeR.eye.scleraContainer.scleraColor.transform.colorTransform;
+			templateInUse.EyeL.eye.scleraContainer.scleraColor.transform.colorTransform = colorTransform;;
+			templateInUse.EyeR.eye.scleraContainer.scleraColor.transform.colorTransform = colorTransform;;
+			scleraColorMenu.setValue(colorTransform);
 		}*/
 		private function ChangeSkinBase(type:String)
 		{

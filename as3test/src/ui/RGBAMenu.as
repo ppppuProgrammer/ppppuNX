@@ -7,6 +7,7 @@ package ui
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.EventPhase;
+	import flash.geom.ColorTransform;
 	import ui.EditSlider;
 	
 	public class RGBAMenu extends Sprite
@@ -91,6 +92,15 @@ package ui
 		public function get A():uint
 		{
 			return sliders[labelStrings.indexOf("A")].value;
+		}
+		
+		public function setValue(ct:ColorTransform) : void
+		{
+			sliders[0].value = ct.redOffset;
+			sliders[1].value = ct.blueOffset;
+			sliders[2].value = ct.greenOffset;
+			sliders[3].value = ct.alphaOffset;
+			cc.value = ct.color;
 		}
 	}
 }
