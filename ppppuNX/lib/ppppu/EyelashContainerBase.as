@@ -9,23 +9,23 @@ package ppppu
 	 */
 	public class EyelashContainerBase extends MovieClip implements IPartContainer
 	{
-		public var eyelash:MovieClip;
+		public var EyelashTypes:MovieClip;
 		public var eyelashMatrix:Matrix = new Matrix();
 		public function EyelashContainerBase() 
 		{
 			//super();
-			eyelash.gotoAndStop(1);
+			EyelashTypes.gotoAndStop(1);
 			
 		}
 		
 		public function SaveInitialTransforms()
 		{
-			eyelashMatrix.copyFrom(eyelash.transform.matrix);
+			eyelashMatrix.copyFrom(EyelashTypes.transform.matrix);
 			//eyeTransformMatrix.copyFrom(Eye.transform.matrix);
 		}
 		public function ResetInitialTransforms()
 		{
-			eyelash.transform.matrix = eyelashMatrix;
+			EyelashTypes.transform.matrix = eyelashMatrix;
 			//eye.transform.matrix = eyeMatrix;
 		}
 		

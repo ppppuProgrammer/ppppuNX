@@ -1,0 +1,252 @@
+<Motion duration="120" xmlns="fl.motion.*" xmlns:geom="flash.geom.*" xmlns:filters="flash.filters.*">
+	<source>
+		<Source frameRate="30" x="243.9" y="505.95" scaleX="1.846" scaleY="0.868" rotation="-1.7" elementType="movie clip" instanceName="Neck" symbolName="Neck Container" class="NeckContainer" baseClass="ppppu.BodyElementContainer">
+			<dimensions>
+				<geom:Rectangle left="-17.15" top="-30.6" width="34.35" height="68.8"/>
+			</dimensions>
+			<transformationPoint>
+				<geom:Point x="0.4992721979621542" y="0.44476744186046513"/>
+			</transformationPoint>
+		</Source>
+	</source>
+
+	<Keyframe index="0"/>
+
+	<Keyframe index="1" x="0.5" y="-29.349999999999966" scaleX="0.9306608884073673" scaleY="0.9308755760368664" rotation="0.19999999999999996"/>
+
+	<Keyframe index="2" x="0.9499999999999886" y="-54.39999999999998" scaleX="0.8721560130010835" scaleY="0.8721198156682027"/>
+
+	<Keyframe index="3" x="1.1999999999999886" y="-75.44999999999999" scaleX="0.8239436619718309" scaleY="0.8237327188940092" rotation="0.09999999999999987"/>
+
+	<Keyframe index="4" x="1.5" y="-91.34999999999997" scaleX="0.7865655471289273" scaleY="0.7868663594470047" rotation="0.19999999999999996"/>
+
+	<Keyframe index="5" x="1.6999999999999886" y="-102.44999999999999" scaleX="0.7600216684723726" scaleY="0.7592165898617512"/>
+
+	<Keyframe index="6" x="1.8499999999999943" y="-109" scaleX="0.7437703141928493" scaleY="0.7442396313364056" rotation="0.09999999999999987"/>
+
+	<Keyframe index="7" x="1.799999999999983" y="-111.19999999999999" scaleX="0.738353196099675" scaleY="0.738479262672811" rotation="0"/>
+
+	<Keyframe index="8" x="1.8499999999999943" y="-108.5" rotation="0.19999999999999996"/>
+
+	<Keyframe index="9" x="1.799999999999983" y="-105.94999999999999"/>
+
+	<Keyframe index="10" x="1.8499999999999943" y="-99.30000000000001"/>
+
+	<Keyframe index="11" y="-92.64999999999998"/>
+
+	<Keyframe index="12" x="1.799999999999983" y="-86"/>
+
+	<Keyframe index="13" y="-79.44999999999999"/>
+
+	<Keyframe index="14" y="-72.80000000000001" rotation="0.09999999999999987"/>
+
+	<Keyframe index="15" y="-66.19999999999999" rotation="0"/>
+
+	<Keyframe index="16" x="1.9000000000000057" y="-69.64999999999998" rotation="0.09999999999999987"/>
+
+	<Keyframe index="17" y="-73.05000000000001"/>
+
+	<Keyframe index="18" y="-76.5"/>
+
+	<Keyframe index="19" y="-79.89999999999998"/>
+
+	<Keyframe index="20" y="-83.34999999999997"/>
+
+	<Keyframe index="21" y="-86.75"/>
+
+	<Keyframe index="22" x="1.799999999999983" y="-90.19999999999999" rotation="0"/>
+
+	<Keyframe index="23" x="1.8499999999999943" y="-87.14999999999998" rotation="0.09999999999999987"/>
+
+	<Keyframe index="24" y="-84.14999999999998"/>
+
+	<Keyframe index="25" y="-81.14999999999998"/>
+
+	<Keyframe index="26" y="-78.14999999999998"/>
+
+	<Keyframe index="27" y="-75.14999999999998"/>
+
+	<Keyframe index="28" y="-72.14999999999998"/>
+
+	<Keyframe index="29" y="-69.14999999999998"/>
+
+	<Keyframe index="30" x="1.799999999999983" y="-66.19999999999999" rotation="0"/>
+
+	<Keyframe index="31" x="1.8499999999999943" y="-71.80000000000001" rotation="0.09999999999999987"/>
+
+	<Keyframe index="32" y="-77.44999999999999" rotation="0.19999999999999996"/>
+
+	<Keyframe index="33" x="1.9000000000000057" y="-83"/>
+
+	<Keyframe index="34" y="-88.64999999999998"/>
+
+	<Keyframe index="35" y="-94.30000000000001"/>
+
+	<Keyframe index="36" x="1.8499999999999943" y="-99.94999999999999" rotation="0.09999999999999987"/>
+
+	<Keyframe index="37" x="1.799999999999983" y="-101.19999999999999" rotation="0"/>
+
+	<Keyframe index="38" y="-99.25" rotation="0.19999999999999996"/>
+
+	<Keyframe index="39" y="-97.44999999999999"/>
+
+	<Keyframe index="40" x="1.8499999999999943" y="-92.25"/>
+
+	<Keyframe index="41" y="-87"/>
+
+	<Keyframe index="42" y="-81.80000000000001"/>
+
+	<Keyframe index="43" y="-76.64999999999998"/>
+
+	<Keyframe index="44" x="1.75" y="-71.39999999999998" rotation="0.09999999999999987"/>
+
+	<Keyframe index="45" x="1.799999999999983" y="-66.19999999999999" rotation="0"/>
+
+	<Keyframe index="46" x="1.9000000000000057" y="-69.64999999999998" rotation="0.09999999999999987"/>
+
+	<Keyframe index="47" y="-73.05000000000001"/>
+
+	<Keyframe index="48" y="-76.5"/>
+
+	<Keyframe index="49" y="-79.89999999999998"/>
+
+	<Keyframe index="50" y="-83.34999999999997"/>
+
+	<Keyframe index="51" y="-86.75"/>
+
+	<Keyframe index="52" x="1.799999999999983" y="-90.19999999999999" rotation="0"/>
+
+	<Keyframe index="53" x="1.8499999999999943" y="-87.14999999999998" rotation="0.09999999999999987"/>
+
+	<Keyframe index="54" y="-84.14999999999998"/>
+
+	<Keyframe index="55" y="-81.14999999999998"/>
+
+	<Keyframe index="56" y="-78.14999999999998"/>
+
+	<Keyframe index="57" y="-75.14999999999998"/>
+
+	<Keyframe index="58" y="-72.14999999999998"/>
+
+	<Keyframe index="59" y="-69.14999999999998"/>
+
+	<Keyframe index="60" x="1.799999999999983" y="-66.19999999999999" rotation="0"/>
+
+	<Keyframe index="61" x="1.8499999999999943" y="-71.80000000000001" rotation="0.09999999999999987"/>
+
+	<Keyframe index="62" y="-77.44999999999999" rotation="0.19999999999999996"/>
+
+	<Keyframe index="63" x="1.9000000000000057" y="-83"/>
+
+	<Keyframe index="64" y="-88.64999999999998"/>
+
+	<Keyframe index="65" y="-94.30000000000001"/>
+
+	<Keyframe index="66" x="1.8499999999999943" y="-99.94999999999999" rotation="0.09999999999999987"/>
+
+	<Keyframe index="67" x="1.799999999999983" y="-101.19999999999999" rotation="0"/>
+
+	<Keyframe index="68" y="-99.25" rotation="0.19999999999999996"/>
+
+	<Keyframe index="69" y="-97.44999999999999"/>
+
+	<Keyframe index="70" x="1.8499999999999943" y="-92.25"/>
+
+	<Keyframe index="71" y="-87"/>
+
+	<Keyframe index="72" y="-81.80000000000001"/>
+
+	<Keyframe index="73" y="-76.64999999999998"/>
+
+	<Keyframe index="74" x="1.75" y="-71.39999999999998" rotation="0.09999999999999987"/>
+
+	<Keyframe index="75" x="1.799999999999983" y="-66.19999999999999" rotation="0"/>
+
+	<Keyframe index="76" x="1.9000000000000057" y="-69.64999999999998" rotation="0.09999999999999987"/>
+
+	<Keyframe index="77" y="-73.05000000000001"/>
+
+	<Keyframe index="78" y="-76.5"/>
+
+	<Keyframe index="79" y="-79.89999999999998"/>
+
+	<Keyframe index="80" y="-83.34999999999997"/>
+
+	<Keyframe index="81" y="-86.75"/>
+
+	<Keyframe index="82" x="1.799999999999983" y="-90.19999999999999" rotation="0"/>
+
+	<Keyframe index="83" x="1.8499999999999943" y="-87.14999999999998" rotation="0.09999999999999987"/>
+
+	<Keyframe index="84" y="-84.14999999999998"/>
+
+	<Keyframe index="85" y="-81.14999999999998"/>
+
+	<Keyframe index="86" y="-78.14999999999998"/>
+
+	<Keyframe index="87" y="-75.14999999999998"/>
+
+	<Keyframe index="88" y="-72.14999999999998"/>
+
+	<Keyframe index="89" y="-69.14999999999998"/>
+
+	<Keyframe index="90" x="1.799999999999983" y="-66.19999999999999" rotation="0"/>
+
+	<Keyframe index="91" x="1.8499999999999943" y="-71.80000000000001" rotation="0.09999999999999987"/>
+
+	<Keyframe index="92" y="-77.44999999999999" rotation="0.19999999999999996"/>
+
+	<Keyframe index="93" x="1.9000000000000057" y="-83"/>
+
+	<Keyframe index="94" y="-88.64999999999998"/>
+
+	<Keyframe index="95" y="-94.30000000000001"/>
+
+	<Keyframe index="96" x="1.8499999999999943" y="-99.94999999999999" rotation="0.09999999999999987"/>
+
+	<Keyframe index="97" x="1.799999999999983" y="-101.19999999999999" rotation="0"/>
+
+	<Keyframe index="98" y="-99.25" rotation="0.19999999999999996"/>
+
+	<Keyframe index="99" y="-97.44999999999999"/>
+
+	<Keyframe index="100" x="1.8499999999999943" y="-92.25"/>
+
+	<Keyframe index="101" y="-87"/>
+
+	<Keyframe index="102" y="-81.80000000000001"/>
+
+	<Keyframe index="103" y="-76.64999999999998"/>
+
+	<Keyframe index="104" x="1.75" y="-71.39999999999998" rotation="0.09999999999999987"/>
+
+	<Keyframe index="105" x="1.799999999999983" y="-66.19999999999999" rotation="0"/>
+
+	<Keyframe index="106" x="1.8499999999999943" y="-73.14999999999998" rotation="0.09999999999999987"/>
+
+	<Keyframe index="107" y="-80.14999999999998" rotation="0.19999999999999996"/>
+
+	<Keyframe index="108" x="1.9000000000000057" y="-87.05000000000001"/>
+
+	<Keyframe index="109" y="-94"/>
+
+	<Keyframe index="110" y="-101.05000000000001"/>
+
+	<Keyframe index="111" x="1.8499999999999943" y="-108" rotation="0.09999999999999987"/>
+
+	<Keyframe index="112" x="1.799999999999983" y="-110.19999999999999" rotation="0"/>
+
+	<Keyframe index="113" y="-108" scaleX="0.7437703141928493" scaleY="0.7442396313364056" rotation="0.09999999999999987"/>
+
+	<Keyframe index="114" x="1.75" y="-101.94999999999999" scaleX="0.7600216684723726" scaleY="0.7592165898617512" rotation="0.19999999999999996"/>
+
+	<Keyframe index="115" x="1.5999999999999943" y="-91.34999999999997" scaleX="0.7865655471289273" scaleY="0.7868663594470047"/>
+
+	<Keyframe index="116" x="1.1999999999999886" y="-76.55000000000001" scaleX="0.8239436619718309" scaleY="0.8237327188940092" rotation="0.09999999999999987"/>
+
+	<Keyframe index="117" x="1.049999999999983" y="-56.55000000000001" scaleX="0.8721560130010835" scaleY="0.8721198156682027" rotation="0.19999999999999996"/>
+
+	<Keyframe index="118" x="0.549999999999983" y="-32.30000000000001" scaleX="0.9306608884073673" scaleY="0.9308755760368664"/>
+
+	<Keyframe index="119" x="0.04999999999998295" y="-3.849999999999966" scaleX="1" scaleY="1"/>
+</Motion>

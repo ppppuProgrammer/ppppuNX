@@ -1,0 +1,680 @@
+<Motion duration="120" xmlns="fl.motion.*" xmlns:geom="flash.geom.*" xmlns:filters="flash.filters.*">
+	<source>
+		<Source frameRate="30" x="247.45" y="635.15" scaleX="1.408" scaleY="1.389" rotation="0" elementType="movie clip" instanceName="Vulva" symbolName="Vulva 2 Container">
+			<dimensions>
+				<geom:Rectangle left="-52.65" top="-27.65" width="107.6" height="50.6"/>
+			</dimensions>
+			<transformationPoint>
+				<geom:Point x="0.4893122676579926" y="0.5464426877470355"/>
+			</transformationPoint>
+		</Source>
+	</source>
+
+	<Keyframe index="0">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="1" x="4.650000000000006" y="-40.299999999999955" scaleX="1.046875" scaleY="0.9467242620590353" rotation="-3.5">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="2" x="2" y="-80.85000000000002" scaleX="1.0738636363636365" scaleY="0.9013678905687544" rotation="-7.3">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="3" x="-0.19999999999998863" y="-114.39999999999998" scaleX="1.1349431818181819" scaleY="0.8653707703383728" rotation="-11">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="4" x="3.1000000000000227" y="-159.75" scaleX="0.9275568181818182" scaleY="0.8358531317494601" rotation="-8">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="5" x="2.4000000000000057" y="-192.54999999999995" scaleX="0.7798295454545455" scaleY="0.8156947444204463" rotation="-5.8">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="6" x="3.1000000000000227" y="-214" scaleX="0.6853693181818182" scaleY="0.8034557235421167" rotation="-4.1">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="7" x="1.450000000000017" y="-224.34999999999997" scaleX="0.6818181818181819" scaleY="0.7998560115190785" rotation="-3.3">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="8" x="0.950000000000017" y="-225.75" scaleX="0.6825284090909091" scaleY="0.8005759539236862" rotation="-3">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="9" x="1.0500000000000114" y="-218.29999999999995" scaleX="0.6903409090909091" scaleY="0.8020158387329014" skewX="-2.8" skewY="-2.3">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="10" x="-2.8499999999999943" y="-200.64999999999998" scaleX="0.7656250000000001" scaleY="0.8041756659467243" skewX="-2.1" skewY="-1">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="11" x="-7.799999999999983" y="-173.25" scaleX="0.8714488636363638" scaleY="0.8077753779697625" skewX="-1.3" skewY="1.3">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="12" x="-11.299999999999983" y="-136.09999999999997" scaleX="1.1250000000000002" scaleY="0.8128149748020158" skewX="0" skewY="4.6">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="14" x="-5.149999999999977" y="-81" scaleX="1.1384943181818183" scaleY="0.8250539956803455" skewY="1.5">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="15" x="-0.44999999999998863" y="-49.44999999999993" scaleX="1.1072443181818181" scaleY="0.8329733621310296" rotation="0">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="16" x="-0.8499999999999943" y="-68.75" scaleX="1.0582386363636365" scaleY="0.8243340532757379" rotation="-3.5">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="17" x="2.25" y="-89.44999999999993" scaleX="0.9396306818181819" scaleY="0.8164146868250539" rotation="-7.3">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="18" x="1.5" y="-105.04999999999995" scaleX="1.0113636363636365" scaleY="0.8106551475881929" rotation="-11">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="19" x="2" y="-136.29999999999995" scaleX="0.8671875000000001" scaleY="0.8056155507559395" rotation="-8">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="20" x="2.1500000000000057" y="-159.25" scaleX="0.7755681818181819" scaleY="0.8020158387329014" rotation="-5.8">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="21" x="3.450000000000017" y="-175.59999999999997" scaleX="0.6825284090909091" scaleY="0.8005759539236862" rotation="-4.1">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="22" x="1" y="-184.34999999999997" scaleX="0.6818181818181819" scaleY="0.7998560115190785" rotation="-3.3">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="23" y="-186.04999999999995" scaleX="0.6825284090909091" scaleY="0.8005759539236862" rotation="-3">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="24" x="1.6000000000000227" y="-180.7" scaleX="0.6903409090909091" scaleY="0.8020158387329014" skewX="-2.8" skewY="-2.3">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="25" x="-2.25" y="-166.89999999999998" scaleX="0.7549715909090909" scaleY="0.8041756659467243" skewX="-2.1" skewY="-1">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="26" x="-6.799999999999983" y="-143.34999999999997" scaleX="0.8842329545454547" scaleY="0.8077753779697625" skewX="-1.3" skewY="1.3">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="27" x="-11.149999999999977" y="-110.94999999999993" scaleX="1.1051136363636365" scaleY="0.8128149748020158" skewX="0" skewY="4.6">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="29" x="-5.349999999999994" y="-70.64999999999998" scaleX="1.1384943181818183" scaleY="0.8250539956803455" skewY="1.5">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="30" x="-0.44999999999998863" y="-49.44999999999993" scaleX="1.1072443181818181" scaleY="0.8329733621310296" rotation="0">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="31" x="0.8500000000000227" y="-69.10000000000002" scaleX="1.0582386363636365" scaleY="0.8243340532757379" rotation="-3.5">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="32" x="3.450000000000017" y="-88.69999999999993" scaleX="0.9396306818181819" scaleY="0.8164146868250539" rotation="-7.3">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="33" x="1.450000000000017" y="-103.79999999999995" scaleX="1.0113636363636365" scaleY="0.8106551475881929" rotation="-11">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="34" x="2.450000000000017" y="-135.54999999999995" scaleX="0.8671875000000001" scaleY="0.8056155507559395" rotation="-8">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="35" x="1.8500000000000227" y="-159.45" scaleX="0.7755681818181819" scaleY="0.8020158387329014" rotation="-5.8">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="36" x="3.1500000000000057" y="-175.5" scaleX="0.6825284090909091" scaleY="0.8005759539236862" rotation="-4.1">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="37" x="1.450000000000017" y="-184.59999999999997" scaleX="0.6818181818181819" scaleY="0.7998560115190785" rotation="-3.3">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="38" x="0.700000000000017" y="-186.2" scaleX="0.6825284090909091" scaleY="0.8005759539236862" rotation="-3">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="39" x="1.0500000000000114" y="-180.64999999999998" scaleX="0.6903409090909091" scaleY="0.8020158387329014" skewX="-2.8" skewY="-2.3">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="40" x="-2.049999999999983" y="-166.29999999999995" scaleX="0.7549715909090909" scaleY="0.8041756659467243" skewX="-2.1" skewY="-1">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="41" x="-6.449999999999989" y="-143.34999999999997" scaleX="0.8842329545454547" scaleY="0.8077753779697625" skewX="-1.3" skewY="1.3">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="42" x="-10.849999999999994" y="-111.29999999999995" scaleX="1.1051136363636365" scaleY="0.8128149748020158" skewX="0" skewY="4.6">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="44" x="-5.049999999999983" y="-70.64999999999998" scaleX="1.1384943181818183" scaleY="0.8250539956803455" skewY="1.5">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="45" x="-0.44999999999998863" y="-49.44999999999993" scaleX="1.1072443181818181" scaleY="0.8329733621310296" rotation="0">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="46" x="0.8500000000000227" y="-69.10000000000002" scaleX="1.0582386363636365" scaleY="0.8243340532757379" rotation="-3.5">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="47" x="3.450000000000017" y="-88.69999999999993" scaleX="0.9396306818181819" scaleY="0.8164146868250539" rotation="-7.3">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="48" x="1.450000000000017" y="-103.64999999999998" scaleX="1.0113636363636365" scaleY="0.8106551475881929" rotation="-11">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="49" x="2.450000000000017" y="-135.79999999999995" scaleX="0.8671875000000001" scaleY="0.8056155507559395" rotation="-8">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="50" x="1.8500000000000227" y="-159.14999999999998" scaleX="0.7755681818181819" scaleY="0.8020158387329014" rotation="-5.8">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="51" x="3.1500000000000057" y="-175.39999999999998" scaleX="0.6825284090909091" scaleY="0.8005759539236862" rotation="-4.1">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="52" x="1.450000000000017" y="-184.7" scaleX="0.6818181818181819" scaleY="0.7998560115190785" rotation="-3.3">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="53" x="0.950000000000017" y="-186.04999999999995" scaleX="0.6825284090909091" scaleY="0.8005759539236862" rotation="-3">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="54" x="1.0500000000000114" y="-180.5" scaleX="0.6903409090909091" scaleY="0.8020158387329014" skewX="-2.8" skewY="-2.3">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="55" x="-2.049999999999983" y="-166.29999999999995" scaleX="0.7549715909090909" scaleY="0.8041756659467243" skewX="-2.1" skewY="-1">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="56" x="-6.349999999999994" y="-143.34999999999997" scaleX="0.8842329545454547" scaleY="0.8077753779697625" skewX="-1.3" skewY="1.3">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="57" x="-11.149999999999977" y="-110.75" scaleX="1.1051136363636365" scaleY="0.8128149748020158" skewX="0" skewY="4.6">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="59" x="-5.149999999999977" y="-70.64999999999998" scaleX="1.1384943181818183" scaleY="0.8250539956803455" skewY="1.5">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="60" x="-0.44999999999998863" y="-49.44999999999993" scaleX="1.1072443181818181" scaleY="0.8329733621310296" rotation="0">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="61" x="0.8500000000000227" y="-69.10000000000002" scaleX="1.0582386363636365" scaleY="0.8243340532757379" rotation="-3.5">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="62" x="3.3000000000000114" y="-88.64999999999998" scaleX="0.9396306818181819" scaleY="0.8164146868250539" rotation="-7.3">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="63" x="1.450000000000017" y="-103.79999999999995" scaleX="1.0113636363636365" scaleY="0.8106551475881929" rotation="-11">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="64" x="2.450000000000017" y="-135.95" scaleX="0.8671875000000001" scaleY="0.8056155507559395" rotation="-8">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="65" x="1.8500000000000227" y="-159.45" scaleX="0.7755681818181819" scaleY="0.8020158387329014" rotation="-5.8">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="66" x="3.1500000000000057" y="-175.75" scaleX="0.6825284090909091" scaleY="0.8005759539236862" rotation="-4.1">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="67" x="1.450000000000017" y="-184.34999999999997" scaleX="0.6818181818181819" scaleY="0.7998560115190785" rotation="-3.3">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="68" x="0.6500000000000057" y="-186.25" scaleX="0.6825284090909091" scaleY="0.8005759539236862" rotation="-3">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="69" x="1.0500000000000114" y="-180.64999999999998" scaleX="0.6903409090909091" scaleY="0.8020158387329014" skewX="-2.8" skewY="-2.3">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="70" x="-2.049999999999983" y="-166.29999999999995" scaleX="0.7549715909090909" scaleY="0.8041756659467243" skewX="-2.1" skewY="-1">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="71" x="-6.349999999999994" y="-143.34999999999997" scaleX="0.8842329545454547" scaleY="0.8077753779697625" skewX="-1.3" skewY="1.3">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="72" x="-10.949999999999989" y="-110.94999999999993" scaleX="1.1051136363636365" scaleY="0.8128149748020158" skewX="0" skewY="4.6">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="74" x="-5.149999999999977" y="-70.5" scaleX="1.1384943181818183" scaleY="0.8250539956803455" skewY="1.5">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="75" x="-0.44999999999998863" y="-49.44999999999993" scaleX="1.1072443181818181" scaleY="0.8329733621310296" rotation="0">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="76" x="0.8500000000000227" y="-68.89999999999998" scaleX="1.0582386363636365" scaleY="0.8243340532757379" rotation="-3.5">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="77" x="3.6000000000000227" y="-88.79999999999995" scaleX="0.9396306818181819" scaleY="0.8164146868250539" rotation="-7.3">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="78" x="1.450000000000017" y="-103.79999999999995" scaleX="1.0113636363636365" scaleY="0.8106551475881929" rotation="-11">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="79" x="2.450000000000017" y="-135.79999999999995" scaleX="0.8671875000000001" scaleY="0.8056155507559395" rotation="-8">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="80" x="1.8500000000000227" y="-159.45" scaleX="0.7755681818181819" scaleY="0.8020158387329014" rotation="-5.8">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="81" x="3.1500000000000057" y="-175.75" scaleX="0.6825284090909091" scaleY="0.8005759539236862" rotation="-4.1">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="82" x="1.450000000000017" y="-184.2" scaleX="0.6818181818181819" scaleY="0.7998560115190785" rotation="-3.3">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="83" x="0.950000000000017" y="-186.09999999999997" scaleX="0.6825284090909091" scaleY="0.8005759539236862" rotation="-3">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="84" x="1.0500000000000114" y="-180.14999999999998" scaleX="0.6903409090909091" scaleY="0.8020158387329014" skewX="-2.8" skewY="-2.3">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="85" x="-1.3499999999999943" y="-164.79999999999995" scaleX="0.7549715909090909" scaleY="0.8041756659467243" skewX="-2.1" skewY="-1">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="86" x="-7" y="-140.84999999999997" scaleX="0.8842329545454547" scaleY="0.8077753779697625" skewX="-1.3" skewY="1.3">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="87" x="-10.25" y="-107.89999999999998" scaleX="1.1051136363636365" scaleY="0.8128149748020158" skewX="0" skewY="4.6">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="89" x="-4.5" y="-62.39999999999998" scaleX="1.1384943181818183" scaleY="0.8250539956803455" skewY="1.5">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="90" x="0.8000000000000114" y="-39.35000000000002" scaleX="1.1072443181818181" scaleY="0.8329733621310296" rotation="0">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="91" x="1.3500000000000227" y="-59" scaleX="1.0582386363636365" scaleY="0.8243340532757379" rotation="-3.5">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="92" x="3.6000000000000227" y="-78.69999999999993" scaleX="0.9396306818181819" scaleY="0.8164146868250539" rotation="-7.3">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="93" x="1.450000000000017" y="-93.79999999999995" scaleX="1.0113636363636365" scaleY="0.8106551475881929" rotation="-11">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="94" x="2.450000000000017" y="-125.79999999999995" scaleX="0.8671875000000001" scaleY="0.8056155507559395" rotation="-8">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="95" x="1" y="-149.54999999999995" scaleX="0.7755681818181819" scaleY="0.8020158387329014" rotation="-5.8">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="96" x="2.3500000000000227" y="-166.09999999999997" scaleX="0.6825284090909091" scaleY="0.8005759539236862" rotation="-4.1">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="97" x="0.10000000000002274" y="-173.04999999999995" scaleX="0.6818181818181819" scaleY="0.7998560115190785" rotation="-3.3">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="98" x="-1.3999999999999773" y="-176.84999999999997" scaleX="0.6825284090909091" scaleY="0.8005759539236862" rotation="-3">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="99" x="-0.799999999999983" y="-170.45" scaleX="0.6903409090909091" scaleY="0.8020158387329014" skewX="-2.8" skewY="-2.3">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="100" x="-2.049999999999983" y="-154.95" scaleX="0.7549715909090909" scaleY="0.8041756659467243" skewX="-2.1" skewY="-1">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="101" x="-6.349999999999994" y="-130.7" scaleX="0.8842329545454547" scaleY="0.8077753779697625" skewX="-1.3" skewY="1.3">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="102" x="-9.449999999999989" y="-97.79999999999995" scaleX="1.1051136363636365" scaleY="0.8128149748020158" skewX="0" skewY="4.6">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="104" x="-3.6499999999999773" y="-53.5" scaleX="1.1384943181818183" scaleY="0.8250539956803455" skewY="1.5">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="105" x="-0.44999999999998863" y="-29.600000000000023" scaleX="1.1036931818181819" scaleY="0.8329733621310296" rotation="0">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="107" x="2.0500000000000114" y="-87.79999999999995" scaleX="1.0106534090909092" scaleY="0.8164146868250539" rotation="-7.3">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="108" x="1.0500000000000114" y="-110.79999999999995" scaleX="1.0269886363636365" scaleY="0.8106551475881929" rotation="-11">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="109" x="3.75" y="-148.45" scaleX="0.8536931818181819" scaleY="0.8056155507559395" rotation="-8">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="110" x="1.8500000000000227" y="-176.5" scaleX="0.7571022727272728" scaleY="0.8020158387329014" rotation="-5.8">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="111" x="3" y="-195.14999999999998" scaleX="0.7159090909090909" scaleY="0.8005759539236862" rotation="-4.1">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="112" x="1.75" y="-205.54999999999995" scaleX="0.6818181818181819" scaleY="0.7998560115190785" rotation="-3.3">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="113" x="0.950000000000017" y="-206.2" scaleX="0.6420454545454546" scaleY="0.8041756659467243" rotation="-3">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="114" x="1.25" y="-195.29999999999995" scaleX="0.7024147727272727" scaleY="0.8156947444204463" skewX="-2.8" skewY="-2.3">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="115" x="-1.3999999999999773" y="-173.29999999999995" scaleX="0.8103693181818182" scaleY="0.8365730741540676" skewX="-2.1" skewY="-1">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="116" x="-8.649999999999977" y="-138.75" scaleX="0.9715909090909092" scaleY="0.8646508279337654" skewX="-1.3" skewY="1.3">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="117" x="-10.349999999999994" y="-90.44999999999993" scaleX="1.2151988636363638" scaleY="0.902087832973362" skewX="0" skewY="4.6">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="118" x="-10.949999999999989" y="-51.5" scaleX="1.3068181818181819" scaleY="0.9467242620590353" skewY="3">
+		<tweens>
+			<SimpleEase ease="0"/>
+		</tweens>
+	</Keyframe>
+
+	<Keyframe index="119" x="-6.149999999999977" y="-6.199999999999932" scaleX="1.3856534090909092" scaleY="1" skewY="1.5"/>
+</Motion>

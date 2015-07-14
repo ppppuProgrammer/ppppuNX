@@ -16,7 +16,15 @@
 		private var m_playAnimationFrame:int = 0;
 		private var m_randomizePlayAnim:Boolean = true;
 		private var m_lockedAnimation:Vector.<Boolean>; //Keeps track if an animation can be switched to.
-		private var m_useBacklight:Boolean=true;
+		private var m_useBacklight:Boolean = true;
+		private var m_defaultSkinColor:uint;
+		private var m_irisLColor:uint;
+		private var m_irisRColor:uint;
+		private var m_scleraColor:uint;
+		//private var m_scleraLColor:uint;
+		//private var m_scleraRColor:uint;
+		private var m_wornHeadwear:String; //Indicates which headwear the character is wearing. Unsure if it should be the frame number or the name of the headwear.
+		private var m_wornEarring:String; //Indicates which earring the character is wearing. Unsure if it should be the frame number or the name of the earring.
 		//private var m_numOfLockedAnimations:int = 0;
 		
 		public function ppppuCharacter(charMC:MovieClip,characterColorTransform:ColorTransform, outDiamondMC:MovieClip, defOutDiaMC:Boolean, inDiamondMC:MovieClip, defInDiaMC:Boolean, transitionDiamondMC:MovieClip, defTransDiaMC:Boolean, BacklightColorTransform:ColorTransform, useLight:Boolean=true) 

@@ -18,7 +18,8 @@ package ppppu
 		}
 		public static function ConvertXmlToTweens(targetObject:DisplayObject, motionXML:XML):Vector.<TweenOrder>
 		{
-			var orders:Vector.<TweenOrder> = new Vector.<TweenOrder>(120, true);
+			//var orders:Vector.<TweenOrder> = new Vector.<TweenOrder>(120, true);
+			var orders:Vector.<TweenOrder> = new Vector.<TweenOrder>();
 			var nodes:XMLList = motionXML.children();
 			var frameVariables:Object;
 			var transformMatrixData:Object;
@@ -37,16 +38,57 @@ package ppppu
 			var latestScaleY:Number;
 			var latestRotation:Number;
 			var tweenDuration:int = 0;
+			var lastKeyframeNumber:uint = 1;
 			var skewBased:Boolean = false; //If skew based, the rotation property is applied to both skew values
-			
+			var tweenOrder:TweenOrder;
+			var tweenMatrix:Matrix;
 			for (var i:int = 0, l:int = nodes.length(); i < l; ++i)
 			{
+				if (keyframeNumber > 0)
+				{
+					
+					
+					
+					tweenMatrix = new Matrix();
+					//Start with scale
+					SetMatrixScaleX(tweenMatrix, latestScaleX);
+					SetMatrixScaleY(tweenMatrix, latestScaleY);
+					//Rotation and skews
+					if (skewBased)
+					{
+						SetMatrixSkewX(tweenMatrix, latestSkewX);
+						SetMatrixSkewY(tweenMatrix, latestSkewY);
+					}
+					else
+					{
+						SetMatrixSkewX(tweenMatrix, latestRotation);
+						SetMatrixSkewY(tweenMatrix, latestRotation);
+					}
+					
+					//If the difference between frames is 
+					if (i+1 == l) //Last go at the for loop
+					{
+						tweenDuration = 120 - lastKeyframeNumber;
+					}
+					if (tweenDuration == 1) 
+					{ tweenDuration = 0; } 
+					else 
+					{tweenDuration = keyframeNumber - lastKeyframeNumber;}
+					
+					
+					tweenOrder = new TweenOrder(targetObject, new TweenLiteVars().transformMatrix( { a:tweenMatrix.a, 
+						b:tweenMatrix.b, 
+						c:tweenMatrix.c, 
+						d:tweenMatrix.d, tx: latestX, ty: latestY}), 
+						keyframeNumber, tweenDuration);
+					orders[orders.length] = tweenOrder;
+				}
+				
 				storingSourceProperties = false;
 				currentNode = nodes[i];
 				if (currentNode.localName() == "source")
 				{
 					currentNode = currentNode.children()[0]; //"Source" element nested in "source" element
-					//keyframeNumber = -1;
 				}
 				if (currentNode.localName() == "Source")
 				{
@@ -61,15 +103,7 @@ package ppppu
 					attributeName = nodeAttributes[attCounter].localName();
 					if (attributeName == "index")
 					{
-						//if (nodeAttributes[attCounter].toXMLString() == "0")
-						//{
-							//keyframeNumber = -1;
-							//break;
-						//}
-						//else
-						//{
-							keyframeNumber = int(nodeAttributes[attCounter].toXMLString())+1;
-						//}
+						keyframeNumber = int(nodeAttributes[attCounter].toXMLString()) + 1;
 					}
 					else if (attributeName != "frameRate" && attributeName != "elementType" && attributeName != "symbolName")
 					{
@@ -107,13 +141,11 @@ package ppppu
 								case "scaleY":
 									latestScaleY = attributeValue * sourceProperties[attributeName];
 									break;
-									//transformMatrixData[attributeName] = attributeValue * sourceProperties[attributeName];
 							}
 						}
 						else //storing source properties
 						{
 							sourceProperties[attributeName] = attributeValue;
-							//transformMatrixData[attributeName] = attributeValue;
 							switch(attributeName)
 							{
 								case "rotation":
@@ -146,95 +178,71 @@ package ppppu
 							}
 						}
 					}
-				}
-				/*transformMatrixData = { a:Math.cos(skewBased ? latestSkewY : latestRotation) * latestScaleY, 
-					b:Math.sin(skewBased ? latestSkewY : latestRotation) * latestScaleX, 
-					c:( -(Math.sin(skewBased ? latestSkewX : latestRotation))) * latestScaleY, 
-					d:Math.cos(skewBased ? latestSkewX : latestRotation) * latestScaleY, tx: latestX, ty: latestY };*/
-				/*tweenOrder = new TweenOrder(targetObject, new TweenLiteVars().transformMatrix( { a:Math.cos((skewBased ? latestSkewY : latestRotation) / 180.0 * Math.PI) * latestScaleY, 
-					b:Math.sin((skewBased ? latestSkewY : latestRotation) / 180.0 * Math.PI) * latestScaleX, 
-					c:-(Math.sin((skewBased ? latestSkewX : latestRotation)/180.0 * Math.PI)) * latestScaleY, 
-					d:Math.cos((skewBased ? latestSkewX : latestRotation)/180.0 * Math.PI) * latestScaleY, tx: latestX, ty: latestY }), 
-					keyframeNumber, 0);*/
+				}			
 					
-					
-				if (keyframeNumber > 0)
+				lastKeyframeNumber = keyframeNumber;
+			}
+			if (keyframeNumber > 0)
+			{
+				tweenMatrix = new Matrix();
+				
+				
+				//Start with scale
+				SetMatrixScaleX(tweenMatrix, latestScaleX);
+				SetMatrixScaleY(tweenMatrix, latestScaleY);
+				//Rotation and skews
+				if (skewBased)
 				{
-					var tweenOrder:TweenOrder;
-					var tweenMatrix:Matrix = new Matrix();
-					
-					
-					//Start with scale
-					SetMatrixScaleX(tweenMatrix, latestScaleX);
-					SetMatrixScaleY(tweenMatrix, latestScaleY);
-					//Rotation and skews
-					if (skewBased)
-					{
-						SetMatrixSkewX(tweenMatrix, latestSkewX);
-						SetMatrixSkewY(tweenMatrix, latestSkewY);
-					}
-					else
-					{
-						SetMatrixSkewX(tweenMatrix, latestRotation);
-						SetMatrixSkewY(tweenMatrix, latestRotation);
-						
-					}
-					tweenOrder = new TweenOrder(targetObject, new TweenLiteVars().transformMatrix( { a:tweenMatrix.a, 
-						b:tweenMatrix.b, 
-						c:tweenMatrix.c, 
-						d:tweenMatrix.d, tx: latestX, ty: latestY}), 
-						keyframeNumber, tweenDuration);
-					/*if (skewBased)
-					{
-						tweenOrder = new TweenOrder(targetObject, new TweenLiteVars().transformMatrix( { a:Math.cos(latestSkewX * (Math.PI/ 180.0)) * latestScaleX, 
-						b:Math.sin(latestSkewY * (Math.PI/ 180.0)) * latestScaleX, 
-						c:(-(Math.sin(latestSkewX* (Math.PI/ 180.0)))) * latestScaleY, 
-						d:Math.cos(latestSkewX * (Math.PI/ 180.0)) * latestScaleY, tx: latestX, ty: latestY}), 
-						keyframeNumber, tweenDuration); 
-						//var tweenMatrix:Matrix = new Matrix(Math.cos(latestSkewY * (Math.PI/ 180.0)), Math.sin(latestSkewY * (Math.PI/ 180.0)), -(Math.sin(latestSkewX * (Math.PI/ 180.0))), Math.cos(latestSkewX * (Math.PI/ 180.0)));
-						//var scaleMatrix:Matrix = new Matrix(latestScaleX, 0, 0, latestScaleY);
-						//tweenMatrix.concat(scaleMatrix);
-						tweenOrder = new TweenOrder(targetObject, new TweenLiteVars().transformMatrix( { a:tweenMatrix.a, 
-						b:tweenMatrix.b, 
-						c:tweenMatrix.c, 
-						d:tweenMatrix.d, tx: latestX, ty: latestY}), 
-						keyframeNumber, tweenDuration);
-					}
-					else
-					{
-						tweenOrder = new TweenOrder(targetObject, new TweenLiteVars().transformMatrix( { rotation: latestRotation, x: latestX, y: latestY, scaleX: latestScaleX, scaleY: latestScaleY }), 
-					keyframeNumber, tweenDuration);
-					}*/
-					
-					//var tweenOrder:TweenOrder = new TweenOrder(targetObject, frameVariables, keyframeNumber, 0);
-					orders[keyframeNumber-1] = tweenOrder;
+					SetMatrixSkewX(tweenMatrix, latestSkewX);
+					SetMatrixSkewY(tweenMatrix, latestSkewY);
 				}
+				else
+				{
+					SetMatrixSkewX(tweenMatrix, latestRotation);
+					SetMatrixSkewY(tweenMatrix, latestRotation);
+				}
+				
+				
+				if (i == l) //Last go at the for loop
+				{
+					tweenDuration = 120 - lastKeyframeNumber;
+				}
+				//If the difference between frames is 1, then set it to 0 so the change happens instantly
+				if (tweenDuration == 1) { tweenDuration = 0; } else {tweenDuration = keyframeNumber - lastKeyframeNumber;}
+				
+				
+				tweenOrder = new TweenOrder(targetObject, new TweenLiteVars().transformMatrix( { a:tweenMatrix.a, 
+					b:tweenMatrix.b, 
+					c:tweenMatrix.c, 
+					d:tweenMatrix.d, tx: latestX, ty: latestY}), 
+					keyframeNumber, tweenDuration);
+				orders[orders.length] = tweenOrder;
 			}
 			return orders;
 		}
 		//Matrix modification code ported from MotionXML.jsfl
-		public static function SetMatrixScaleX(m:Matrix, scaleX:Number)
+		public static function SetMatrixScaleX(m:Matrix, scaleX:Number):void
 		{
 			var skewYRad:Number = GetMatrixSkewYRadians(m);
 			m.a = Math.cos(skewYRad) * scaleX;
 			m.b = Math.sin(skewYRad) * scaleX;
 		}
 		
-		public static function SetMatrixScaleY(m:Matrix, scaleY:Number)
+		public static function SetMatrixScaleY(m:Matrix, scaleY:Number):void
 		{
 			var skewXRad:Number = GetMatrixSkewXRadians(m);
 			m.c = -Math.sin(skewXRad) * scaleY;
 			m.d = Math.cos(skewXRad) * scaleY;
 		}
 		
-		public static function SetMatrixSkewX(m:Matrix,skewXDegrees:Number)
+		public static function SetMatrixSkewX(m:Matrix,skewXDegrees:Number):void
 		{
 			var skewXRadians:Number = skewXDegrees * (Math.PI / 180.0);
 			var scaleY:Number = GetMatrixScaleY(m);
 			m.c = -scaleY * Math.sin(skewXRadians);
 			m.d =  scaleY * Math.cos(skewXRadians);
 		}
-		public static function SetMatrixSkewY(m:Matrix,skewYDegrees:Number)
+		public static function SetMatrixSkewY(m:Matrix,skewYDegrees:Number):void
 		{
 			var skewYRadians:Number = skewYDegrees * (Math.PI / 180.0);
 			var scaleX:Number = GetMatrixScaleX(m);
@@ -261,18 +269,6 @@ package ppppu
 		{
 			return Math.sqrt(m.c*m.c + m.d*m.d);
 		}
-		/*private function ComposeMatrixObject(latestX:Number, latestY:Number, latestSkewX:Number, latestSkewY:Number, latestScaleX:Number,
-		latestScaleY:Number,latestRotation:Number, skewBased:Boolean):Object
-		{
-			return new Object( { a:Math.cos(skewBased ? latestSkewY : latestRotation) * latestScaleY, 
-			b:Math.sin(skewBased ? latestSkewY : latestRotation) * latestScaleX, c:( -(Math.sin(skewBased ? latestSkewX : latestRotation))) * latestScaleY, 
-			d:Math.cos(skewBased ? latestSkewX : latestRotation)*latestScaleY, tx: latestX, ty: latestY});
-		}*/
-		/*public function XmlMotionToTweens() 
-		{
-			
-		}*/
-		
 	}
 
 }

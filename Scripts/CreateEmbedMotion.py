@@ -5,8 +5,6 @@
 
 from pathlib import Path
 
-
-
 def classNameCheck(className):
     nameIsOk = True
     for i in range(len(className)):
@@ -17,68 +15,50 @@ def classNameCheck(className):
 
 def searchWithinFolder(folderDir):
     motionXMLDefinitions = ""
+    sourceFolderDir = str(folderDir.resolve())
+    sourceFolderDir += '/'
+    sourceFolderDir = "/.." + sourceFolderDir[sourceFolderDir.rfind("\lib"):len(sourceFolderDir)]
+    sourceFolderDir = sourceFolderDir.replace("\\", "/")
+    print(sourceFolderDir)
     for filePath in folderDir.iterdir():
-##        print(filePath.name)
         if filePath.is_file():
             if filePath.suffix in ('.xml'):
                 xmlClassName = filePath.name
-                xmlClassName = xmlClassName[xmlClassName.rfind("_")+1:xmlClassName.rfind(".")]
                 ##print(xmlClassName)
-                ##xmlClassName = xmlClassName.replace(".xml", "")
-               ## xmlClassName = xmlClassName.replace("_", "")
-                ##xmlClassName = xmlClassName.replace(" ", "")
-                ##xmlClassName = xmlClassName.lstrip()
+                
+                xmlClassName = xmlClassName[xmlClassName.rfind("_")+1:xmlClassName.rfind(".")]
                 motionXMLDefinitions += '''\t\t[Embed(source = \"{0:s}\", mimeType = \"application/octet-stream\")]
-\t\tpublic static const {1:s}:Class;\n'''.format(filePath.name, xmlClassName)
+\t\tpublic static const {1:s}:Class;\n'''.format(sourceFolderDir + filePath.name, xmlClassName)
     ##print(motionXMLDefinitions)
     return motionXMLDefinitions
-                
-                
-
-##enterPrompt = "Enter the name of the character these motion XMLs are for: "
-##while True:
-##    character = str(input(enterPrompt))
-##    if classNameCheck(character) == True:
-##        break
-##    else:
-##        print("Name can not contain spaces.\n")
-##
-##enterPrompt = "Enter the name of the animation these motion XMLs are for: "
-##while True:
-##    animation = str(input(enterPrompt))
-##    if classNameCheck(animation) == True and animation != character:
-##        break
-##    else:
-##        print("Animation name can not contain spaces and has to be different from the character's name.\n")
 
 ##Get current directory of script and deduce the package for the as file
 currDir = Path('.')
 package = str(currDir.resolve())
 package = package.split("\\lib\\")[1]
 package = package.replace("\\", ".")
-print(package)
+##print(package)
 ##Get name of character the motionXML is used for
 character = package
 firstDot = character.find(".")
-character = character[firstDot+1:character.find(".", firstDot+1)]
-print(character)
+character = character[firstDot+1:len(character)]
+##print(character)
 
-animation = package
-animation = animation[animation.rfind(".")+1:]
-print(animation)
+for dirIter in currDir.iterdir():
+    if dirIter.is_dir():
+        animationName = str(dirIter.resolve())
+        animationName = animationName[animationName.rfind("\\")+1:len(animationName)]
+        ##print(animationName)
+        baseFileName = character + animationName
+        ##print(baseFileName)
+        ##Final class name
+        newClassName = baseFileName + "Motions"
+        ##Create file name
+        fileName = newClassName + ".as"
+        ##Create path that the file will be created in
+        asFilePath = Path(fileName)
 
-baseFileName = character + animation
-print(baseFileName)
-newClassName = baseFileName + "Motions"
-
-fileName = newClassName + ".as"
-asFilePath = Path(fileName)
-##print(fileName)
-
-
-##print(package)
-
-scriptContents = '''package {0:s}
+        scriptContents = '''package {0:s}
 {{
     public class {1:s}
     {{
@@ -86,12 +66,9 @@ scriptContents = '''package {0:s}
         public static const CharacterName:String = \"{3:s}\";
         public static const AnimationName:String = \"{4:s}\";
     }}
-}}'''.format(package, newClassName, searchWithinFolder(currDir), character, animation)
-##print(scriptContents)
-##scriptContents
-with asFilePath.open('x') as asFile:
-    asFile.write(scriptContents)          
-
+}}'''.format(package, newClassName, searchWithinFolder(dirIter), character, animationName)
+        with asFilePath.open('w') as asFile:
+            asFile.write(scriptContents)
 
 userInput = input('Finished. Press enter to exit.')
 

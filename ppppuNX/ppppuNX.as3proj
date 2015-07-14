@@ -7,11 +7,11 @@
     <movie path="bin\ppppuNX.swf" />
     <movie fps="30" />
     <movie width="800" />
-    <movie height="600" />
+    <movie height="750" />
     <movie version="17" />
     <movie minorVersion="0" />
     <movie platform="Flash Player" />
-    <movie background="#FFFFFF" />
+    <movie background="#0C0046" />
   </output>
   <!-- Other classes to be compiled into your SWF -->
   <classpaths>
@@ -49,7 +49,7 @@
   </build>
   <!-- SWC Include Libraries -->
   <includeLibraries>
-    <!-- example: <element path="..." /> -->
+    <element path="lib\TemplateAnimationMotions.swc" />
   </includeLibraries>
   <!-- SWC Libraries -->
   <libraryPaths>

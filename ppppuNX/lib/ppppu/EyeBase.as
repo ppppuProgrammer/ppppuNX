@@ -13,11 +13,11 @@
 	public class EyeBase extends MovieClip implements IPartContainer
 	{
 		//var initialChildrenMatrices:Dictionary = new Dictionary();
-		public var innerEyeContainer:InnerEyeContainer;
-		//public var eyeMask:MovieClip;
-		public var eyelidContainer:EyelidContainer;
-		public var eyelashContainer:EyelashContainer;
-		public var scleraContainer:ScleraContainer;
+		public var InnerEyeSettings:MovieClip;
+		public var EyeMaskSettings:MovieClip;
+		public var EyelidSettings:MovieClip;
+		public var EyelashSettings:MovieClip;
+		public var ScleraSettings:MovieClip;
 		//InnerEye;
 		public var eyeMaskMatrix:Matrix = new Matrix();
 		//Eyelid;
@@ -49,19 +49,19 @@
 		
 		public function SaveInitialTransforms()
 		{
-			innerEyeContainer.SaveInitialTransforms();
+			InnerEyeSettings.SaveInitialTransforms();
 			//eyeMaskMatrix.copyFrom(eyeMask.transform.matrix);
-			eyelidContainer.SaveInitialTransforms();
-			eyelashContainer.SaveInitialTransforms();
+			EyelidSettings.SaveInitialTransforms();
+			EyelashSettings.SaveInitialTransforms();
 			//scleraContainer.SaveInitialTransforms();
 			//eyeTransformMatrix.copyFrom(Eye.transform.matrix);
 		}
 		public function ResetInitialTransforms()
 		{
 			//eyeMask.transform.matrix = eyeMaskMatrix;
-			innerEyeContainer.ResetInitialTransforms();
-			eyelidContainer.ResetInitialTransforms();
-			eyelashContainer.ResetInitialTransforms();
+			InnerEyeSettings.ResetInitialTransforms();
+			EyelidSettings.ResetInitialTransforms();
+			EyelashSettings.ResetInitialTransforms();
 			//scleraContainer.ResetInitialTransforms();
 			//eye.transform.matrix = eyeMatrix;
 		}
