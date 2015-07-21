@@ -1,6 +1,6 @@
 <Motion duration="120" xmlns="fl.motion.*" xmlns:geom="flash.geom.*" xmlns:filters="flash.filters.*">
 	<source>
-		<Source frameRate="30" x="312.05" y="252" scaleX="1.401" scaleY="1.401" skewX="-5.5" skewY="174.5" elementType="movie clip" instanceName="EarringR" symbolName="Earring Container">
+		<Source frameRate="30" x="312.05" y="252" scaleX="1.401" scaleY="1.401" skewX="-5.5" skewY="174.5" elementType="movie clip" instanceName="EarringR" symbolName="Earring Container" class="EarringContainer">
 			<dimensions>
 				<geom:Rectangle left="-20.5" top="-27.7" width="40.95" height="48.2"/>
 			</dimensions>

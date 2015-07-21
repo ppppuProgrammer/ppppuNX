@@ -1,6 +1,7 @@
 package ppppu 
 {
 	import flash.geom.Matrix;
+	import flash.sampler.getMasterString;
 	import flash.utils.Dictionary;
 	import flash.xml.*;
 	import flash.display.DisplayObject;

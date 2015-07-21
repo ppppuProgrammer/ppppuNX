@@ -2,10 +2,10 @@
 	<source>
 		<Source frameRate="30" x="237.6" y="264.75" scaleX="1.792" scaleY="1.528" rotation="0" elementType="movie clip" instanceName="Mouth" symbolName="Mouth Container" class="MouthContainer" baseClass="ppppu.MouthContainerBase">
 			<dimensions>
-				<geom:Rectangle left="-7.25" top="0.4" width="14.5" height="5.55"/>
+				<geom:Rectangle left="-7.25" top="0.4" width="14.5" height="13.8"/>
 			</dimensions>
 			<transformationPoint>
-				<geom:Point x="0.5" y="-0.07207207207207207"/>
+				<geom:Point x="0.5" y="-0.028985507246376812"/>
 			</transformationPoint>
 		</Source>
 	</source>

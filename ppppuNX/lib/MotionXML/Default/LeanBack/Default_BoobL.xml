@@ -2,10 +2,10 @@
 	<source>
 		<Source frameRate="30" x="199.2" y="394.85" scaleX="1.308" scaleY="1.212" skewX="3.2" skewY="2.8" elementType="movie clip" instanceName="BoobL" symbolName="Body parts/Breasts/Boob Container">
 			<dimensions>
-				<geom:Rectangle left="-40" top="-35.8" width="72.45" height="67.45"/>
+				<geom:Rectangle left="-38.05" top="-34.6" width="70.5" height="66.25"/>
 			</dimensions>
 			<transformationPoint>
-				<geom:Point x="0.5521048999309869" y="0.5307635285396589"/>
+				<geom:Point x="0.5397163120567375" y="0.5222641509433963"/>
 			</transformationPoint>
 		</Source>
 	</source>

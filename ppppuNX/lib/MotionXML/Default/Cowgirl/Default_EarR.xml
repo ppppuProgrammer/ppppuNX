@@ -2,10 +2,10 @@
 	<source>
 		<Source frameRate="30" x="316.5" y="201.05" scaleX="1.402" scaleY="1.306" rotation="0" elementType="movie clip" instanceName="EarR" symbolName="Ear Container">
 			<dimensions>
-				<geom:Rectangle left="-14.2" top="-18.3" width="31.2" height="35.9"/>
+				<geom:Rectangle left="-14.4" top="-18.3" width="31.4" height="35.9"/>
 			</dimensions>
 			<transformationPoint>
-				<geom:Point x="0.4551282051282051" y="0.50974930362117"/>
+				<geom:Point x="0.4585987261146497" y="0.50974930362117"/>
 			</transformationPoint>
 		</Source>
 	</source>

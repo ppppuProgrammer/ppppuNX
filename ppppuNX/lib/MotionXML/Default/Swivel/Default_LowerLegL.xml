@@ -1,6 +1,6 @@
 <Motion duration="120" xmlns="fl.motion.*" xmlns:geom="flash.geom.*" xmlns:filters="flash.filters.*">
 	<source>
-		<Source frameRate="30" x="-89.25" y="604.95" scaleX="1.351" scaleY="1.351" rotation="-105.9" elementType="movie clip" instanceName="LowerLegL" symbolName="Lower Leg Container">
+		<Source frameRate="30" x="-89.25" y="604.95" scaleX="1.351" scaleY="1.351" rotation="-105.9" elementType="movie clip" instanceName="LowerLegL" symbolName="Lower Leg Container" class="LowerLegContainer">
 			<dimensions>
 				<geom:Rectangle left="-242.65" top="-24.3" width="272.25" height="67.55"/>
 			</dimensions>

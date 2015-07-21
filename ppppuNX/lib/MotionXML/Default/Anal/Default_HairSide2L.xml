@@ -1,6 +1,6 @@
 <Motion duration="120" xmlns="fl.motion.*" xmlns:geom="flash.geom.*" xmlns:filters="flash.filters.*">
 	<source>
-		<Source frameRate="30" x="267.15" y="106.55" scaleX="1.647" scaleY="1.419" skewX="-7.9" skewY="166.4" elementType="movie clip" instanceName="HairSideL2" symbolName="Base Side2 Hair" class="BaseHairSide2" baseClass="flash.display.MovieClip">
+		<Source frameRate="30" x="267.15" y="106.55" scaleX="1.647" scaleY="1.419" skewX="-7.9" skewY="166.4" elementType="movie clip" instanceName="HairSide2L" symbolName="Base Side2 Hair" class="BaseHairSide2" baseClass="flash.display.MovieClip">
 			<dimensions>
 				<geom:Rectangle left="-40.1" top="-36.05" width="75.7" height="75.1"/>
 			</dimensions>

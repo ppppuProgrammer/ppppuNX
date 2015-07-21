@@ -1,8 +1,10 @@
 package ppppu 
 {
-	//import com.greensock.TimelineLite;
 	import com.greensock.TimelineLite;
+	import com.greensock.TimelineMax;
+	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
+	import flash.events.Event;
 	//import EyeContainer;
 	//import MouthContainer;
 	/**
@@ -13,8 +15,9 @@ package ppppu
 	{
 		/*Master timeline for the template animation. Contains all the timelines for parts of the animation that are 
 		 * controlled  by series of tweens defined by a motion xml.*/
-		private var masterTimeline:TimelineLite = new TimelineLite( { useFrames:true, smoothChildTiming:true } );
-		private var defaultTimelines:Array = null;
+		private var masterTimeline:TimelineLite = new TimelineLite( { /*useFrames:true,*/ smoothChildTiming:true } );
+		//Master template version this array contains arrays of timelines. To access the index of the appropriate animation, refer to the animationNameIndexes array in ppppuCore.
+		private var defaultTimelines:Vector.<Vector.<TimelineMax>> = new Vector.<Vector.<TimelineMax>>();
 		
 		/*public var EyeL:EyeContainer;
 		public var EyeR:EyeContainer;*/
@@ -30,26 +33,37 @@ package ppppu
 		public var HairSide3L:BaseHairSide3;
 		public var HairSide3R:BaseHairSide3;
 		public var HairFront:BaseHairFront;
+		public var LowerLegL:LowerLegContainer;
+		public var LowerLegR:LowerLegContainer;
 		public var EarL:MovieClip;
 		public var EarR:MovieClip;
+		
+		private var millisecPerFrame:Number;
 		/*public var HairFront:BaseHairFront;*/
 		
 		public function TemplateBase()
 		{
+			addEventListener(Event.ADDED_TO_STAGE, StageSetup);
 			//SetupEyeContainer(EyeL);
 			//SetupEyeContainer(EyeR);
-			if (EarL) { EarL.Ear.gotoAndStop(1); EarL.Ear.Skin.gotoAndStop(1); EarL.Ear.Lines.gotoAndStop(1); }
-			if(EarR) {EarR.Ear.gotoAndStop(1); EarR.Ear.Skin.gotoAndStop(1); EarR.Ear.Lines.gotoAndStop(1);}
-			EarringL.Earring.gotoAndStop(1);
-			EarringR.Earring.gotoAndStop(1);
+			if (EarL) { EarL.Element.gotoAndStop(1); EarL.Element.Skin.gotoAndStop(1); EarL.Element.Lines.gotoAndStop(1); }
+			if(EarR) {EarR.Element.gotoAndStop(1); EarR.Element.Skin.gotoAndStop(1); EarR.Element.Lines.gotoAndStop(1);}
+			EarringL.Element.gotoAndStop(1);
+			EarringR.Element.gotoAndStop(1);
 			Mouth.MouthBase.gotoAndStop(1);
 			Mouth.LipsColor.gotoAndStop(1);
 			Mouth.LipsHighlight.gotoAndStop(1);
+			Mouth.Tongue.Element.gotoAndStop(1);
 			Headwear.gotoAndStop(1);
 			SetupHair();
-			
+			if(LowerLegL) LowerLegL.Element.Color.gotoAndStop(1);
+			if(LowerLegR) LowerLegR.Element.Color.gotoAndStop(1);
 		}
-		
+		private function StageSetup(e:Event)
+		{
+			millisecPerFrame = 1000.0 / stage.frameRate;
+			removeEventListener(Event.ADDED_TO_STAGE, StageSetup);
+		}
 		private function SetupHair()
 		{
 			HairBack.Element.gotoAndStop(1);
@@ -78,14 +92,24 @@ package ppppu
 			EyeC.eye.InnerEyeSettings.InnerEye.Pupil.gotoAndStop(1);
 			EyeC.eye.InnerEyeSettings.InnerEye.Iris.gotoAndStop(1);
 		}*/
-		public function SetDefaultTimelines(defTimelines:Array)
+		
+		//Master template version
+		public function SetDefaultTimelines(defTimelines:Vector.<TimelineMax>, animationIndex:uint)
+		{
+			if (defTimelines.length > 0)
+			{
+				defaultTimelines[animationIndex] = defTimelines;
+			}
+		}
+		
+		/*public function SetDefaultTimelines(defTimelines:Array)
 		{
 			if (defaultTimelines == null)
 			{
 				defaultTimelines = defTimelines;
 				ResetToDefaultTimelines();
 			}
-		}
+		}*/
 		
 		/*public function UpdateTimelines(jumpToFrame:uint)
 		{
@@ -99,11 +123,14 @@ package ppppu
 		
 		public function PlayAnimation(startAtFrame:uint)
 		{
-			masterTimeline.play(startAtFrame);
+			//startAtFrame -= 1;
+			//masterTimeline.play(startAtFrame);
+			masterTimeline.play((startAtFrame * millisecPerFrame)/1000.0);
 			var childTimelines:Array = masterTimeline.getChildren(!true, false);
 			for (var i:int = 0, l:int = childTimelines.length; i < l; ++i)
 			{
-				(childTimelines[i] as TimelineLite).play(startAtFrame);
+				//(childTimelines[i] as TimelineLite).play(startAtFrame);
+				(childTimelines[i] as TimelineLite).play((startAtFrame * millisecPerFrame)/1000.0 );
 				//trace((childTimelines[i] as TimelineLite).vars["useFrames"]);
 			}
 		}
@@ -141,63 +168,82 @@ package ppppu
 			}
 		}*/
 		
-		public function ResetToDefaultTimelines()
+		public function ChangeDefaultTimelinesUsed(animationIndex:uint)
+		{
+			if (animationIndex < defaultTimelines.length)
+			{
+				masterTimeline.clear();
+				AddTimelines(defaultTimelines[animationIndex] as Vector.<TimelineMax>);
+			}
+		}
+		
+		/*public function ResetToDefaultTimelines()
 		{
 			masterTimeline.clear();
 			masterTimeline.add(defaultTimelines);
 			//UpdateTimelines();
-		}
+		}*/
 		
 		public function ClearTimelines()
 		{
 			masterTimeline.clear();
 		}
 		
-		public function AddTimelines(timelinesToAdd:Array)
+		public function AddTimelines(timelinesToAdd:Vector.<TimelineMax>)
 		{
 			for (var i:uint = 0, l:uint = timelinesToAdd.length; i < l; ++i)
 			{
-				AddTimeline(timelinesToAdd[i]);
+				AddTimeline(timelinesToAdd[i] as TimelineMax);
 			}
 		}
 		
-		public function AddTimeline(tlToAdd:TimelineLite)
+		public function AddTimeline(tlToAdd:TimelineMax)
 		{
-			var timelineForPart:String = tlToAdd.data as String;
+			//var timelineForPart:String = tlToAdd.data as String;
+			var timelineForPart:String = tlToAdd.data.targetElement.name as String;
+			//The display object that the timeline controls
+			var timelineDisplayObject:DisplayObject = tlToAdd.data.targetElement as DisplayObject;
+			//Make the display object visible
+			timelineDisplayObject.visible = true;
 			var currentFrame:int = this.currentFrame;
 			if (timelineForPart)
 			{
+				//Check to see if the master timeline already has a nested timeline for the specified display object.
+				//If it does, then 
 				var childTimelines:Array = masterTimeline.getChildren(true, false);
 				var childTlForPart:String;
-				var childTimeline:TimelineLite;
+				var childTimeline:TimelineMax;
 				for (var i:int = 0, l:int = childTimelines.length; i < l; ++i)
 				{
-					
-					childTimeline = childTimelines[i] as TimelineLite;
+					childTimeline = childTimelines[i] as TimelineMax;
 					if (childTimeline)
 					{
-						childTlForPart = childTimeline.data as String;
+						childTlForPart = childTimeline.data.targetElement.name as String;
 						if (timelineForPart == childTlForPart)
 						{
-							masterTimeline.remove(childTimeline);
-							masterTimeline.add(tlToAdd);
-							tlToAdd.seek(currentFrame);
+							//Match was found, so replace the match with tlToAdd.
+							ReplaceTimeline(childTimeline, tlToAdd);
 							return; //Finished, so end early. 
 						}
 						//TODO Have timelines that are completely new (ie Isabelle's body fur pattern) be added if there were no matches
 					}
 				}
+				//Looked through all the timelines nested in the master timeline and there were no matches for tlToAdd to override.
+				masterTimeline.add(tlToAdd);
+				//tlToAdd.seek(this.currentFrame);
+				tlToAdd.seek((this.currentFrame * millisecPerFrame) / 1000.0);
 			}
 		}
 		
 		
-		public function ReplaceTimeline(tlToRemove:TimelineLite, tlToAdd:TimelineLite)
+		public function ReplaceTimeline(tlToRemove:TimelineMax, tlToAdd:TimelineMax)
 		{
 			if (tlToRemove != tlToAdd)
 			{
 				masterTimeline.remove(tlToRemove);
 				masterTimeline.add(tlToAdd);
-				tlToAdd.seek(this.currentFrame);
+				//tlToAdd.seek(this.currentFrame);
+				tlToAdd.seek((this.currentFrame * millisecPerFrame) / 1000.0);
 			}
 		}
 		

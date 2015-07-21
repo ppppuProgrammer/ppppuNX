@@ -1,11 +1,11 @@
 <Motion duration="120" xmlns="fl.motion.*" xmlns:geom="flash.geom.*" xmlns:filters="flash.filters.*">
 	<source>
-		<Source frameRate="30" x="146.4" y="248.35" scaleX="1.402" scaleY="1.402" rotation="0" elementType="movie clip" instanceName="EarringL" symbolName="Earring Container">
+		<Source frameRate="30" x="146.4" y="248.35" scaleX="1.402" scaleY="1.402" rotation="0" elementType="movie clip" instanceName="EarringL" symbolName="Earring Container" class="EarringContainer">
 			<dimensions>
-				<geom:Rectangle left="-20.5" top="-20.5" width="40.95" height="41"/>
+				<geom:Rectangle left="-20.5" top="-27.7" width="40.95" height="48.2"/>
 			</dimensions>
 			<transformationPoint>
-				<geom:Point x="0.5006105006105006" y="0.5"/>
+				<geom:Point x="0.5006105006105006" y="0.5746887966804979"/>
 			</transformationPoint>
 		</Source>
 	</source>

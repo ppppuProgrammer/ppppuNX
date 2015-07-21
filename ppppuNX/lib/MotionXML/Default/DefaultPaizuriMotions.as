@@ -6,14 +6,14 @@ package MotionXML.Default
 		public static const AreolaL:Class;
 		[Embed(source = "/../lib/MotionXML/Default/Paizuri/Default_AreolaR.xml", mimeType = "application/octet-stream")]
 		public static const AreolaR:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Paizuri/Default_ArmL.xml", mimeType = "application/octet-stream")]
-		public static const ArmL:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Paizuri/Default_ArmR.xml", mimeType = "application/octet-stream")]
-		public static const ArmR:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Paizuri/Default_BoobL.xml", mimeType = "application/octet-stream")]
-		public static const BoobL:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Paizuri/Default_BoobR.xml", mimeType = "application/octet-stream")]
-		public static const BoobR:Class;
+		[Embed(source = "/../lib/MotionXML/Default/Paizuri/Default_Arm2L.xml", mimeType = "application/octet-stream")]
+		public static const Arm2L:Class;
+		[Embed(source = "/../lib/MotionXML/Default/Paizuri/Default_Arm2R.xml", mimeType = "application/octet-stream")]
+		public static const Arm2R:Class;
+		[Embed(source = "/../lib/MotionXML/Default/Paizuri/Default_Boob3L.xml", mimeType = "application/octet-stream")]
+		public static const Boob3L:Class;
+		[Embed(source = "/../lib/MotionXML/Default/Paizuri/Default_Boob3R.xml", mimeType = "application/octet-stream")]
+		public static const Boob3R:Class;
 		[Embed(source = "/../lib/MotionXML/Default/Paizuri/Default_Chest.xml", mimeType = "application/octet-stream")]
 		public static const Chest:Class;
 		[Embed(source = "/../lib/MotionXML/Default/Paizuri/Default_ClavicleL.xml", mimeType = "application/octet-stream")]
@@ -54,14 +54,28 @@ package MotionXML.Default
 		public static const HairSideL:Class;
 		[Embed(source = "/../lib/MotionXML/Default/Paizuri/Default_HairSideR.xml", mimeType = "application/octet-stream")]
 		public static const HairSideR:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Paizuri/Default_HandL.xml", mimeType = "application/octet-stream")]
-		public static const HandL:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Paizuri/Default_HandR.xml", mimeType = "application/octet-stream")]
-		public static const HandR:Class;
+		[Embed(source = "/../lib/MotionXML/Default/Paizuri/Default_Hand2L.xml", mimeType = "application/octet-stream")]
+		public static const Hand2L:Class;
+		[Embed(source = "/../lib/MotionXML/Default/Paizuri/Default_Hand2R.xml", mimeType = "application/octet-stream")]
+		public static const Hand2R:Class;
 		[Embed(source = "/../lib/MotionXML/Default/Paizuri/Default_Headwear.xml", mimeType = "application/octet-stream")]
 		public static const Headwear:Class;
 		[Embed(source = "/../lib/MotionXML/Default/Paizuri/Default_Hips.xml", mimeType = "application/octet-stream")]
 		public static const Hips:Class;
+		[Embed(source = "/../lib/MotionXML/Default/Paizuri/Default_Male_LegL.xml", mimeType = "application/octet-stream")]
+		public static const Male_LegL:Class;
+		[Embed(source = "/../lib/MotionXML/Default/Paizuri/Default_Male_LegR.xml", mimeType = "application/octet-stream")]
+		public static const Male_LegR:Class;
+		[Embed(source = "/../lib/MotionXML/Default/Paizuri/Default_Male_LowerBody.xml", mimeType = "application/octet-stream")]
+		public static const Male_LowerBody:Class;
+		[Embed(source = "/../lib/MotionXML/Default/Paizuri/Default_Male_PenisHead.xml", mimeType = "application/octet-stream")]
+		public static const Male_PenisHead:Class;
+		[Embed(source = "/../lib/MotionXML/Default/Paizuri/Default_Male_PenisHeadMask2.xml", mimeType = "application/octet-stream")]
+		public static const Male_PenisHeadMask2:Class;
+		[Embed(source = "/../lib/MotionXML/Default/Paizuri/Default_Male_PenisShaft.xml", mimeType = "application/octet-stream")]
+		public static const Male_PenisShaft:Class;
+		[Embed(source = "/../lib/MotionXML/Default/Paizuri/Default_Male_UpperBody.xml", mimeType = "application/octet-stream")]
+		public static const Male_UpperBody:Class;
 		[Embed(source = "/../lib/MotionXML/Default/Paizuri/Default_Mouth.xml", mimeType = "application/octet-stream")]
 		public static const Mouth:Class;
 		[Embed(source = "/../lib/MotionXML/Default/Paizuri/Default_Neck.xml", mimeType = "application/octet-stream")]
@@ -76,10 +90,9 @@ package MotionXML.Default
 		public static const ShoulderL:Class;
 		[Embed(source = "/../lib/MotionXML/Default/Paizuri/Default_ShoulderR.xml", mimeType = "application/octet-stream")]
 		public static const ShoulderR:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Paizuri/Default_Tongue.xml", mimeType = "application/octet-stream")]
-		public static const Tongue:Class;
 
         public static const CharacterName:String = "Default";
         public static const AnimationName:String = "Paizuri";
+		public static const LayerInfo:String = '{"F0":{"ForearmL":0,"Hand2L":1,"ForearmR":2,"Hand2R":3,"NippleR":4,"AreolaR":5,"Boob3R":6,"NippleL":7,"AreolaL":8,"Boob3L":9,"Male_UpperBody":10,"Male_PenisHeadMask2":11,"Male_PenisHead":12,"Male_PenisShaft":13,"Male_LowerBody":14,"ClavicleL":15,"ClavicleR":16,"Tongue":17,"Mouth":18,"Nose":19,"HairFront":20,"HairSide2L":21,"HairSide2R":22,"HairSideL":23,"HairSideR":24,"EyeL":25,"EyeR":26,"Face":27,"EarR":28,"EarL":29,"EarringR":30,"EarringL":31,"HairSide3L":32,"HairSide3R":33,"Headwear":34,"Neck":35,"ShoulderR":36,"ShoulderL":37,"Arm2L":38,"Arm2R":39,"Male_LegR":40,"Male_LegL":41,"Chest":42,"Hips":43,"HairBack":44}}';
     }
 }

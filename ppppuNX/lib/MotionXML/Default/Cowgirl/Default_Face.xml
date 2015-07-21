@@ -1,6 +1,6 @@
 <Motion duration="120" xmlns="fl.motion.*" xmlns:geom="flash.geom.*" xmlns:filters="flash.filters.*">
 	<source>
-		<Source frameRate="30" x="236.15" y="181.3" scaleX="1.402" scaleY="1.348" rotation="0" elementType="movie clip" instanceName="Face" symbolName="Face Container">
+		<Source frameRate="30" x="236.15" y="181.3" scaleX="1.402" scaleY="1.348" rotation="0" elementType="movie clip" instanceName="Face" symbolName="Body parts/FaceParts/Face Container">
 			<dimensions>
 				<geom:Rectangle left="-57.05" top="-79.8" width="114" height="154.05"/>
 			</dimensions>

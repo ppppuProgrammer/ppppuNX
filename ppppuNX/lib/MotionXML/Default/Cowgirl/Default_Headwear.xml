@@ -2,10 +2,10 @@
 	<source>
 		<Source frameRate="30" x="236.2" y="33.95" scaleX="1.402" scaleY="1.402" rotation="0" elementType="movie clip" instanceName="Headwear" symbolName="Base Headwear" class="BaseHeadwear">
 			<dimensions>
-				<geom:Rectangle left="-40.7" top="-28.25" width="81.4" height="56.45"/>
+				<geom:Rectangle left="-115" top="-72.8" width="216" height="211.65"/>
 			</dimensions>
 			<transformationPoint>
-				<geom:Point x="0.5" y="0.5004428697962798"/>
+				<geom:Point x="0.5324074074074074" y="0.34396409166076064"/>
 			</transformationPoint>
 		</Source>
 	</source>

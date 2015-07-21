@@ -1,11 +1,11 @@
 <Motion duration="120" xmlns="fl.motion.*" xmlns:geom="flash.geom.*" xmlns:filters="flash.filters.*">
 	<source>
-		<Source frameRate="30" x="238.55" y="259.5" scaleX="3.003" scaleY="1.075" rotation="0" elementType="movie clip" instanceName="Mouth" symbolName="Mouths/mouth - some copy 2">
+		<Source frameRate="30" x="238.55" y="259.5" scaleX="3.003" scaleY="1.075" rotation="0" elementType="movie clip" instanceName="Mouth" symbolName="Mouth Container" class="MouthContainer" baseClass="ppppu.MouthContainerBase">
 			<dimensions>
-				<geom:Rectangle left="-4.75" top="-3.5" width="9.45" height="15.4"/>
+				<geom:Rectangle left="-7.25" top="0.4" width="14.5" height="13.8"/>
 			</dimensions>
 			<transformationPoint>
-				<geom:Point x="0.5026455026455027" y="0.22727272727272727"/>
+				<geom:Point x="0.5" y="-0.028985507246376812"/>
 			</transformationPoint>
 		</Source>
 	</source>

@@ -6,14 +6,14 @@ package MotionXML.Default
 		public static const AreolaL:Class;
 		[Embed(source = "/../lib/MotionXML/Default/LeanForward/Default_AreolaR.xml", mimeType = "application/octet-stream")]
 		public static const AreolaR:Class;
-		[Embed(source = "/../lib/MotionXML/Default/LeanForward/Default_ArmL.xml", mimeType = "application/octet-stream")]
-		public static const ArmL:Class;
-		[Embed(source = "/../lib/MotionXML/Default/LeanForward/Default_ArmR.xml", mimeType = "application/octet-stream")]
-		public static const ArmR:Class;
-		[Embed(source = "/../lib/MotionXML/Default/LeanForward/Default_BoobL.xml", mimeType = "application/octet-stream")]
-		public static const BoobL:Class;
-		[Embed(source = "/../lib/MotionXML/Default/LeanForward/Default_BoobR.xml", mimeType = "application/octet-stream")]
-		public static const BoobR:Class;
+		[Embed(source = "/../lib/MotionXML/Default/LeanForward/Default_Arm3L.xml", mimeType = "application/octet-stream")]
+		public static const Arm3L:Class;
+		[Embed(source = "/../lib/MotionXML/Default/LeanForward/Default_Arm3R.xml", mimeType = "application/octet-stream")]
+		public static const Arm3R:Class;
+		[Embed(source = "/../lib/MotionXML/Default/LeanForward/Default_Boob2L.xml", mimeType = "application/octet-stream")]
+		public static const Boob2L:Class;
+		[Embed(source = "/../lib/MotionXML/Default/LeanForward/Default_Boob2R.xml", mimeType = "application/octet-stream")]
+		public static const Boob2R:Class;
 		[Embed(source = "/../lib/MotionXML/Default/LeanForward/Default_Chest.xml", mimeType = "application/octet-stream")]
 		public static const Chest:Class;
 		[Embed(source = "/../lib/MotionXML/Default/LeanForward/Default_ClavicleL.xml", mimeType = "application/octet-stream")]
@@ -66,12 +66,28 @@ package MotionXML.Default
 		public static const HandR:Class;
 		[Embed(source = "/../lib/MotionXML/Default/LeanForward/Default_Headwear.xml", mimeType = "application/octet-stream")]
 		public static const Headwear:Class;
-		[Embed(source = "/../lib/MotionXML/Default/LeanForward/Default_Hips.xml", mimeType = "application/octet-stream")]
-		public static const Hips:Class;
+		[Embed(source = "/../lib/MotionXML/Default/LeanForward/Default_Hips2.xml", mimeType = "application/octet-stream")]
+		public static const Hips2:Class;
 		[Embed(source = "/../lib/MotionXML/Default/LeanForward/Default_LowerLegL.xml", mimeType = "application/octet-stream")]
 		public static const LowerLegL:Class;
 		[Embed(source = "/../lib/MotionXML/Default/LeanForward/Default_LowerLegR.xml", mimeType = "application/octet-stream")]
 		public static const LowerLegR:Class;
+		[Embed(source = "/../lib/MotionXML/Default/LeanForward/Default_Male_LegL.xml", mimeType = "application/octet-stream")]
+		public static const Male_LegL:Class;
+		[Embed(source = "/../lib/MotionXML/Default/LeanForward/Default_Male_LegR.xml", mimeType = "application/octet-stream")]
+		public static const Male_LegR:Class;
+		[Embed(source = "/../lib/MotionXML/Default/LeanForward/Default_Male_LowerBody.xml", mimeType = "application/octet-stream")]
+		public static const Male_LowerBody:Class;
+		[Embed(source = "/../lib/MotionXML/Default/LeanForward/Default_Male_PenisHead.xml", mimeType = "application/octet-stream")]
+		public static const Male_PenisHead:Class;
+		[Embed(source = "/../lib/MotionXML/Default/LeanForward/Default_Male_PenisHeadMask.xml", mimeType = "application/octet-stream")]
+		public static const Male_PenisHeadMask:Class;
+		[Embed(source = "/../lib/MotionXML/Default/LeanForward/Default_Male_PenisShaft.xml", mimeType = "application/octet-stream")]
+		public static const Male_PenisShaft:Class;
+		[Embed(source = "/../lib/MotionXML/Default/LeanForward/Default_Male_PenisShaftMask.xml", mimeType = "application/octet-stream")]
+		public static const Male_PenisShaftMask:Class;
+		[Embed(source = "/../lib/MotionXML/Default/LeanForward/Default_Male_UpperBody.xml", mimeType = "application/octet-stream")]
+		public static const Male_UpperBody:Class;
 		[Embed(source = "/../lib/MotionXML/Default/LeanForward/Default_Mouth.xml", mimeType = "application/octet-stream")]
 		public static const Mouth:Class;
 		[Embed(source = "/../lib/MotionXML/Default/LeanForward/Default_Navel.xml", mimeType = "application/octet-stream")]
@@ -97,5 +113,6 @@ package MotionXML.Default
 
         public static const CharacterName:String = "Default";
         public static const AnimationName:String = "LeanForward";
+		public static const LayerInfo:String = '{"F0":{"NippleR":0,"AreolaR":1,"ClavicleL":2,"ClavicleR":3,"Mouth":4,"Nose":5,"HairFront":6,"HairSide2L":7,"HairSide2R":8,"HairSideL":9,"HairSideR":10,"EyeL":11,"EyeR":12,"Face":13,"EarR":14,"EarL":15,"EarringR":16,"EarringL":17,"HairSide3L":18,"HairSide3R":19,"Headwear":20,"Boob2R":21,"NippleL":22,"AreolaL":23,"Boob2L":24,"Neck":25,"ShoulderR":26,"ForearmR":27,"HandR":28,"ForearmL":29,"HandL":30,"ShoulderL":31,"Arm3R":32,"Arm3L":33,"Male_UpperBody":34,"Vulva":35,"Groin":36,"Male_PenisHeadMask":37,"Male_PenisHead":38,"Male_PenisShaftMask":39,"Male_PenisShaft":40,"Male_LowerBody":41,"Navel":42,"Chest":43,"Hips2":44,"UpperLegL":45,"LowerLegL":46,"UpperLegR":47,"LowerLegR":48,"FrontButtL":49,"FrontButtR":50,"Male_LegR":51,"Male_LegL":52,"HairBack":53}}';
     }
 }

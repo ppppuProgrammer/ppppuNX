@@ -1,11 +1,11 @@
 <Motion duration="120" xmlns="fl.motion.*" xmlns:geom="flash.geom.*" xmlns:filters="flash.filters.*">
 	<source>
-		<Source frameRate="30" x="278.45" y="182.05" scaleX="1.455" scaleY="1.264" skewX="0" skewY="-0.8" elementType="movie clip" instanceName="EyeR" symbolName="Eye Container" class="EyeContainer" baseClass="ppppu.EyeContainerBase">
+		<Source frameRate="30" x="278.45" y="182.05" scaleX="1.455" scaleY="1.264" skewX="0" skewY="-0.8" elementType="movie clip" instanceName="EyeR" symbolName="Body parts/EyeParts/Eye Container" class="EyeContainer" baseClass="ppppu.EyeContainerBase">
 			<dimensions>
-				<geom:Rectangle left="-14.9" top="-39.35" width="39.35" height="56.6"/>
+				<geom:Rectangle left="-27.5" top="-53.55" width="54.3" height="73.35"/>
 			</dimensions>
 			<transformationPoint>
-				<geom:Point x="0.3786531130876747" y="0.6952296819787986"/>
+				<geom:Point x="0.5064456721915286" y="0.7300613496932515"/>
 			</transformationPoint>
 		</Source>
 	</source>
