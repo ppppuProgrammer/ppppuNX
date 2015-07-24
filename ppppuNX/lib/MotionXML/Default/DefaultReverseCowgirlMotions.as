@@ -84,8 +84,6 @@ package MotionXML.Default
 		public static const MidBack:Class;
 		[Embed(source = "/../lib/MotionXML/Default/ReverseCowgirl/Default_Mouth.xml", mimeType = "application/octet-stream")]
 		public static const Mouth:Class;
-		[Embed(source = "/../lib/MotionXML/Default/ReverseCowgirl/Default_Navel.xml", mimeType = "application/octet-stream")]
-		public static const Navel:Class;
 		[Embed(source = "/../lib/MotionXML/Default/ReverseCowgirl/Default_Neck.xml", mimeType = "application/octet-stream")]
 		public static const Neck:Class;
 		[Embed(source = "/../lib/MotionXML/Default/ReverseCowgirl/Default_NippleL.xml", mimeType = "application/octet-stream")]
@@ -109,6 +107,6 @@ package MotionXML.Default
 
         public static const CharacterName:String = "Default";
         public static const AnimationName:String = "ReverseCowgirl";
-		public static const LayerInfo:String = '{"F0":{"ForearmL":0,"HandL":1,"Male_UpperBody":2,"LowerLegL":3,"ButtCheekL":4,"ButtCheekShadowL":5,"ButtCheekShadow2L":6,"ButtCheekR":7,"ButtCheekShadowR":8,"ButtCheekShadow2R":9,"SideBoobL":10,"NippleL":11,"LowerBack":12,"ShoulderL":13,"ArmL":14,"MidBack":15,"UpperBack":16,"VulvaBackview":17,"Male_PenisHeadMask":18,"Male_PenisHead":19,"Male_PenisShaftMask":20,"Male_PenisShaft":21,"Clit":22,"HairFrontAngled2":23,"HairSide2L":24,"HairSide3L":25,"Headwear":26,"HairSideL":27,"TurnedNose":28,"Mouth":29,"EyeL":30,"EyeR":31,"EarringL":32,"EarR":33,"TurnedFace":34,"HairSideR":35,"HairSide2R":36,"HairSide3R":37,"EarringR":38,"UpperLegL":39,"LowerLegR":40,"UpperLegR":41,"Groin2":42,"ArmR":43,"Neck":44,"ForearmR":45,"HandR":46,"HairBack":47,"Male_LowerBody":48,"Male_LegR":49,"Male_LegL":50,"Navel":51}}';
+        public static const LayerInfo:String = '{"F0":{"ForearmL":0,"HandL":1,"Male_UpperBody":2,"LowerLegL":3,"ButtCheekL":4,"ButtCheekShadowL":5,"ButtCheekShadow2L":6,"ButtCheekR":7,"ButtCheekShadowR":8,"ButtCheekShadow2R":9,"SideBoobL":10,"NippleL":11,"LowerBack":12,"ShoulderL":13,"ArmL":14,"MidBack":15,"UpperBack":16,"VulvaBackview":17,"Male_PenisHeadMask":18,"Male_PenisHead":19,"Male_PenisShaftMask":20,"Male_PenisShaft":21,"Clit":22,"HairFrontAngled2":23,"HairSide2L":24,"HairSide3L":25,"Headwear":26,"HairSideL":27,"TurnedNose":28,"Mouth":29,"EyeL":30,"EyeR":31,"EarringL":32,"EarR":33,"TurnedFace":34,"HairSideR":35,"HairSide2R":36,"HairSide3R":37,"EarringR":38,"UpperLegL":39,"LowerLegR":40,"UpperLegR":41,"Groin2":42,"ArmR":43,"Neck":44,"ForearmR":45,"HandR":46,"HairBack":47,"Male_LowerBody":48,"Male_LegR":49,"Male_LegL":50}}';
     }
 }

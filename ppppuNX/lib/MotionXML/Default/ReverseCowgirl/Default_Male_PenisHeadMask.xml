@@ -1,6 +1,6 @@
 <Motion duration="120" xmlns="fl.motion.*" xmlns:geom="flash.geom.*" xmlns:filters="flash.filters.*">
 	<source>
-		<Source frameRate="30" x="200.8" y="654.95" scaleX="1.2" scaleY="1.2" rotation="0" elementType="movie clip" instanceName="Male_PenisShaftMask" symbolName="Penis Shaft Mask">
+		<Source frameRate="30" x="200.8" y="654.95" scaleX="1.2" scaleY="1.2" rotation="0" elementType="movie clip" instanceName="Male_PenisHeadMask" symbolName="Penis Shaft Mask">
 			<dimensions>
 				<geom:Rectangle left="0" top="0" width="72.8" height="147.15"/>
 			</dimensions>

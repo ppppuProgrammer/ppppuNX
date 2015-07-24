@@ -1,6 +1,6 @@
 <Motion duration="120" xmlns="fl.motion.*" xmlns:geom="flash.geom.*" xmlns:filters="flash.filters.*">
 	<source>
-		<Source frameRate="30" x="124.45" y="80.25" scaleX="1.303" scaleY="1.381" skewX="-1.8" skewY="-3.6" elementType="movie clip" instanceName="Face" symbolName="Body parts/FaceParts/Turned Face Container">
+		<Source frameRate="30" x="124.45" y="80.25" scaleX="1.303" scaleY="1.381" skewX="-1.8" skewY="-3.6" elementType="movie clip" instanceName="TurnedFace" symbolName="Body parts/FaceParts/Turned Face Container">
 			<dimensions>
 				<geom:Rectangle left="1.15" top="-0.8" width="138" height="152"/>
 			</dimensions>

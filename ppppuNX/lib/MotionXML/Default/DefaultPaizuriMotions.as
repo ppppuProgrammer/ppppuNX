@@ -93,6 +93,6 @@ package MotionXML.Default
 
         public static const CharacterName:String = "Default";
         public static const AnimationName:String = "Paizuri";
-		public static const LayerInfo:String = '{"F0":{"ForearmL":0,"Hand2L":1,"ForearmR":2,"Hand2R":3,"NippleR":4,"AreolaR":5,"Boob3R":6,"NippleL":7,"AreolaL":8,"Boob3L":9,"Male_UpperBody":10,"Male_PenisHeadMask2":11,"Male_PenisHead":12,"Male_PenisShaft":13,"Male_LowerBody":14,"ClavicleL":15,"ClavicleR":16,"Tongue":17,"Mouth":18,"Nose":19,"HairFront":20,"HairSide2L":21,"HairSide2R":22,"HairSideL":23,"HairSideR":24,"EyeL":25,"EyeR":26,"Face":27,"EarR":28,"EarL":29,"EarringR":30,"EarringL":31,"HairSide3L":32,"HairSide3R":33,"Headwear":34,"Neck":35,"ShoulderR":36,"ShoulderL":37,"Arm2L":38,"Arm2R":39,"Male_LegR":40,"Male_LegL":41,"Chest":42,"Hips":43,"HairBack":44}}';
+        public static const LayerInfo:String = '{"F0":{"ForearmL":0,"Hand2L":1,"ForearmR":2,"Hand2R":3,"NippleR":4,"AreolaR":5,"Boob3R":6,"NippleL":7,"AreolaL":8,"Boob3L":9,"Male_UpperBody":10,"Male_PenisHeadMask2":11,"Male_PenisHead":12,"Male_PenisShaft":13,"Male_LowerBody":14,"ClavicleL":15,"ClavicleR":16,"Mouth":17,"Nose":18,"HairFront":19,"HairSide2L":20,"HairSide2R":21,"HairSideL":22,"HairSideR":23,"EyeL":24,"EyeR":25,"Face":26,"EarR":27,"EarL":28,"EarringR":29,"EarringL":30,"HairSide3L":31,"HairSide3R":32,"Headwear":33,"Neck":34,"ShoulderR":35,"ShoulderL":36,"Arm2L":37,"Arm2R":38,"Male_LegR":39,"Male_LegL":40,"Chest":41,"Hips":42,"HairBack":43}}';
     }
 }

@@ -1,5 +1,6 @@
 package ppppu 
 {
+	import com.greensock.TweenLite;
 	import flash.geom.Matrix;
 	import flash.sampler.getMasterString;
 	import flash.utils.Dictionary;
@@ -17,13 +18,15 @@ package ppppu
 		{
 			
 		}
-		public static function ConvertXmlToTweens(targetObject:DisplayObject, motionXML:XML):Vector.<TweenOrder>
+		public static function ConvertXmlToTweens(targetObject:DisplayObject, motionXML:XML):Array
 		{
+			//var targetName:String = ;
+			trace(targetObject.name);
 			//var orders:Vector.<TweenOrder> = new Vector.<TweenOrder>(120, true);
-			var orders:Vector.<TweenOrder> = new Vector.<TweenOrder>();
+			var Tweens:Array = new Array();
 			var nodes:XMLList = motionXML.children();
-			var frameVariables:Object;
-			var transformMatrixData:Object;
+			//var frameVariables:Object;
+			//var transformMatrixData:Object;
 			var nodeAttributes:XMLList;
 			var currentNode:XML;
 			var attributeName:String;
@@ -38,188 +41,143 @@ package ppppu
 			var latestScaleX:Number;
 			var latestScaleY:Number;
 			var latestRotation:Number;
-			var tweenDuration:int = 0;
-			var lastKeyframeNumber:uint = 1;
-			var skewBased:Boolean = false; //If skew based, the rotation property is applied to both skew values
-			var tweenOrder:TweenOrder;
+			//var tweenDuration:int = 0;
+			//var lastKeyframeNumber:uint = 1;
+			//var skewBased:Boolean = false; //If skew based, the rotation property is applied to both skew values
+			//var tweenOrder:TweenOrder;
 			var tweenMatrix:Matrix;
+			var previousTween:TweenLite = null, currentTween:TweenLite = null;
 			for (var i:int = 0, l:int = nodes.length(); i < l; ++i)
 			{
-				if (keyframeNumber > 0)
-				{
-					
-					
-					
-					tweenMatrix = new Matrix();
-					//Start with scale
-					SetMatrixScaleX(tweenMatrix, latestScaleX);
-					SetMatrixScaleY(tweenMatrix, latestScaleY);
-					//Rotation and skews
-					if (skewBased)
-					{
-						SetMatrixSkewX(tweenMatrix, latestSkewX);
-						SetMatrixSkewY(tweenMatrix, latestSkewY);
-					}
-					else
-					{
-						SetMatrixSkewX(tweenMatrix, latestRotation);
-						SetMatrixSkewY(tweenMatrix, latestRotation);
-					}
-					
-					//If the difference between frames is 
-					if (i+1 == l) //Last go at the for loop
-					{
-						tweenDuration = 120 - lastKeyframeNumber;
-					}
-					if (tweenDuration == 1) 
-					{ tweenDuration = 0; } 
-					else 
-					{tweenDuration = keyframeNumber - lastKeyframeNumber;}
-					
-					
-					tweenOrder = new TweenOrder(targetObject, new TweenLiteVars().transformMatrix( { a:tweenMatrix.a, 
-						b:tweenMatrix.b, 
-						c:tweenMatrix.c, 
-						d:tweenMatrix.d, tx: latestX, ty: latestY}), 
-						keyframeNumber, tweenDuration);
-					orders[orders.length] = tweenOrder;
-				}
-				
 				storingSourceProperties = false;
 				currentNode = nodes[i];
 				if (currentNode.localName() == "source")
 				{
 					currentNode = currentNode.children()[0]; //"Source" element nested in "source" element
-				}
-				if (currentNode.localName() == "Source")
-				{
 					storingSourceProperties = true;
 				}
 				nodeAttributes = currentNode.attributes();
-				frameVariables = new Object();
-				transformMatrixData = new Object();
-				frameVariables["transformMatrix"] = transformMatrixData;
+				
+				if (currentTween != null)
+				{
+					previousTween = currentTween;
+					currentTween = null;
+				}
+				
 				for (var attCounter:int = 0, attLen:int = nodeAttributes.length(); attCounter < attLen; ++attCounter)
 				{
+					//Get attribute's name
 					attributeName = nodeAttributes[attCounter].localName();
-					if (attributeName == "index")
+					
+					var attributeValue:Number = Number(nodeAttributes[attCounter].toXMLString());	
+					if (storingSourceProperties)
 					{
-						keyframeNumber = int(nodeAttributes[attCounter].toXMLString()) + 1;
-					}
-					else if (attributeName != "frameRate" && attributeName != "elementType" && attributeName != "symbolName")
-					{
-						var attributeValue:Number = Number(nodeAttributes[attCounter].toXMLString());		
-						if (!storingSourceProperties)
+						sourceProperties[attributeName] = attributeValue;
+						switch(attributeName)
 						{
-							switch(attributeName)
+							case "rotation":
+								latestSkewX = sourceProperties["skewX"] = attributeValue;
+								latestSkewY = sourceProperties["skewY"] = attributeValue;
+								break;
+							case "skewX":
+								latestSkewX = attributeValue;
+								break;
+							case "skewY":
+								latestSkewY = attributeValue;
+								break;
+							case "x":
+								latestX = attributeValue;
+								break;
+							case "y":
+								latestY = attributeValue;
+								break;
+							case "scaleX":
+								latestScaleX = attributeValue;
+								break;
+							case "scaleY":
+								latestScaleY = attributeValue;
+								break;
+						}
+					}
+					else
+					{
+						if (attributeName == "index")
+						{
+							keyframeNumber = int(nodeAttributes[attCounter].toXMLString()) + 1;
+						}
+						else if (attributeName != "frameRate" && attributeName != "elementType" && attributeName != "symbolName")
+						{
+							
+							if (!storingSourceProperties)
 							{
-								case "rotation":
-									if (skewBased == true)
-									{
+								switch(attributeName)
+								{
+									case "rotation":
 										latestSkewX = attributeValue + sourceProperties["skewX"];
 										latestSkewY = attributeValue + sourceProperties["skewY"];
-									}
-									else 
-									{
-										latestRotation = attributeValue + sourceProperties[attributeName];
-									}
-									break;
-								case "skewX":
-									latestSkewX = attributeValue + sourceProperties[attributeName];
-									break;
-								case "skewY":
-									latestSkewY = attributeValue + sourceProperties[attributeName];
-									break;
-								case "x":
-									latestX = attributeValue + sourceProperties[attributeName];
-									break;
-								case "y":
-									latestY = attributeValue + sourceProperties[attributeName];
-									break;
-								case "scaleX":
-									latestScaleX = attributeValue * sourceProperties[attributeName];
-									break;
-								case "scaleY":
-									latestScaleY = attributeValue * sourceProperties[attributeName];
-									break;
-							}
-						}
-						else //storing source properties
-						{
-							sourceProperties[attributeName] = attributeValue;
-							switch(attributeName)
-							{
-								case "rotation":
-									latestRotation = attributeValue;
-									break;
-								case "skewX":
-								case "skewY":
-									skewBased = true;
-									if (attributeName == "skewX")
-									{
-										latestSkewX = attributeValue;
-									}
-									else
-									{
-										latestSkewY = attributeValue;
-									}
-									break;
-								case "x":
-									latestX = attributeValue;
-									break;
-								case "y":
-									latestY = attributeValue;
-									break;
-								case "scaleX":
-									latestScaleX = attributeValue;
-									break;
-								case "scaleY":
-									latestScaleY = attributeValue;
-									break;
+										break;
+									case "skewX":
+										latestSkewX = attributeValue + sourceProperties[attributeName];
+										break;
+									case "skewY":
+										latestSkewY = attributeValue + sourceProperties[attributeName];
+										break;
+									case "x":
+										latestX = attributeValue + sourceProperties[attributeName];
+										break;
+									case "y":
+										latestY = attributeValue + sourceProperties[attributeName];
+										break;
+									case "scaleX":
+										latestScaleX = attributeValue * sourceProperties[attributeName];
+										break;
+									case "scaleY":
+										latestScaleY = attributeValue * sourceProperties[attributeName];
+										break;
+								}
 							}
 						}
 					}
 				}			
-					
-				lastKeyframeNumber = keyframeNumber;
-			}
-			if (keyframeNumber > 0)
-			{
-				tweenMatrix = new Matrix();
 				
-				
-				//Start with scale
-				SetMatrixScaleX(tweenMatrix, latestScaleX);
-				SetMatrixScaleY(tweenMatrix, latestScaleY);
-				//Rotation and skews
-				if (skewBased)
+				if (keyframeNumber > 0)
 				{
+					tweenMatrix = new Matrix();
+					
+					//Start with scale
+					SetMatrixScaleX(tweenMatrix, latestScaleX);
+					SetMatrixScaleY(tweenMatrix, latestScaleY);
+					//Rotation and skews
 					SetMatrixSkewX(tweenMatrix, latestSkewX);
 					SetMatrixSkewY(tweenMatrix, latestSkewY);
+
+					if (currentTween == null)
+					{
+						//Creates a new tween with the calculated matrix information
+						currentTween = TweenLite.to(targetObject, 0.0, new TweenLiteVars().transformMatrix( { a:tweenMatrix.a, 
+							b:tweenMatrix.b, c:tweenMatrix.c, d:tweenMatrix.d, tx: latestX, ty: latestY } ));
+						//Set current tweens start time, based on it's keyframe. 30 is the fps the flash is intended to run at
+						currentTween.startTime(((keyframeNumber-1)  * (1000.0 / 30.0)) / 1000.0);
+					}
+					//If both current frame and previous frame tweens are found, duration for the current tween can be calculated
+					if (currentTween && previousTween)
+					{
+						//Set the current tween's duration equal to the difference of start times of the current tween and the previous one
+						currentTween.duration(currentTween.startTime() - previousTween.startTime());
+					}
+					if (currentTween && i + 1 >= l)
+					{
+						//Current Tween is the last tween that will be added for the timeline.
+						//4.0 is the amount of seconds an animation lasts.
+						currentTween.duration( 4.0 - currentTween.startTime());
+					}
+					//Add the current tween to the tweens array
+					Tweens[Tweens.length] = currentTween;
 				}
-				else
-				{
-					SetMatrixSkewX(tweenMatrix, latestRotation);
-					SetMatrixSkewY(tweenMatrix, latestRotation);
-				}
 				
-				
-				if (i == l) //Last go at the for loop
-				{
-					tweenDuration = 120 - lastKeyframeNumber;
-				}
-				//If the difference between frames is 1, then set it to 0 so the change happens instantly
-				if (tweenDuration == 1) { tweenDuration = 0; } else {tweenDuration = keyframeNumber - lastKeyframeNumber;}
-				
-				
-				tweenOrder = new TweenOrder(targetObject, new TweenLiteVars().transformMatrix( { a:tweenMatrix.a, 
-					b:tweenMatrix.b, 
-					c:tweenMatrix.c, 
-					d:tweenMatrix.d, tx: latestX, ty: latestY}), 
-					keyframeNumber, tweenDuration);
-				orders[orders.length] = tweenOrder;
 			}
-			return orders;
+			
+			return Tweens;
 		}
 		//Matrix modification code ported from MotionXML.jsfl
 		public static function SetMatrixScaleX(m:Matrix, scaleX:Number):void

@@ -1,14 +1,14 @@
 package
 {
-	import flash.display.MovieClip;
+	import flash.display.Sprite;
 	import ppppu.ppppuCore;
 	import flash.events.Event;
 	
 	/**
-	 * ...
-	 * @author 
+	 * Main entryway into the program. Creates an instance of ppppuCore, adds it 
+	 * @author ppppuProgrammer
 	 */
-	public class Main extends MovieClip
+	public class Main extends Sprite
 	{
 		public function Main() 
 		{

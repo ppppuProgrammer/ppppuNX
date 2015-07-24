@@ -15,7 +15,7 @@ package ppppu
 	{
 		/*Master timeline for the template animation. Contains all the timelines for parts of the animation that are 
 		 * controlled  by series of tweens defined by a motion xml.*/
-		private var masterTimeline:TimelineLite = new TimelineLite( { /*useFrames:true,*/ smoothChildTiming:true } );
+		public var masterTimeline:TimelineLite = new TimelineLite( { /*useFrames:true,*/ smoothChildTiming:true } );
 		//Master template version this array contains arrays of timelines. To access the index of the appropriate animation, refer to the animationNameIndexes array in ppppuCore.
 		private var defaultTimelines:Vector.<Vector.<TimelineMax>> = new Vector.<Vector.<TimelineMax>>();
 		
@@ -54,17 +54,20 @@ package ppppu
 			Mouth.LipsColor.gotoAndStop(1);
 			Mouth.LipsHighlight.gotoAndStop(1);
 			Mouth.Tongue.Element.gotoAndStop(1);
+			Mouth.Tongue.visible = false;
 			Headwear.gotoAndStop(1);
 			SetupHair();
 			if(LowerLegL) LowerLegL.Element.Color.gotoAndStop(1);
 			if(LowerLegR) LowerLegR.Element.Color.gotoAndStop(1);
 		}
-		private function StageSetup(e:Event)
+		
+		//Used to obtain the time spent per frame for the flash.
+		private function StageSetup(e:Event):void
 		{
 			millisecPerFrame = 1000.0 / stage.frameRate;
 			removeEventListener(Event.ADDED_TO_STAGE, StageSetup);
 		}
-		private function SetupHair()
+		private function SetupHair():void
 		{
 			HairBack.Element.gotoAndStop(1);
 			HairSideL.gotoAndStop(1);
@@ -79,7 +82,8 @@ package ppppu
 			}
 		}
 		
-		/*private function SetupEyeContainer(EyeC:EyeContainer)
+		//Initializes the eye container to go to it's default look (and to stop cycling through the other possible visual it can take.)
+		/*private function SetupEyeContainer(EyeC:EyeContainer):void
 		{
 			EyeC.eye.EyebrowSettings.gotoAndStop(1);
 			EyeC.eye.EyebrowSettings.Eyebrow.gotoAndStop(1);
@@ -93,87 +97,73 @@ package ppppu
 			EyeC.eye.InnerEyeSettings.InnerEye.Iris.gotoAndStop(1);
 		}*/
 		
-		//Master template version
-		public function SetDefaultTimelines(defTimelines:Vector.<TimelineMax>, animationIndex:uint)
+		/*Sets the vector of timelines passed to it as the default timelines used for a specified animation.
+		For reference, ppppuCore's animationNameIndexes variable details which index is linked to a specific animation name*/
+		public function SetDefaultTimelines(defTimelines:Vector.<TimelineMax>, animationIndex:uint):void
 		{
+			//Quick check to make sure that there are timelines in the vector
 			if (defTimelines.length > 0)
 			{
 				defaultTimelines[animationIndex] = defTimelines;
 			}
 		}
 		
-		/*public function SetDefaultTimelines(defTimelines:Array)
-		{
-			if (defaultTimelines == null)
-			{
-				defaultTimelines = defTimelines;
-				ResetToDefaultTimelines();
-			}
-		}*/
-		
-		/*public function UpdateTimelines(jumpToFrame:uint)
-		{
-			//var currentFrame:int = this.currentFrame;
-			var childTimelines:Array = masterTimeline.getChildren(true, false);
-			for (var i:int = 0, l:int = childTimelines.length; i < l; ++i)
-			{
-				(childTimelines[i] as TimelineLite).seek(jumpToFrame);
-			}
-		}*/
-		
-		public function PlayAnimation(startAtFrame:uint)
+		//Starts playing the currently set animation at a specified frame.
+		public function PlayAnimation(startAtFrame:uint):void
 		{
 			//startAtFrame -= 1;
 			//masterTimeline.play(startAtFrame);
-			masterTimeline.play((startAtFrame * millisecPerFrame)/1000.0);
+			//The timelines and tweens are time based, so there needs to be a conversion from frame to time (in milliseconds)
+			masterTimeline.play((startAtFrame * millisecPerFrame) / 1000.0);
+			//Get all timelines currently used
 			var childTimelines:Array = masterTimeline.getChildren(!true, false);
 			for (var i:int = 0, l:int = childTimelines.length; i < l; ++i)
 			{
-				//(childTimelines[i] as TimelineLite).play(startAtFrame);
-				(childTimelines[i] as TimelineLite).play((startAtFrame * millisecPerFrame)/1000.0 );
-				//trace((childTimelines[i] as TimelineLite).vars["useFrames"]);
+				//Tell the child timeline to play at the specified time
+				(childTimelines[i] as TimelineMax).play((startAtFrame * millisecPerFrame)/1000.0 );
 			}
 		}
 		
-		public function StopAnimation()
+		public function ResumePlayingAnimation():void
 		{
-			masterTimeline.stop();
-			/*var childTimelines:Array = masterTimeline.getChildren(true, false);
+			masterTimeline.play();
+			//Get all timelines currently used
+			var childTimelines:Array = masterTimeline.getChildren(!true, false);
 			for (var i:int = 0, l:int = childTimelines.length; i < l; ++i)
 			{
-				(childTimelines[i] as TimelineLite).stop();
-			}*/
+				//Tell the child timeline to play at the specified time
+				(childTimelines[i] as TimelineMax).play();
+			}
 		}
 		
-		/*public function UpdateTimelines()
+		public function JumpToFrameAnimation(startAtFrame:uint):void
 		{
-			var currentFrame:int = this.currentFrame;
 			var childTimelines:Array = masterTimeline.getChildren(true, false);
 			for (var i:int = 0, l:int = childTimelines.length; i < l; ++i)
 			{
-				(childTimelines[i] as TimelineLite).seek(currentFrame);
+				(childTimelines[i] as TimelineMax).seek((startAtFrame * millisecPerFrame)/1000.0 );
 			}
-		}*/
+		}
 		
-		/*public function AddTimelines(timelines:Array)
+		/*Pauses the animation. Currently used, it's just here in case there is a time where the animation needs to be paused. 
+		Might be useful when character editing facilities are better and they need a still to look at.*/
+		public function StopAnimation():void
 		{
-			var currentFrame:int = this.currentFrame;
-			for (var i:uint = 0, l:uint = timelines.length; i < l; ++i)
+			masterTimeline.stop();
+			var childTimelines:Array = masterTimeline.getChildren(true, false);
+			for (var i:int = 0, l:int = childTimelines.length; i < l; ++i)
 			{
-				var timeline:Object = timelines[i];
-				if (timeline is TimelineLite)
-				{
-					masterTimeline.add((timeline as TimelineLite).seek(currentFrame));
-				}
+				(childTimelines[i] as TimelineLite).stop();
 			}
-		}*/
+		}
 		
-		public function ChangeDefaultTimelinesUsed(animationIndex:uint)
+		/*Removes all currently active timelines and adds the default timelines for a specified animation by it's index number.*/
+		public function ChangeDefaultTimelinesUsed(animationIndex:uint):void
 		{
 			if (animationIndex < defaultTimelines.length)
 			{
-				masterTimeline.clear();
-				AddTimelines(defaultTimelines[animationIndex] as Vector.<TimelineMax>);
+				ClearTimelines();
+				AddTimelines(defaultTimelines[animationIndex]);
 			}
 		}
 		
@@ -184,35 +174,58 @@ package ppppu
 			//UpdateTimelines();
 		}*/
 		
-		public function ClearTimelines()
+		/*Removes all children timelines, which control the various body part elements of the master template, from the master timeline.
+		 Additionally, these body part elements are set to be invisible. */
+		public function ClearTimelines():void
 		{
-			masterTimeline.clear();
+			//Get the timelines used currently
+			var childTimelines:Array = masterTimeline.getChildren(true, false);
+			var currentChildTimeline:TimelineMax;
+			//Iterate through all the timelines 
+			for (var i:int = 0, l:int = childTimelines.length; i < l; ++i)
+			{
+				currentChildTimeline = childTimelines[i] as TimelineMax;
+				//The element that the timeline controls is to become invisible.
+				//TODO: Test if it is more efficient, performance wise, to remove the element from the master template.
+				(currentChildTimeline.data.targetElement as DisplayObject).visible = false;
+			}
+			//Remove the array of timelines from the master timeline, leaving it clear for another animation.
+			masterTimeline.remove(childTimelines);
+			//Unused, if remove() calls actually kills timelines (as in, no longer exist in memory), then use clear()
+			//masterTimeline.clear();
 		}
 		
-		public function AddTimelines(timelinesToAdd:Vector.<TimelineMax>)
+		//Adds the timelines contained in a vector to the master timeline.
+		public function AddTimelines(timelinesToAdd:Vector.<TimelineMax>):void
 		{
 			for (var i:uint = 0, l:uint = timelinesToAdd.length; i < l; ++i)
 			{
 				AddTimeline(timelinesToAdd[i] as TimelineMax);
+				//trace(i + ": " + timelinesToAdd[i].data.targetElement.name )
 			}
 		}
 		
-		public function AddTimeline(tlToAdd:TimelineMax)
+		//Adds a specified Timeline to the master timeline.
+		public function AddTimeline(tlToAdd:TimelineMax):void
 		{
-			//var timelineForPart:String = tlToAdd.data as String;
-			var timelineForPart:String = tlToAdd.data.targetElement.name as String;
 			//The display object that the timeline controls
 			var timelineDisplayObject:DisplayObject = tlToAdd.data.targetElement as DisplayObject;
+			//Get the name of the element that the timeline controls
+			var timelineForPart:String = timelineDisplayObject.name;
 			//Make the display object visible
 			timelineDisplayObject.visible = true;
 			var currentFrame:int = this.currentFrame;
+			
 			if (timelineForPart)
 			{
 				//Check to see if the master timeline already has a nested timeline for the specified display object.
-				//If it does, then 
+				//If it does, then replace it. Otherwise, add it.
+				
+				//Get all active timelines
 				var childTimelines:Array = masterTimeline.getChildren(true, false);
 				var childTlForPart:String;
 				var childTimeline:TimelineMax;
+				//Iterating through the active timelines array.
 				for (var i:int = 0, l:int = childTimelines.length; i < l; ++i)
 				{
 					childTimeline = childTimelines[i] as TimelineMax;
@@ -223,31 +236,30 @@ package ppppu
 						{
 							//Match was found, so replace the match with tlToAdd.
 							ReplaceTimeline(childTimeline, tlToAdd);
-							return; //Finished, so end early. 
+							return; //Finished, so return to exit out the function early. 
 						}
-						//TODO Have timelines that are completely new (ie Isabelle's body fur pattern) be added if there were no matches
 					}
 				}
 				//Looked through all the timelines nested in the master timeline and there were no matches for tlToAdd to override.
 				masterTimeline.add(tlToAdd);
 				//tlToAdd.seek(this.currentFrame);
-				tlToAdd.seek((this.currentFrame * millisecPerFrame) / 1000.0);
+				//tlToAdd.seek(((((this.parent as MovieClip).currentFrame-2) % 120) * millisecPerFrame) / 1000.0);
 			}
 		}
 		
-		
-		public function ReplaceTimeline(tlToRemove:TimelineMax, tlToAdd:TimelineMax)
+		//Replaces a specified timeline with another and then sets the newly added timeline to the frame that the removed one was on.
+		public function ReplaceTimeline(tlToRemove:TimelineMax, tlToAdd:TimelineMax):void
 		{
 			if (tlToRemove != tlToAdd)
 			{
 				masterTimeline.remove(tlToRemove);
 				masterTimeline.add(tlToAdd);
 				//tlToAdd.seek(this.currentFrame);
-				tlToAdd.seek((this.currentFrame * millisecPerFrame) / 1000.0);
+				//tlToAdd.seek(((((this.parent as MovieClip).currentFrame-2) % 120) * millisecPerFrame) / 1000.0);
 			}
 		}
 		
-		public function GetName():String{return this.name}
+		//public function GetName():String{return this.name}
 		
 		/*public function TemplateBase() 
 		{

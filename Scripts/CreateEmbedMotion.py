@@ -26,7 +26,7 @@ def searchWithinFolder(folderDir):
                 xmlClassName = filePath.name
                 ##print(xmlClassName)
                 
-                xmlClassName = xmlClassName[xmlClassName.rfind("_")+1:xmlClassName.rfind(".")]
+                xmlClassName = xmlClassName[xmlClassName.find("_")+1:xmlClassName.rfind(".")]
                 motionXMLDefinitions += '''\t\t[Embed(source = \"{0:s}\", mimeType = \"application/octet-stream\")]
 \t\tpublic static const {1:s}:Class;\n'''.format(sourceFolderDir + filePath.name, xmlClassName)
     ##print(motionXMLDefinitions)
@@ -57,7 +57,13 @@ for dirIter in currDir.iterdir():
         fileName = newClassName + ".as"
         ##Create path that the file will be created in
         asFilePath = Path(fileName)
-
+        ##Open layer info file
+        layerInfo = ""
+        layerInfoFilePath = Path(animationName + " Template layer info.json")
+        with layerInfoFilePath.open('r') as layerInfoFile:
+            layerInfo = layerInfoFile.read()
+        
+        
         scriptContents = '''package {0:s}
 {{
     public class {1:s}
@@ -65,8 +71,9 @@ for dirIter in currDir.iterdir():
 {2:s}
         public static const CharacterName:String = \"{3:s}\";
         public static const AnimationName:String = \"{4:s}\";
+        public static const LayerInfo:String = {5:s};
     }}
-}}'''.format(package, newClassName, searchWithinFolder(dirIter), character, animationName)
+}}'''.format(package, newClassName, searchWithinFolder(dirIter), character, animationName, layerInfo)
         with asFilePath.open('w') as asFile:
             asFile.write(scriptContents)
 

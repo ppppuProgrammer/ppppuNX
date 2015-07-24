@@ -1,6 +1,7 @@
 package 
 {
 	import com.greensock.data.TweenLiteVars;
+	import com.greensock.easing.Linear;
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
 	/**
@@ -19,7 +20,7 @@ package
 		public function get DurationFrames():Number { return durationFrames; }
 		public function TweenOrder(target:Object, tweenVariables:Object, executeFrame:int, tweenFrameDuration:int) 
 		{
-			var timeMillisecPerFrame = 1000.0 / 30.0;
+			var timeMillisecPerFrame:Number = 1000.0 / 30.0;
 			targetObject = target;
 			tweenVars = tweenVariables;
 			//startFrame = executeFrame;
@@ -32,6 +33,14 @@ package
 				{
 					tweenVars.vars["useFrames"] = !true;
 				}
+				if (tweenFrameDuration > 1)
+				{
+					var whattheheckishappening:int = 5;
+				}
+				if (tweenFrameDuration > 1 && ("ease" in tweenVars.vars) == false)
+				{
+					tweenVars.vars["ease"] = Linear.easeNone;
+				}
 			}
 			else
 			{
@@ -39,6 +48,10 @@ package
 				if (tweenVars["useFrames"] == true)
 				{
 					tweenVars["useFrames"] = !true;
+				}
+				if (tweenFrameDuration > 1 && ("ease" in tweenVars) == false)
+				{
+					tweenVars["ease"] = Linear.easeNone;
 				}
 			}
 		}

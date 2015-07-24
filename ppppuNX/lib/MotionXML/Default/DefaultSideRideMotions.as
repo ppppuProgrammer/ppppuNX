@@ -6,10 +6,10 @@ package MotionXML.Default
 		public static const AreolaL:Class;
 		[Embed(source = "/../lib/MotionXML/Default/SideRide/Default_AreolaR.xml", mimeType = "application/octet-stream")]
 		public static const AreolaR:Class;
+		[Embed(source = "/../lib/MotionXML/Default/SideRide/Default_Arm3R.xml", mimeType = "application/octet-stream")]
+		public static const Arm3R:Class;
 		[Embed(source = "/../lib/MotionXML/Default/SideRide/Default_ArmL.xml", mimeType = "application/octet-stream")]
 		public static const ArmL:Class;
-		[Embed(source = "/../lib/MotionXML/Default/SideRide/Default_ArmR.xml", mimeType = "application/octet-stream")]
-		public static const ArmR:Class;
 		[Embed(source = "/../lib/MotionXML/Default/SideRide/Default_BoobL.xml", mimeType = "application/octet-stream")]
 		public static const BoobL:Class;
 		[Embed(source = "/../lib/MotionXML/Default/SideRide/Default_BoobR.xml", mimeType = "application/octet-stream")]
@@ -111,6 +111,6 @@ package MotionXML.Default
 
         public static const CharacterName:String = "Default";
         public static const AnimationName:String = "SideRide";
-		public static const LayerInfo:String = '{"F0":{"ForearmR":0,"ArmR":1,"Hand2R":2,"HandL":3,"TurnedVulva":4,"Male_UpperBody":5,"NippleR":6,"AreolaR":7,"BoobR":8,"NippleL":9,"AreolaL":10,"Male_LegL":11,"Groin":12,"UpperLegR":13,"Male_PenisHeadMask":14,"Male_PenisHead":15,"Male_PenisShaftMask":16,"Male_PenisShaft":17,"LowerLegR":18,"Navel":19,"Hips":20,"BoobL":21,"FrontButtR":22,"ClavicleR":23,"HairFrontAngled":24,"HairSide2R":25,"HairSide3R":26,"Headwear":27,"HairSideR":28,"Nose":29,"Mouth":30,"EyeR":31,"EyeL":32,"EarringR":33,"EarR":34,"TurnedFace2":35,"HairSideL":36,"HairSide2L":37,"HairSide3L":38,"EarringL":39,"Neck":40,"ClavicleL":41,"ShoulderL":42,"MidTorso":43,"UpperTorso":44,"ForearmL":45,"ArmL":46,"UpperLegL":47,"FrontButtL":48,"Male_LowerBody":49,"Male_LegR":50,"LowerLegL":51,"HairBack":52}}';
+        public static const LayerInfo:String = '{"F0":{"ForearmR":0,"Arm3R":1,"Hand2R":2,"HandL":3,"TurnedVulva":4,"Male_UpperBody":5,"NippleR":6,"AreolaR":7,"BoobR":8,"NippleL":9,"AreolaL":10,"Male_LegL":11,"Groin":12,"UpperLegR":13,"Male_PenisHeadMask":14,"Male_PenisHead":15,"Male_PenisShaftMask":16,"Male_PenisShaft":17,"LowerLegR":18,"Navel":19,"Hips":20,"BoobL":21,"FrontButtR":22,"ClavicleR":23,"HairFrontAngled":24,"HairSide2R":25,"HairSide3R":26,"Headwear":27,"HairSideR":28,"Nose":29,"Mouth":30,"EyeR":31,"EyeL":32,"EarringR":33,"EarR":34,"TurnedFace2":35,"HairSideL":36,"HairSide2L":37,"HairSide3L":38,"EarringL":39,"Neck":40,"ClavicleL":41,"ShoulderL":42,"MidTorso":43,"UpperTorso":44,"ForearmL":45,"ArmL":46,"UpperLegL":47,"FrontButtL":48,"Male_LowerBody":49,"Male_LegR":50,"LowerLegL":51,"HairBack":52}}';
     }
 }
