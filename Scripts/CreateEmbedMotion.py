@@ -60,9 +60,11 @@ for dirIter in currDir.iterdir():
         ##Open layer info file
         layerInfo = ""
         layerInfoFilePath = Path(animationName + " Template layer info.json")
-        with layerInfoFilePath.open('r') as layerInfoFile:
-            layerInfo = layerInfoFile.read()
-        
+        if layerInfoFilePath.is_file():
+            with layerInfoFilePath.open('r') as layerInfoFile:
+                layerInfo = layerInfoFile.read()
+        else:
+            layerInfo = "\"\""
         
         scriptContents = '''package {0:s}
 {{

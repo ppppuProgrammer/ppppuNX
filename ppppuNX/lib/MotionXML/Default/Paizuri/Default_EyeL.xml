@@ -1,6 +1,6 @@
 <Motion duration="120" xmlns="fl.motion.*" xmlns:geom="flash.geom.*" xmlns:filters="flash.filters.*">
 	<source>
-		<Source frameRate="30" x="196.8" y="432.45" scaleX="1.756" scaleY="1.557" skewX="0" skewY="-180" elementType="movie clip" instanceName="EyeL" symbolName="Body parts/EyeParts/Eye Container" class="EyeContainer" baseClass="ppppu.EyeContainerBase">
+		<Source frameRate="30" x="196.8" y="432.45" scaleX="1.756" scaleY="1.557" skewX="0" skewY="-180" elementType="movie clip" instanceName="EyeL" symbolName="Body parts/EyeParts/Eye Container" class="EyeContainer">
 			<dimensions>
 				<geom:Rectangle left="-27.5" top="-53.55" width="54.3" height="73.35"/>
 			</dimensions>
@@ -130,7 +130,7 @@
 
 	<Keyframe index="59" x="10.649999999999977" y="-49.55000000000001" rotation="357.7"/>
 
-	<Keyframe index="60" x="-2.6000000000000227" y="-65.05000000000001" scaleX="0.7351936218678815" scaleY="0.7803468208092487" skewX="-6.3" skewY="357.5"/>
+	<Keyframe index="60" x="8.699999999999989" y="-42.5" scaleX="0.7351936218678815" scaleY="0.7803468208092487" skewX="-6.3" skewY="357.5"/>
 
 	<Keyframe index="61" x="11.199999999999989" y="-40.05000000000001" scaleX="0.7380410022779044" scaleY="0.7360308285163776" rotation="357.5"/>
 

@@ -15,7 +15,7 @@ package ppppu
 	{
 		/*Master timeline for the template animation. Contains all the timelines for parts of the animation that are 
 		 * controlled  by series of tweens defined by a motion xml.*/
-		public var masterTimeline:TimelineLite = new TimelineLite( { /*useFrames:true,*/ smoothChildTiming:true } );
+		private var masterTimeline:TimelineLite = new TimelineLite( { useFrames:true, smoothChildTiming:true } );
 		//Master template version this array contains arrays of timelines. To access the index of the appropriate animation, refer to the animationNameIndexes array in ppppuCore.
 		private var defaultTimelines:Vector.<Vector.<TimelineMax>> = new Vector.<Vector.<TimelineMax>>();
 		
@@ -23,7 +23,7 @@ package ppppu
 		public var EyeR:EyeContainer;*/
 		public var EarringL:EarringContainer;
 		public var EarringR:EarringContainer;
-		public var Headwear:BaseHeadwear;
+		public var Headwear:HeadwearContainer;
 		public var Mouth:MouthContainer;
 		public var HairBack:HairBackContainer;
 		public var HairSideL:BaseHairSide;
@@ -33,19 +33,23 @@ package ppppu
 		public var HairSide3L:BaseHairSide3;
 		public var HairSide3R:BaseHairSide3;
 		public var HairFront:BaseHairFront;
+		public var HairFrontAngled:BaseFrontAngledHair;
+		public var HairFrontAngled2:BaseFrontAngled2Hair;
 		public var LowerLegL:LowerLegContainer;
 		public var LowerLegR:LowerLegContainer;
 		public var EarL:MovieClip;
 		public var EarR:MovieClip;
+		public var EyeL:EyeContainer;
+		public var EyeR:EyeContainer;
 		
-		private var millisecPerFrame:Number;
+		//private var millisecPerFrame:Number;
 		/*public var HairFront:BaseHairFront;*/
 		
 		public function TemplateBase()
 		{
-			addEventListener(Event.ADDED_TO_STAGE, StageSetup);
-			//SetupEyeContainer(EyeL);
-			//SetupEyeContainer(EyeR);
+			//addEventListener(Event.ADDED_TO_STAGE, StageSetup);
+			SetupEyeContainer(EyeL);
+			SetupEyeContainer(EyeR);
 			if (EarL) { EarL.Element.gotoAndStop(1); EarL.Element.Skin.gotoAndStop(1); EarL.Element.Lines.gotoAndStop(1); }
 			if(EarR) {EarR.Element.gotoAndStop(1); EarR.Element.Skin.gotoAndStop(1); EarR.Element.Lines.gotoAndStop(1);}
 			EarringL.Element.gotoAndStop(1);
@@ -55,18 +59,18 @@ package ppppu
 			Mouth.LipsHighlight.gotoAndStop(1);
 			Mouth.Tongue.Element.gotoAndStop(1);
 			Mouth.Tongue.visible = false;
-			Headwear.gotoAndStop(1);
+			Headwear.Element.gotoAndStop(1);
 			SetupHair();
 			if(LowerLegL) LowerLegL.Element.Color.gotoAndStop(1);
 			if(LowerLegR) LowerLegR.Element.Color.gotoAndStop(1);
 		}
 		
 		//Used to obtain the time spent per frame for the flash.
-		private function StageSetup(e:Event):void
+		/*private function StageSetup(e:Event):void
 		{
 			millisecPerFrame = 1000.0 / stage.frameRate;
 			removeEventListener(Event.ADDED_TO_STAGE, StageSetup);
-		}
+		}*/
 		private function SetupHair():void
 		{
 			HairBack.Element.gotoAndStop(1);
@@ -80,22 +84,57 @@ package ppppu
 			{
 				HairFront.gotoAndStop(1);
 			}
+			HairFrontAngled.gotoAndStop(1);
+			HairFrontAngled2.gotoAndStop(1);
+		}
+		
+		public function ChangeHair(character:String):void
+		{
+			HairBack.Element.gotoAndStop(character);
+			HairSideL.gotoAndStop(character);
+			HairSideR.gotoAndStop(character);
+			HairSide2L.gotoAndStop(character);
+			HairSide2R.gotoAndStop(character);
+			HairSide3L.gotoAndStop(character);
+			HairSide3R.gotoAndStop(character);
+			if (HairFront)
+			{
+				HairFront.gotoAndStop(character);
+			}
+			HairFrontAngled.gotoAndStop(character);
+			HairFrontAngled2.gotoAndStop(character);
+		}
+		
+		public function ChangeHeadwear(character:String):void
+		{
+			Headwear.Element.gotoAndStop(character);
+		}
+		
+		public function ChangeEarring(character:String):void
+		{
+			EarringL.Element.gotoAndStop(character);
+			EarringR.Element.gotoAndStop(character);
 		}
 		
 		//Initializes the eye container to go to it's default look (and to stop cycling through the other possible visual it can take.)
-		/*private function SetupEyeContainer(EyeC:EyeContainer):void
+		private function SetupEyeContainer(EyeC:EyeContainer):void
 		{
-			EyeC.eye.EyebrowSettings.gotoAndStop(1);
-			EyeC.eye.EyebrowSettings.Eyebrow.gotoAndStop(1);
-			EyeC.eye.EyelashSettings.gotoAndStop(1);
-			EyeC.eye.EyelashSettings.Eyelash.gotoAndStop(1);
-			EyeC.eye.EyeMaskSettings.EyeMask.gotoAndStop(1);
-			EyeC.eye.EyelidSettings.gotoAndStop(1);
-			EyeC.eye.EyelidSettings.Eyelid.gotoAndStop(1);
-			EyeC.eye.InnerEyeSettings.InnerEye.Highlight.gotoAndStop(1);
-			EyeC.eye.InnerEyeSettings.InnerEye.Pupil.gotoAndStop(1);
-			EyeC.eye.InnerEyeSettings.InnerEye.Iris.gotoAndStop(1);
-		}*/
+			EyeC.Element.EyebrowSettings.gotoAndStop(1);
+			EyeC.Element.EyebrowSettings.Eyebrow.gotoAndStop(1);
+			EyeC.Element.EyelashSettings.gotoAndStop(1);
+			EyeC.Element.EyelashSettings.Eyelash.gotoAndStop(1);
+			EyeC.Element.EyeMaskSettings.EyeMask.gotoAndStop(1);
+			EyeC.Element.EyelidSettings.gotoAndStop(1);
+			EyeC.Element.EyelidSettings.Eyelid.gotoAndStop(1);
+			EyeC.Element.EyelashSettings.Eyelash.EyelashTypes.gotoAndStop(1);
+			EyeC.Element.InnerEyeSettings.gotoAndStop(1);
+			EyeC.Element.InnerEyeSettings.InnerEye.gotoAndStop(1);
+			EyeC.Element.InnerEyeSettings.InnerEye.Highlight.gotoAndStop(1);
+			EyeC.Element.InnerEyeSettings.InnerEye.Pupil.gotoAndStop(1);
+			EyeC.Element.InnerEyeSettings.InnerEye.Iris.gotoAndStop(1);
+			EyeC.Element.ScleraSettings.gotoAndStop(1);
+			EyeC.Element.ScleraSettings.Sclera.gotoAndStop(1);
+		}
 		
 		/*Sets the vector of timelines passed to it as the default timelines used for a specified animation.
 		For reference, ppppuCore's animationNameIndexes variable details which index is linked to a specific animation name*/
@@ -111,17 +150,26 @@ package ppppu
 		//Starts playing the currently set animation at a specified frame.
 		public function PlayAnimation(startAtFrame:uint):void
 		{
-			//startAtFrame -= 1;
-			//masterTimeline.play(startAtFrame);
-			//The timelines and tweens are time based, so there needs to be a conversion from frame to time (in milliseconds)
-			masterTimeline.play((startAtFrame * millisecPerFrame) / 1000.0);
+			--startAtFrame;
+			masterTimeline.play(startAtFrame);
 			//Get all timelines currently used
 			var childTimelines:Array = masterTimeline.getChildren(!true, false);
 			for (var i:int = 0, l:int = childTimelines.length; i < l; ++i)
 			{
 				//Tell the child timeline to play at the specified time
-				(childTimelines[i] as TimelineMax).play((startAtFrame * millisecPerFrame)/1000.0 );
+				(childTimelines[i] as TimelineMax).play(startAtFrame);
 			}
+			
+			//masterTimeline.
+			//The timelines and tweens are time based, so there needs to be a conversion from frame to time (in milliseconds)
+			//masterTimeline.play((startAtFrame * millisecPerFrame) / 1000.0);
+			//Get all timelines currently used
+			/*var childTimelines:Array = masterTimeline.getChildren(!true, false);
+			for (var i:int = 0, l:int = childTimelines.length; i < l; ++i)
+			{
+				//Tell the child timeline to play at the specified time
+				(childTimelines[i] as TimelineMax).play((startAtFrame * millisecPerFrame)/1000.0 );
+			}*/
 		}
 		
 		public function ResumePlayingAnimation():void
@@ -138,11 +186,23 @@ package ppppu
 		
 		public function JumpToFrameAnimation(startAtFrame:uint):void
 		{
-			var childTimelines:Array = masterTimeline.getChildren(true, false);
-			for (var i:int = 0, l:int = childTimelines.length; i < l; ++i)
+			--startAtFrame;
+			var time:int = startAtFrame; //useFrames version
+			if (masterTimeline.paused() == false)
 			{
-				(childTimelines[i] as TimelineMax).seek((startAtFrame * millisecPerFrame)/1000.0 );
+				masterTimeline.seek(time);
 			}
+			else
+			{
+				var childTimelines:Array = masterTimeline.getChildren(true, false);
+				//var time:Number = ((startAtFrame * millisecPerFrame) / 1000.0)+0.01;
+				
+				for (var i:int = 0, l:int = childTimelines.length; i < l; ++i)
+				{
+					(childTimelines[i] as TimelineMax).seek(time);
+				}
+			}
+			//trace(time);
 		}
 		
 		/*Pauses the animation. Currently used, it's just here in case there is a time where the animation needs to be paused. 
@@ -150,11 +210,11 @@ package ppppu
 		public function StopAnimation():void
 		{
 			masterTimeline.stop();
-			var childTimelines:Array = masterTimeline.getChildren(true, false);
+			/*var childTimelines:Array = masterTimeline.getChildren(true, false);
 			for (var i:int = 0, l:int = childTimelines.length; i < l; ++i)
 			{
 				(childTimelines[i] as TimelineLite).stop();
-			}
+			}*/
 		}
 		
 		/*Removes all currently active timelines and adds the default timelines for a specified animation by it's index number.*/

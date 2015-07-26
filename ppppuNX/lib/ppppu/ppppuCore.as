@@ -32,7 +32,10 @@ package ppppu
 		//Keeps track of what keys were pressed and/or held down
 		private var keyDownStatus:Array = [];
 		//Contains the names of the various animations that the master template can switch between. The names are indexed by their position in the vector.
-		private var animationNameIndexes:Vector.<String> = new <String>["Cowgirl"/*, "LeanBack", "LeanForward", "Grind", "ReverseCowgirl", "Paizuri", "Blowjob", "SideRide", "Swivel", "Anal"*/];
+		private var animationNameIndexes:Vector.<String> = new <String>["Cowgirl", "LeanBack", "LeanForward", "Grind", "ReverseCowgirl", "Paizuri", "Blowjob", "SideRide", "Swivel", "Anal"];
+		
+		private var DEBUG_animationFrame:int=1;
+		private var currentCharacter:String = "Default";
 		//Constructor
 		public function ppppuCore() 
 		{
@@ -61,13 +64,16 @@ package ppppu
 			stage.addEventListener(KeyboardEvent.KEY_UP, KeyReleaseCheck);
 			//Start by initializing plugins for the GSAP library
 			TweenPlugin.activate([FramePlugin, FrameLabelPlugin, TransformMatrixPlugin, VisiblePlugin]);
-			TweenLite.defaultEase = Linear.easeNone;
+			//Set the default Ease for the tweens
+			TweenLite.defaultEase = Linear.ease;
+
+			
 			//Creates the template animation movie clips and adds them to the templateDict dictionary.
 			//SetupTemplates();
 			//Initializing the various default motion xmls for the animation templates.
 			CreateAnimationTimelinesForCharacter("Default");
+			CreateAnimationTimelinesForCharacter("Rosalina");
 			
-			//CreateAnimationTimelinesForCharacter("Rosalina");
 			mainStage.addChild(masterTemplate);
 			/*TODO: Cycle through all templates (default at the minimum) to "warm up", as there can be a rather noticable 
 			delay (on my toaster of a computer) between switching to a templated animation for the first time*/
@@ -107,7 +113,7 @@ package ppppu
 			var layerInfo:String = motionClass.LayerInfo; //Contains information that is used to rearrange the depth of elements displayed.
 			
 			//LayerInfo was found, so process it
-			if (layerInfo != null)
+			if (layerInfo != null && layerInfo.length > 0)
 			{
 				//LayerInfo strings are in JSON format, which is parsed as an Object
 				var layerInfoObject:Object = JSON.parse(layerInfo);
@@ -142,7 +148,7 @@ package ppppu
 					
 					var xmlClass:Class = motionClass[xmlClassName];
 					var tweens:Array = XmlMotionToTweens.ConvertXmlToTweens(templateAnimation[xmlClassName], new XML(new xmlClass));
-					var timelineForMotion:TimelineMax = new TimelineMax( { /*useFrames:true, */repeat: -1 } );
+					var timelineForMotion:TimelineMax = new TimelineMax( { useFrames:true, repeat: -1 } );
 					var tween:TweenLite = tweens[0] as TweenLite;
 
 					if (tween.target != null)
@@ -187,15 +193,27 @@ package ppppu
 			var keyPressed:int = keyEvent.keyCode;
 			if (keyPressed == Keyboard.LEFT)
 			{
-				mainStage.prevFrame();
-				masterTemplate.JumpToFrameAnimation(mainStage.currentFrame);
-				trace("Frame: " + (((mainStage.currentFrame-1) % 120)+1));
+				//mainStage.prevFrame();
+				--DEBUG_animationFrame;
+				if (DEBUG_animationFrame <= 0)
+				{
+					DEBUG_animationFrame = 120;
+				}
+				masterTemplate.JumpToFrameAnimation(DEBUG_animationFrame);
+				trace("Frame: " + DEBUG_animationFrame);
 			}
 			else if (keyPressed == Keyboard.RIGHT)
 			{
-				mainStage.nextFrame();
-				masterTemplate.JumpToFrameAnimation(mainStage.currentFrame);
-				trace("Frame: " + (((mainStage.currentFrame-1) % 120)+1));
+				DEBUG_animationFrame++;
+				if (DEBUG_animationFrame > 120)
+				{
+					DEBUG_animationFrame = 1;
+				}
+				masterTemplate.JumpToFrameAnimation(DEBUG_animationFrame);
+				trace("Frame: " + DEBUG_animationFrame);
+				//mainStage.nextFrame();
+				//masterTemplate.JumpToFrameAnimation(mainStage.currentFrame);
+				//trace("Frame: " + (((mainStage.currentFrame-1) % 120)+1));
 			}
 			if(keyDownStatus[keyPressed] == undefined || keyDownStatus[keyPressed] == false || (keyPressed == 48 || keyPressed == 96))
 			{
@@ -214,6 +232,20 @@ package ppppu
 					SwitchTemplateAnimation(animationNameIndexes[keyPressed - 49]);
 				}
 				
+				if (keyPressed == Keyboard.Z)
+				{
+					currentCharacter = "Default";
+					masterTemplate.ChangeHair("Peach");
+					masterTemplate.ChangeHeadwear(currentCharacter);
+					masterTemplate.ChangeEarring(currentCharacter);
+				}
+				if (keyPressed == Keyboard.X)
+				{
+					currentCharacter = "Rosalina";
+					masterTemplate.ChangeHair(currentCharacter);
+					masterTemplate.ChangeHeadwear(currentCharacter);
+					masterTemplate.ChangeEarring(currentCharacter);
+				}
 				//Debugger
 				if (keyPressed == Keyboard.S)
 				{
@@ -312,6 +344,15 @@ package ppppu
 				if (animationName == animationNameIndexes[index])
 				{
 					masterTemplate.ChangeDefaultTimelinesUsed(index);
+				}
+			}
+			if (currentCharacter != "Default")
+			{
+				var timelinesForCharacter:Dictionary = timelinesDict[currentCharacter][animationName];
+				var currCharTimeline:TimelineMax;
+				for each(currCharTimeline in timelinesForCharacter)
+				{
+					masterTemplate.AddTimeline(currCharTimeline);
 				}
 			}
 			//Sync the animation to the main stage's timeline (main stage's current frame - animation start frame % 120 + 1 to avoid setting it to frame 0)

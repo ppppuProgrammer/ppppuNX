@@ -1,6 +1,6 @@
 <Motion duration="120" xmlns="fl.motion.*" xmlns:geom="flash.geom.*" xmlns:filters="flash.filters.*">
 	<source>
-		<Source frameRate="30" x="214.95" y="345.35" scaleX="1.959" scaleY="2.2" skewX="-1.6" skewY="-2.5" elementType="movie clip" instanceName="Male_PenisShaft2Mask" symbolName="Penis Shaft 2 mask">
+		<Source frameRate="30" x="214.95" y="345.35" scaleX="1.959" scaleY="2.2" skewX="-1.6" skewY="-2.5" elementType="movie clip" instanceName="Male_PenisHeadMask2" symbolName="Penis Shaft 2 mask">
 			<dimensions>
 				<geom:Rectangle left="-20.8" top="0" width="65.7" height="103.1"/>
 			</dimensions>
@@ -11,6 +11,8 @@
 	</source>
 
 	<Keyframe index="0"/>
+
+	<Keyframe index="59" x="0" y="0"/>
 
 	<Keyframe index="60" x="10.75" y="93.5" scaleX="0.7912200102092904" scaleY="0.4363636363636363" rotation="-0.10000000000000009"/>
 

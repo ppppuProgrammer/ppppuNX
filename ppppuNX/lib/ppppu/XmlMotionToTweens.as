@@ -1,8 +1,9 @@
 package ppppu 
 {
+	import com.greensock.easing.ExpoOut;
+	import com.greensock.easing.Linear;
 	import com.greensock.TweenLite;
 	import flash.geom.Matrix;
-	import flash.sampler.getMasterString;
 	import flash.utils.Dictionary;
 	import flash.xml.*;
 	import flash.display.DisplayObject;
@@ -14,6 +15,7 @@ package ppppu
 	 */
 	public class XmlMotionToTweens 
 	{
+		
 		public function XmlMotionToTweens()
 		{
 			
@@ -21,12 +23,9 @@ package ppppu
 		public static function ConvertXmlToTweens(targetObject:DisplayObject, motionXML:XML):Array
 		{
 			//var targetName:String = ;
-			trace(targetObject.name);
-			//var orders:Vector.<TweenOrder> = new Vector.<TweenOrder>(120, true);
+			//trace(targetObject.name);
 			var Tweens:Array = new Array();
 			var nodes:XMLList = motionXML.children();
-			//var frameVariables:Object;
-			//var transformMatrixData:Object;
 			var nodeAttributes:XMLList;
 			var currentNode:XML;
 			var attributeName:String;
@@ -41,7 +40,8 @@ package ppppu
 			var latestScaleX:Number;
 			var latestScaleY:Number;
 			var latestRotation:Number;
-			//var tweenDuration:int = 0;
+			var tweenDuration:Number = 0;
+			//const secondsPerFrame:Number =  (1000.0 / 30.0) / 1000.0;
 			//var lastKeyframeNumber:uint = 1;
 			//var skewBased:Boolean = false; //If skew based, the rotation property is applied to both skew values
 			//var tweenOrder:TweenOrder;
@@ -150,33 +150,44 @@ package ppppu
 					//Rotation and skews
 					SetMatrixSkewX(tweenMatrix, latestSkewX);
 					SetMatrixSkewY(tweenMatrix, latestSkewY);
-
+					
 					if (currentTween == null)
 					{
 						//Creates a new tween with the calculated matrix information
-						currentTween = TweenLite.to(targetObject, 0.0, new TweenLiteVars().transformMatrix( { a:tweenMatrix.a, 
+						/*currentTween = TweenLite.to(targetObject, secondsPerFrame, new TweenLiteVars().transformMatrix( { a:tweenMatrix.a, 
+							b:tweenMatrix.b, c:tweenMatrix.c, d:tweenMatrix.d, tx: latestX, ty: latestY } ));*/
+						currentTween = TweenLite.to(targetObject, 0.0, new TweenLiteVars().useFrames(true).transformMatrix( { a:tweenMatrix.a, 
 							b:tweenMatrix.b, c:tweenMatrix.c, d:tweenMatrix.d, tx: latestX, ty: latestY } ));
 						//Set current tweens start time, based on it's keyframe. 30 is the fps the flash is intended to run at
-						currentTween.startTime(((keyframeNumber-1)  * (1000.0 / 30.0)) / 1000.0);
+						//currentTween.startTime((keyframeNumber - 1)  * secondsPerFrame);
+						currentTween.startTime(keyframeNumber - 1); //useFrames ver
 					}
 					//If both current frame and previous frame tweens are found, duration for the current tween can be calculated
 					if (currentTween && previousTween)
 					{
+						tweenDuration = currentTween.startTime() - previousTween.startTime();
 						//Set the current tween's duration equal to the difference of start times of the current tween and the previous one
-						currentTween.duration(currentTween.startTime() - previousTween.startTime());
+						currentTween.duration(tweenDuration);
+						//If duration is longer than a frame and there is no defined easing, use a linear ease for the tween
+						/*if (tweenDuration > secondsPerFrame+.01 && ("ease" in currentTween.vars == false))
+						{
+							//currentTween.vars["ease"] = Linear.easeNone;
+							//currentTween.vars["ease"] = CustomLinearEase.ease;
+						}*/
 					}
 					if (currentTween && i + 1 >= l)
 					{
 						//Current Tween is the last tween that will be added for the timeline.
 						//4.0 is the amount of seconds an animation lasts.
-						currentTween.duration( 4.0 - currentTween.startTime());
+						//currentTween.duration( (4.0 - currentTween.startTime()));
+						//120 is the amount of frames an animation lasts.
+						currentTween.duration( 120 - currentTween.startTime()); //useFrames ver
 					}
 					//Add the current tween to the tweens array
 					Tweens[Tweens.length] = currentTween;
 				}
 				
 			}
-			
 			return Tweens;
 		}
 		//Matrix modification code ported from MotionXML.jsfl
