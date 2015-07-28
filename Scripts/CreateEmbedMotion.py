@@ -15,20 +15,42 @@ def classNameCheck(className):
 
 def searchWithinFolder(folderDir):
     motionXMLDefinitions = ""
+    constructorBody = ""
     sourceFolderDir = str(folderDir.resolve())
     sourceFolderDir += '/'
     sourceFolderDir = "/.." + sourceFolderDir[sourceFolderDir.rfind("\lib"):len(sourceFolderDir)]
     sourceFolderDir = sourceFolderDir.replace("\\", "/")
     print(sourceFolderDir)
+    animationFolderName = sourceFolderDir
+    animationFolderName = animationFolderName[animationFolderName.rfind("/", 0, len(animationFolderName)-2): animationFolderName.rfind("/")+1]
+    animationFolderName = "." + animationFolderName
+    ##print(animationFolderName)
     for filePath in folderDir.iterdir():
         if filePath.is_file():
             if filePath.suffix in ('.tdf'):
-                xmlClassName = filePath.name
+               
+                tdfASClassFile = filePath.name
+                tdfASClassFile = tdfASClassFile[tdfASClassFile.rfind("/")+1:tdfASClassFile.rfind(".")] + ".as"
+                xmlObjectName = filePath.name
+                classType = filePath.name
+                classType = classType[classType.rfind("/")+1:classType.rfind(".")]
+                ##print(classType)
                 ##print(xmlClassName)
                 
-                xmlClassName = xmlClassName[xmlClassName.find("_")+1:xmlClassName.rfind(".")]
-                motionXMLDefinitions += '''\t\t[Embed(source = \"{0:s}\", mimeType = \"application/octet-stream\")]
-\t\tpublic static const {1:s}:Class;\n'''.format(sourceFolderDir + filePath.name, xmlClassName)
+                xmlObjectName = xmlObjectName[xmlObjectName.find("_")+1:xmlObjectName.rfind(".")]
+                
+                with Path(animationFolderName + tdfASClassFile).open('w') as tdfASFile:
+                    classDefinition = '''package {0:s}.{1:s}
+{{
+\timport flash.utils.ByteArray;
+\t[Embed(source = \"{2:s}\", mimeType = \"application/octet-stream\")]
+\tpublic class {3:s} extends ByteArray
+\t{{}}
+}}'''.format(package, animationName, sourceFolderDir + filePath.name, classType)
+                    tdfASFile.write(classDefinition)
+                
+                motionXMLDefinitions += '''\t\tpublic var {1:s}:{2:s} = new {2:s}();\n'''.format(sourceFolderDir + filePath.name, xmlObjectName, classType)
+                ##constructorBody += 
     ##print(motionXMLDefinitions)
     return motionXMLDefinitions
 
@@ -66,12 +88,13 @@ for dirIter in currDir.iterdir():
         
         scriptContents = '''package {0:s}
 {{
+    import {0:s}.{4:s}.*
     public class {1:s}
     {{
 {2:s}
-        public static const CharacterName:String = \"{3:s}\";
-        public static const AnimationName:String = \"{4:s}\";
-        public static const LayerInfo:String = {5:s};
+        public const CharacterName:String = \"{3:s}\";
+        public const AnimationName:String = \"{4:s}\";
+        public const LayerInfo:String = {5:s};
     }}
 }}'''.format(package, newClassName, searchWithinFolder(dirIter), character, animationName, layerInfo)
         with asFilePath.open('w') as asFile:

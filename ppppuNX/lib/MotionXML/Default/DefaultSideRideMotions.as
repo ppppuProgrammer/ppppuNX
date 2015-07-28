@@ -1,116 +1,64 @@
 package MotionXML.Default
 {
+    import MotionXML.Default.SideRide.*
     public class DefaultSideRideMotions
     {
-		[Embed(source = "/../lib/MotionXML/Default/SideRide/Default_AreolaL.tdf", mimeType = "application/octet-stream")]
-		public static const AreolaL:Class;
-		[Embed(source = "/../lib/MotionXML/Default/SideRide/Default_AreolaR.tdf", mimeType = "application/octet-stream")]
-		public static const AreolaR:Class;
-		[Embed(source = "/../lib/MotionXML/Default/SideRide/Default_Arm3R.tdf", mimeType = "application/octet-stream")]
-		public static const Arm3R:Class;
-		[Embed(source = "/../lib/MotionXML/Default/SideRide/Default_ArmL.tdf", mimeType = "application/octet-stream")]
-		public static const ArmL:Class;
-		[Embed(source = "/../lib/MotionXML/Default/SideRide/Default_BoobL.tdf", mimeType = "application/octet-stream")]
-		public static const BoobL:Class;
-		[Embed(source = "/../lib/MotionXML/Default/SideRide/Default_BoobR.tdf", mimeType = "application/octet-stream")]
-		public static const BoobR:Class;
-		[Embed(source = "/../lib/MotionXML/Default/SideRide/Default_ClavicleL.tdf", mimeType = "application/octet-stream")]
-		public static const ClavicleL:Class;
-		[Embed(source = "/../lib/MotionXML/Default/SideRide/Default_ClavicleR.tdf", mimeType = "application/octet-stream")]
-		public static const ClavicleR:Class;
-		[Embed(source = "/../lib/MotionXML/Default/SideRide/Default_EarR.tdf", mimeType = "application/octet-stream")]
-		public static const EarR:Class;
-		[Embed(source = "/../lib/MotionXML/Default/SideRide/Default_EarringL.tdf", mimeType = "application/octet-stream")]
-		public static const EarringL:Class;
-		[Embed(source = "/../lib/MotionXML/Default/SideRide/Default_EarringR.tdf", mimeType = "application/octet-stream")]
-		public static const EarringR:Class;
-		[Embed(source = "/../lib/MotionXML/Default/SideRide/Default_EyeL.tdf", mimeType = "application/octet-stream")]
-		public static const EyeL:Class;
-		[Embed(source = "/../lib/MotionXML/Default/SideRide/Default_EyeR.tdf", mimeType = "application/octet-stream")]
-		public static const EyeR:Class;
-		[Embed(source = "/../lib/MotionXML/Default/SideRide/Default_ForearmL.tdf", mimeType = "application/octet-stream")]
-		public static const ForearmL:Class;
-		[Embed(source = "/../lib/MotionXML/Default/SideRide/Default_ForearmR.tdf", mimeType = "application/octet-stream")]
-		public static const ForearmR:Class;
-		[Embed(source = "/../lib/MotionXML/Default/SideRide/Default_FrontButtL.tdf", mimeType = "application/octet-stream")]
-		public static const FrontButtL:Class;
-		[Embed(source = "/../lib/MotionXML/Default/SideRide/Default_FrontButtR.tdf", mimeType = "application/octet-stream")]
-		public static const FrontButtR:Class;
-		[Embed(source = "/../lib/MotionXML/Default/SideRide/Default_Groin.tdf", mimeType = "application/octet-stream")]
-		public static const Groin:Class;
-		[Embed(source = "/../lib/MotionXML/Default/SideRide/Default_HairBack.tdf", mimeType = "application/octet-stream")]
-		public static const HairBack:Class;
-		[Embed(source = "/../lib/MotionXML/Default/SideRide/Default_HairFrontAngled.tdf", mimeType = "application/octet-stream")]
-		public static const HairFrontAngled:Class;
-		[Embed(source = "/../lib/MotionXML/Default/SideRide/Default_HairSide2L.tdf", mimeType = "application/octet-stream")]
-		public static const HairSide2L:Class;
-		[Embed(source = "/../lib/MotionXML/Default/SideRide/Default_HairSide2R.tdf", mimeType = "application/octet-stream")]
-		public static const HairSide2R:Class;
-		[Embed(source = "/../lib/MotionXML/Default/SideRide/Default_HairSide3L.tdf", mimeType = "application/octet-stream")]
-		public static const HairSide3L:Class;
-		[Embed(source = "/../lib/MotionXML/Default/SideRide/Default_HairSide3R.tdf", mimeType = "application/octet-stream")]
-		public static const HairSide3R:Class;
-		[Embed(source = "/../lib/MotionXML/Default/SideRide/Default_HairSideL.tdf", mimeType = "application/octet-stream")]
-		public static const HairSideL:Class;
-		[Embed(source = "/../lib/MotionXML/Default/SideRide/Default_HairSideR.tdf", mimeType = "application/octet-stream")]
-		public static const HairSideR:Class;
-		[Embed(source = "/../lib/MotionXML/Default/SideRide/Default_Hand2R.tdf", mimeType = "application/octet-stream")]
-		public static const Hand2R:Class;
-		[Embed(source = "/../lib/MotionXML/Default/SideRide/Default_HandL.tdf", mimeType = "application/octet-stream")]
-		public static const HandL:Class;
-		[Embed(source = "/../lib/MotionXML/Default/SideRide/Default_Headwear.tdf", mimeType = "application/octet-stream")]
-		public static const Headwear:Class;
-		[Embed(source = "/../lib/MotionXML/Default/SideRide/Default_Hips.tdf", mimeType = "application/octet-stream")]
-		public static const Hips:Class;
-		[Embed(source = "/../lib/MotionXML/Default/SideRide/Default_LowerLegL.tdf", mimeType = "application/octet-stream")]
-		public static const LowerLegL:Class;
-		[Embed(source = "/../lib/MotionXML/Default/SideRide/Default_LowerLegR.tdf", mimeType = "application/octet-stream")]
-		public static const LowerLegR:Class;
-		[Embed(source = "/../lib/MotionXML/Default/SideRide/Default_Male_LegL.tdf", mimeType = "application/octet-stream")]
-		public static const Male_LegL:Class;
-		[Embed(source = "/../lib/MotionXML/Default/SideRide/Default_Male_LegR.tdf", mimeType = "application/octet-stream")]
-		public static const Male_LegR:Class;
-		[Embed(source = "/../lib/MotionXML/Default/SideRide/Default_Male_LowerBody.tdf", mimeType = "application/octet-stream")]
-		public static const Male_LowerBody:Class;
-		[Embed(source = "/../lib/MotionXML/Default/SideRide/Default_Male_PenisHead.tdf", mimeType = "application/octet-stream")]
-		public static const Male_PenisHead:Class;
-		[Embed(source = "/../lib/MotionXML/Default/SideRide/Default_Male_PenisHeadMask.tdf", mimeType = "application/octet-stream")]
-		public static const Male_PenisHeadMask:Class;
-		[Embed(source = "/../lib/MotionXML/Default/SideRide/Default_Male_PenisShaft.tdf", mimeType = "application/octet-stream")]
-		public static const Male_PenisShaft:Class;
-		[Embed(source = "/../lib/MotionXML/Default/SideRide/Default_Male_PenisShaftMask.tdf", mimeType = "application/octet-stream")]
-		public static const Male_PenisShaftMask:Class;
-		[Embed(source = "/../lib/MotionXML/Default/SideRide/Default_Male_UpperBody.tdf", mimeType = "application/octet-stream")]
-		public static const Male_UpperBody:Class;
-		[Embed(source = "/../lib/MotionXML/Default/SideRide/Default_MidTorso.tdf", mimeType = "application/octet-stream")]
-		public static const MidTorso:Class;
-		[Embed(source = "/../lib/MotionXML/Default/SideRide/Default_Mouth.tdf", mimeType = "application/octet-stream")]
-		public static const Mouth:Class;
-		[Embed(source = "/../lib/MotionXML/Default/SideRide/Default_Navel.tdf", mimeType = "application/octet-stream")]
-		public static const Navel:Class;
-		[Embed(source = "/../lib/MotionXML/Default/SideRide/Default_Neck.tdf", mimeType = "application/octet-stream")]
-		public static const Neck:Class;
-		[Embed(source = "/../lib/MotionXML/Default/SideRide/Default_NippleL.tdf", mimeType = "application/octet-stream")]
-		public static const NippleL:Class;
-		[Embed(source = "/../lib/MotionXML/Default/SideRide/Default_NippleR.tdf", mimeType = "application/octet-stream")]
-		public static const NippleR:Class;
-		[Embed(source = "/../lib/MotionXML/Default/SideRide/Default_Nose.tdf", mimeType = "application/octet-stream")]
-		public static const Nose:Class;
-		[Embed(source = "/../lib/MotionXML/Default/SideRide/Default_ShoulderL.tdf", mimeType = "application/octet-stream")]
-		public static const ShoulderL:Class;
-		[Embed(source = "/../lib/MotionXML/Default/SideRide/Default_TurnedFace2.tdf", mimeType = "application/octet-stream")]
-		public static const TurnedFace2:Class;
-		[Embed(source = "/../lib/MotionXML/Default/SideRide/Default_TurnedVulva.tdf", mimeType = "application/octet-stream")]
-		public static const TurnedVulva:Class;
-		[Embed(source = "/../lib/MotionXML/Default/SideRide/Default_UpperLegL.tdf", mimeType = "application/octet-stream")]
-		public static const UpperLegL:Class;
-		[Embed(source = "/../lib/MotionXML/Default/SideRide/Default_UpperLegR.tdf", mimeType = "application/octet-stream")]
-		public static const UpperLegR:Class;
-		[Embed(source = "/../lib/MotionXML/Default/SideRide/Default_UpperTorso.tdf", mimeType = "application/octet-stream")]
-		public static const UpperTorso:Class;
+		public var AreolaL:Default_AreolaL = new Default_AreolaL();
+		public var AreolaR:Default_AreolaR = new Default_AreolaR();
+		public var Arm3R:Default_Arm3R = new Default_Arm3R();
+		public var ArmL:Default_ArmL = new Default_ArmL();
+		public var BoobL:Default_BoobL = new Default_BoobL();
+		public var BoobR:Default_BoobR = new Default_BoobR();
+		public var ClavicleL:Default_ClavicleL = new Default_ClavicleL();
+		public var ClavicleR:Default_ClavicleR = new Default_ClavicleR();
+		public var EarR:Default_EarR = new Default_EarR();
+		public var EarringL:Default_EarringL = new Default_EarringL();
+		public var EarringR:Default_EarringR = new Default_EarringR();
+		public var EyeL:Default_EyeL = new Default_EyeL();
+		public var EyeR:Default_EyeR = new Default_EyeR();
+		public var ForearmL:Default_ForearmL = new Default_ForearmL();
+		public var ForearmR:Default_ForearmR = new Default_ForearmR();
+		public var FrontButtL:Default_FrontButtL = new Default_FrontButtL();
+		public var FrontButtR:Default_FrontButtR = new Default_FrontButtR();
+		public var Groin:Default_Groin = new Default_Groin();
+		public var HairBack:Default_HairBack = new Default_HairBack();
+		public var HairFrontAngled:Default_HairFrontAngled = new Default_HairFrontAngled();
+		public var HairSide2L:Default_HairSide2L = new Default_HairSide2L();
+		public var HairSide2R:Default_HairSide2R = new Default_HairSide2R();
+		public var HairSide3L:Default_HairSide3L = new Default_HairSide3L();
+		public var HairSide3R:Default_HairSide3R = new Default_HairSide3R();
+		public var HairSideL:Default_HairSideL = new Default_HairSideL();
+		public var HairSideR:Default_HairSideR = new Default_HairSideR();
+		public var Hand2R:Default_Hand2R = new Default_Hand2R();
+		public var HandL:Default_HandL = new Default_HandL();
+		public var Headwear:Default_Headwear = new Default_Headwear();
+		public var Hips:Default_Hips = new Default_Hips();
+		public var LowerLegL:Default_LowerLegL = new Default_LowerLegL();
+		public var LowerLegR:Default_LowerLegR = new Default_LowerLegR();
+		public var Male_LegL:Default_Male_LegL = new Default_Male_LegL();
+		public var Male_LegR:Default_Male_LegR = new Default_Male_LegR();
+		public var Male_LowerBody:Default_Male_LowerBody = new Default_Male_LowerBody();
+		public var Male_PenisHead:Default_Male_PenisHead = new Default_Male_PenisHead();
+		public var Male_PenisHeadMask:Default_Male_PenisHeadMask = new Default_Male_PenisHeadMask();
+		public var Male_PenisShaft:Default_Male_PenisShaft = new Default_Male_PenisShaft();
+		public var Male_PenisShaftMask:Default_Male_PenisShaftMask = new Default_Male_PenisShaftMask();
+		public var Male_UpperBody:Default_Male_UpperBody = new Default_Male_UpperBody();
+		public var MidTorso:Default_MidTorso = new Default_MidTorso();
+		public var Mouth:Default_Mouth = new Default_Mouth();
+		public var Navel:Default_Navel = new Default_Navel();
+		public var Neck:Default_Neck = new Default_Neck();
+		public var NippleL:Default_NippleL = new Default_NippleL();
+		public var NippleR:Default_NippleR = new Default_NippleR();
+		public var Nose:Default_Nose = new Default_Nose();
+		public var ShoulderL:Default_ShoulderL = new Default_ShoulderL();
+		public var TurnedFace2:Default_TurnedFace2 = new Default_TurnedFace2();
+		public var TurnedVulva:Default_TurnedVulva = new Default_TurnedVulva();
+		public var UpperLegL:Default_UpperLegL = new Default_UpperLegL();
+		public var UpperLegR:Default_UpperLegR = new Default_UpperLegR();
+		public var UpperTorso:Default_UpperTorso = new Default_UpperTorso();
 
-        public static const CharacterName:String = "Default";
-        public static const AnimationName:String = "SideRide";
-        public static const LayerInfo:String = '{"F0":{"ForearmR":0,"Arm3R":1,"Hand2R":2,"HandL":3,"TurnedVulva":4,"Male_UpperBody":5,"NippleR":6,"AreolaR":7,"BoobR":8,"NippleL":9,"AreolaL":10,"Male_LegL":11,"Groin":12,"UpperLegR":13,"Male_PenisHeadMask":14,"Male_PenisHead":15,"Male_PenisShaftMask":16,"Male_PenisShaft":17,"LowerLegR":18,"Navel":19,"Hips":20,"BoobL":21,"FrontButtR":22,"ClavicleR":23,"HairFrontAngled":24,"HairSide2R":25,"HairSide3R":26,"Headwear":27,"HairSideR":28,"Nose":29,"Mouth":30,"EyeR":31,"EyeL":32,"EarringR":33,"EarR":34,"TurnedFace2":35,"HairSideL":36,"HairSide2L":37,"HairSide3L":38,"EarringL":39,"Neck":40,"ClavicleL":41,"ShoulderL":42,"MidTorso":43,"UpperTorso":44,"ForearmL":45,"ArmL":46,"UpperLegL":47,"FrontButtL":48,"Male_LowerBody":49,"Male_LegR":50,"LowerLegL":51,"HairBack":52}}';
+        public const CharacterName:String = "Default";
+        public const AnimationName:String = "SideRide";
+        public const LayerInfo:String = '{"F0":{"ForearmR":0,"Arm3R":1,"Hand2R":2,"HandL":3,"TurnedVulva":4,"Male_UpperBody":5,"NippleR":6,"AreolaR":7,"BoobR":8,"NippleL":9,"AreolaL":10,"Male_LegL":11,"Groin":12,"UpperLegR":13,"Male_PenisHeadMask":14,"Male_PenisHead":15,"Male_PenisShaftMask":16,"Male_PenisShaft":17,"LowerLegR":18,"Navel":19,"Hips":20,"BoobL":21,"FrontButtR":22,"ClavicleR":23,"HairFrontAngled":24,"HairSide2R":25,"HairSide3R":26,"Headwear":27,"HairSideR":28,"Nose":29,"Mouth":30,"EyeR":31,"EyeL":32,"EarringR":33,"EarR":34,"TurnedFace2":35,"HairSideL":36,"HairSide2L":37,"HairSide3L":38,"EarringL":39,"Neck":40,"ClavicleL":41,"ShoulderL":42,"MidTorso":43,"UpperTorso":44,"ForearmL":45,"ArmL":46,"UpperLegL":47,"FrontButtL":48,"Male_LowerBody":49,"Male_LegR":50,"LowerLegL":51,"HairBack":52}}';
     }
 }

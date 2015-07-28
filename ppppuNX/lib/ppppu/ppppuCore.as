@@ -1,5 +1,6 @@
 package ppppu 
 {
+	import avmplus.DescribeTypeJSON;
 	import com.greensock.easing.Linear;
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
@@ -11,6 +12,7 @@ package ppppu
 	import flash.utils.describeType;
 	import flash.utils.Dictionary;
 	import flash.utils.getDefinitionByName;
+	import MotionXML.Default.DefaultAnalMotions;
 	import ppppu.XmlMotionToTweens;
 	import com.greensock.plugins.*;
 	import com.greensock.data.TweenLiteVars;
@@ -19,7 +21,6 @@ package ppppu
 	import ppppu.TemplateBase;
 	import flash.ui.Keyboard;
 	
-	import com.sociodox.theminer.TheMiner;
 	/**
 	 * Responsible for all the various aspects of ppppuNX. 
 	 * @author ppppuProgrammer
@@ -36,7 +37,7 @@ package ppppu
 		//Keeps track of what keys were pressed and/or held down
 		private var keyDownStatus:Array = [];
 		//Contains the names of the various animations that the master template can switch between. The names are indexed by their position in the vector.
-		private var animationNameIndexes:Vector.<String> = new <String>["Cowgirl", "LeanBack", "LeanForward", "Grind", "ReverseCowgirl"/*, "Paizuri", "Blowjob", "SideRide", "Swivel", "Anal"*/];
+		private var animationNameIndexes:Vector.<String> = new <String>["Cowgirl", "LeanBack", "LeanForward", "Grind", "ReverseCowgirl", "Paizuri", "Blowjob", "SideRide", "Swivel", "Anal"];
 		
 		private var DEBUG_animationFrame:int=1;
 		private var currentCharacter:String = "Default";
@@ -66,10 +67,10 @@ package ppppu
 		//Sets up the various aspects of the flash to get it ready for performing.
 		public function Initialize():void
 		{
-			if (Capabilities.isDebugger)
+			/*if (Capabilities.isDebugger)
 			{
 				addChild(new TheMiner());
-			}
+			}*/
 			//Add the key listeners
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, KeyPressCheck);
 			stage.addEventListener(KeyboardEvent.KEY_UP, KeyReleaseCheck);
@@ -125,6 +126,10 @@ package ppppu
 		 * and finally creating a timeline from those tweens and storing it in a dictionary*/
 		private function ProcessMotionStaticClass(motionClass:Class, template:DisplayObject):Vector.<TimelineMax>
 		{
+			
+			//Dirty test
+			var classTest:Object = new motionClass();
+			
 			var timelineVector:Vector.<TimelineMax>;// = new Vector.<TimelineMax>();
 			var templateAnimation:TemplateBase = template as TemplateBase;
 			
@@ -134,9 +139,9 @@ package ppppu
 				return null;
 			}
 			
-			var charName:String = motionClass.CharacterName; //Character the animation motion is for
-			var animName:String = motionClass.AnimationName; //The type of animation template that the animation motion is for
-			var layerInfo:String = motionClass.LayerInfo; //Contains information that is used to rearrange the depth of elements displayed.
+			var charName:String = classTest.CharacterName; //Character the animation motion is for
+			var animName:String = classTest.AnimationName; //The type of animation template that the animation motion is for
+			var layerInfo:String = classTest.LayerInfo; //Contains information that is used to rearrange the depth of elements displayed.
 			
 			//LayerInfo was found, so process it
 			if (layerInfo != null && layerInfo.length > 0)
@@ -149,39 +154,34 @@ package ppppu
 				layerInfoDict[charName][animName] = layerInfoObject;
 			}
 			
-			//Get constants defined in the animation motion as an XML list
-			var xmlData:XMLList = describeType(motionClass).constant;
-			//Navigate through xmlData to get the exact number of elements the timelines vector needs to accomodate for.
-			var numberOfClassesInMotion:uint = xmlData.length() - 3;
-			/*for (var index:int = 0, length:int = xmlData.length(); index < length; ++index)
-			{
-				if (xmlData[index].toXMLString().indexOf("type=\"Class\"") != -1)
-				{
-					++numberOfClassesInMotion;
-				}
-			}*/
-			timelineVector = new Vector.<TimelineMax>(numberOfClassesInMotion);
-			//var allVectorsWithTweenData:Vector.<ByteArray> = new Vector.<ByteArray>(numberOfClassesInMotion);
+			//Rough code - describe type json based reflection
+			var describer:DescribeTypeJSON = new DescribeTypeJSON();
+			var description:Object = describer.describeType(motionClass, DescribeTypeJSON.INCLUDE_VARIABLES | DescribeTypeJSON.INCLUDE_TRAITS | DescribeTypeJSON.INCLUDE_ITRAITS);
+			
+			var varsInMotionClass:Array = description.traits.variables as Array;
+			var currentVarInfo:Object;
 			var objectClassNames:Vector.<String> = new Vector.<String>(numberOfClassesInMotion);
 			var allTweenDataObjects:ByteArray = new ByteArray();
 			var tlVectorIndex:uint = 0, classNameIndex:uint = 0;
+			var numberOfClassesInMotion:int = 0;
 			
-			//Navigate through the xml data again, this time to create the timelines
-			for (var i:int = 0, l:int = xmlData.length(); i < l; ++i)
+			for (var index:int = 0, length:int = varsInMotionClass.length; index < length; ++index)
 			{
-				var dataString:String = xmlData[i].toXMLString();
-				var isClassObj:Boolean = (dataString.indexOf("type=\"Class\"") != -1);
-				if (isClassObj)
+				currentVarInfo = varsInMotionClass[index];
+				var currentVarName:String = currentVarInfo.name as String;
+				
+				var currentVariable:Object = classTest[currentVarName];
+				if (currentVariable is ByteArray)
 				{
-					var firstIndexOfQuote:int = dataString.indexOf("\"")+1;
-					var objectClassName:String = dataString.substring(firstIndexOfQuote, dataString.indexOf("\"", firstIndexOfQuote));	
-					objectClassNames[classNameIndex] = objectClassName;
+					++numberOfClassesInMotion;
+					objectClassNames[classNameIndex] = currentVarName;
 					++classNameIndex;
-					var objectClass:Class = motionClass[objectClassName];
-					amfObjPooler.writeObject(new objectClass);
-					
-				}
+					amfObjPooler.writeObject(currentVariable);
+				}	
 			}
+			
+			timelineVector = new Vector.<TimelineMax>(numberOfClassesInMotion);
+
 			amfObjPooler.finalize(allTweenDataObjects);
 			allTweenDataObjects.position = 0;
 			var tweenDataObjectsArray:Array = AMFObjectPooler.read(allTweenDataObjects);
@@ -218,44 +218,6 @@ package ppppu
 				++tlVectorIndex;
 				timelineForMotion.pause();
 			}
-					/*
-					//Create byte array
-					var tweensDataByteArray:ByteArray = new ByteArray();
-					//Fill the byte array with the data from the embed file
-					tweensDataByteArray.writeBytes(new objectClass);
-					//reset byte array's position
-					tweensDataByteArray.position = 0;
-					//Create vector of tweens data objects from the byte array.
-					var VectorOfTweenData:Vector.<Object> = tweensDataByteArray.readObject() as Vector.<Object>;
-					var templateElement:DisplayObject = templateAnimation[objectClassName];
-					var tweens:Array = embedTweenDataConverter.IntegrateTweenData(templateElement, VectorOfTweenData);
-					var timelineForMotion:TimelineMax = new TimelineMax( { useFrames:true, repeat: -1, paused:true } );
-
-					if (templateElement != null)
-					{
-						timelineForMotion.data = { targetElement: templateElement };
-						timelineForMotion.add(tweens,"+=0", "sequence");
-					}
-					else
-					{
-						trace("Critical Warning! Animation " + animName + " is unable to target Element \"" + objectClassName + "\"");
-					}
-					
-					if (timelinesDict[charName] == null)
-					{
-						timelinesDict[charName] = new Dictionary();
-					}
-					if (timelinesDict[charName][animName] == null)
-					{
-						timelinesDict[charName][animName] = new Dictionary();
-					}
-					
-					timelinesDict[charName][animName][objectClassName] = timelineForMotion;
-					timelineVector[tlVectorIndex] = timelineForMotion;
-					++tlVectorIndex;
-					timelineForMotion.pause();*/
-				//}
-			//}
 			return timelineVector;
 		}
 		
@@ -484,7 +446,7 @@ package ppppu
 			}
 		}
 		
-		/*function printObject(obj:Object, numTabs:int=0): void
+		function printObject(obj:Object, numTabs:int=0): void
 		{
 			var tabs:String = "";
 			for (var i:int = 0; i < numTabs; ++i)
@@ -500,7 +462,7 @@ package ppppu
 					printObject(v, numTabs+1);
 				}
 			}
-		}*/
+		}
 	}
 
 }

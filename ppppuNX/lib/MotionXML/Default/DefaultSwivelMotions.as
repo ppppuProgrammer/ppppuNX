@@ -1,118 +1,65 @@
 package MotionXML.Default
 {
+    import MotionXML.Default.Swivel.*
     public class DefaultSwivelMotions
     {
-		[Embed(source = "/../lib/MotionXML/Default/Swivel/Default_AreolaL.tdf", mimeType = "application/octet-stream")]
-		public static const AreolaL:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Swivel/Default_AreolaR.tdf", mimeType = "application/octet-stream")]
-		public static const AreolaR:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Swivel/Default_ArmL.tdf", mimeType = "application/octet-stream")]
-		public static const ArmL:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Swivel/Default_ArmR.tdf", mimeType = "application/octet-stream")]
-		public static const ArmR:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Swivel/Default_BoobL.tdf", mimeType = "application/octet-stream")]
-		public static const BoobL:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Swivel/Default_BoobR.tdf", mimeType = "application/octet-stream")]
-		public static const BoobR:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Swivel/Default_Chest.tdf", mimeType = "application/octet-stream")]
-		public static const Chest:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Swivel/Default_ClavicleL.tdf", mimeType = "application/octet-stream")]
-		public static const ClavicleL:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Swivel/Default_ClavicleR.tdf", mimeType = "application/octet-stream")]
-		public static const ClavicleR:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Swivel/Default_EarL.tdf", mimeType = "application/octet-stream")]
-		public static const EarL:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Swivel/Default_EarR.tdf", mimeType = "application/octet-stream")]
-		public static const EarR:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Swivel/Default_EarringL.tdf", mimeType = "application/octet-stream")]
-		public static const EarringL:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Swivel/Default_EarringR.tdf", mimeType = "application/octet-stream")]
-		public static const EarringR:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Swivel/Default_EyeL.tdf", mimeType = "application/octet-stream")]
-		public static const EyeL:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Swivel/Default_EyeR.tdf", mimeType = "application/octet-stream")]
-		public static const EyeR:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Swivel/Default_Face.tdf", mimeType = "application/octet-stream")]
-		public static const Face:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Swivel/Default_ForearmL.tdf", mimeType = "application/octet-stream")]
-		public static const ForearmL:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Swivel/Default_ForearmR.tdf", mimeType = "application/octet-stream")]
-		public static const ForearmR:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Swivel/Default_FrontButtL.tdf", mimeType = "application/octet-stream")]
-		public static const FrontButtL:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Swivel/Default_FrontButtR.tdf", mimeType = "application/octet-stream")]
-		public static const FrontButtR:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Swivel/Default_Groin.tdf", mimeType = "application/octet-stream")]
-		public static const Groin:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Swivel/Default_HairBack.tdf", mimeType = "application/octet-stream")]
-		public static const HairBack:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Swivel/Default_HairFront.tdf", mimeType = "application/octet-stream")]
-		public static const HairFront:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Swivel/Default_HairSide2L.tdf", mimeType = "application/octet-stream")]
-		public static const HairSide2L:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Swivel/Default_HairSide2R.tdf", mimeType = "application/octet-stream")]
-		public static const HairSide2R:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Swivel/Default_HairSide3L.tdf", mimeType = "application/octet-stream")]
-		public static const HairSide3L:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Swivel/Default_HairSide3R.tdf", mimeType = "application/octet-stream")]
-		public static const HairSide3R:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Swivel/Default_HairSideL.tdf", mimeType = "application/octet-stream")]
-		public static const HairSideL:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Swivel/Default_HairSideR.tdf", mimeType = "application/octet-stream")]
-		public static const HairSideR:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Swivel/Default_HandL.tdf", mimeType = "application/octet-stream")]
-		public static const HandL:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Swivel/Default_HandR.tdf", mimeType = "application/octet-stream")]
-		public static const HandR:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Swivel/Default_Headwear.tdf", mimeType = "application/octet-stream")]
-		public static const Headwear:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Swivel/Default_Hips2.tdf", mimeType = "application/octet-stream")]
-		public static const Hips2:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Swivel/Default_LowerLegL.tdf", mimeType = "application/octet-stream")]
-		public static const LowerLegL:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Swivel/Default_LowerLegR.tdf", mimeType = "application/octet-stream")]
-		public static const LowerLegR:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Swivel/Default_Male_LegL.tdf", mimeType = "application/octet-stream")]
-		public static const Male_LegL:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Swivel/Default_Male_LegR.tdf", mimeType = "application/octet-stream")]
-		public static const Male_LegR:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Swivel/Default_Male_LowerBody.tdf", mimeType = "application/octet-stream")]
-		public static const Male_LowerBody:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Swivel/Default_Male_PenisHead.tdf", mimeType = "application/octet-stream")]
-		public static const Male_PenisHead:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Swivel/Default_Male_PenisHeadMask.tdf", mimeType = "application/octet-stream")]
-		public static const Male_PenisHeadMask:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Swivel/Default_Male_PenisShaft.tdf", mimeType = "application/octet-stream")]
-		public static const Male_PenisShaft:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Swivel/Default_Male_PenisShaftMask.tdf", mimeType = "application/octet-stream")]
-		public static const Male_PenisShaftMask:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Swivel/Default_Male_UpperBody.tdf", mimeType = "application/octet-stream")]
-		public static const Male_UpperBody:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Swivel/Default_Mouth.tdf", mimeType = "application/octet-stream")]
-		public static const Mouth:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Swivel/Default_Navel.tdf", mimeType = "application/octet-stream")]
-		public static const Navel:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Swivel/Default_Neck.tdf", mimeType = "application/octet-stream")]
-		public static const Neck:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Swivel/Default_NippleL.tdf", mimeType = "application/octet-stream")]
-		public static const NippleL:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Swivel/Default_NippleR.tdf", mimeType = "application/octet-stream")]
-		public static const NippleR:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Swivel/Default_Nose.tdf", mimeType = "application/octet-stream")]
-		public static const Nose:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Swivel/Default_ShoulderL.tdf", mimeType = "application/octet-stream")]
-		public static const ShoulderL:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Swivel/Default_ShoulderR.tdf", mimeType = "application/octet-stream")]
-		public static const ShoulderR:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Swivel/Default_UpperLegL.tdf", mimeType = "application/octet-stream")]
-		public static const UpperLegL:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Swivel/Default_UpperLegR.tdf", mimeType = "application/octet-stream")]
-		public static const UpperLegR:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Swivel/Default_Vulva.tdf", mimeType = "application/octet-stream")]
-		public static const Vulva:Class;
+		public var AreolaL:Default_AreolaL = new Default_AreolaL();
+		public var AreolaR:Default_AreolaR = new Default_AreolaR();
+		public var ArmL:Default_ArmL = new Default_ArmL();
+		public var ArmR:Default_ArmR = new Default_ArmR();
+		public var BoobL:Default_BoobL = new Default_BoobL();
+		public var BoobR:Default_BoobR = new Default_BoobR();
+		public var Chest:Default_Chest = new Default_Chest();
+		public var ClavicleL:Default_ClavicleL = new Default_ClavicleL();
+		public var ClavicleR:Default_ClavicleR = new Default_ClavicleR();
+		public var EarL:Default_EarL = new Default_EarL();
+		public var EarR:Default_EarR = new Default_EarR();
+		public var EarringL:Default_EarringL = new Default_EarringL();
+		public var EarringR:Default_EarringR = new Default_EarringR();
+		public var EyeL:Default_EyeL = new Default_EyeL();
+		public var EyeR:Default_EyeR = new Default_EyeR();
+		public var Face:Default_Face = new Default_Face();
+		public var ForearmL:Default_ForearmL = new Default_ForearmL();
+		public var ForearmR:Default_ForearmR = new Default_ForearmR();
+		public var FrontButtL:Default_FrontButtL = new Default_FrontButtL();
+		public var FrontButtR:Default_FrontButtR = new Default_FrontButtR();
+		public var Groin:Default_Groin = new Default_Groin();
+		public var HairBack:Default_HairBack = new Default_HairBack();
+		public var HairFront:Default_HairFront = new Default_HairFront();
+		public var HairSide2L:Default_HairSide2L = new Default_HairSide2L();
+		public var HairSide2R:Default_HairSide2R = new Default_HairSide2R();
+		public var HairSide3L:Default_HairSide3L = new Default_HairSide3L();
+		public var HairSide3R:Default_HairSide3R = new Default_HairSide3R();
+		public var HairSideL:Default_HairSideL = new Default_HairSideL();
+		public var HairSideR:Default_HairSideR = new Default_HairSideR();
+		public var HandL:Default_HandL = new Default_HandL();
+		public var HandR:Default_HandR = new Default_HandR();
+		public var Headwear:Default_Headwear = new Default_Headwear();
+		public var Hips2:Default_Hips2 = new Default_Hips2();
+		public var LowerLegL:Default_LowerLegL = new Default_LowerLegL();
+		public var LowerLegR:Default_LowerLegR = new Default_LowerLegR();
+		public var Male_LegL:Default_Male_LegL = new Default_Male_LegL();
+		public var Male_LegR:Default_Male_LegR = new Default_Male_LegR();
+		public var Male_LowerBody:Default_Male_LowerBody = new Default_Male_LowerBody();
+		public var Male_PenisHead:Default_Male_PenisHead = new Default_Male_PenisHead();
+		public var Male_PenisHeadMask:Default_Male_PenisHeadMask = new Default_Male_PenisHeadMask();
+		public var Male_PenisShaft:Default_Male_PenisShaft = new Default_Male_PenisShaft();
+		public var Male_PenisShaftMask:Default_Male_PenisShaftMask = new Default_Male_PenisShaftMask();
+		public var Male_UpperBody:Default_Male_UpperBody = new Default_Male_UpperBody();
+		public var Mouth:Default_Mouth = new Default_Mouth();
+		public var Navel:Default_Navel = new Default_Navel();
+		public var Neck:Default_Neck = new Default_Neck();
+		public var NippleL:Default_NippleL = new Default_NippleL();
+		public var NippleR:Default_NippleR = new Default_NippleR();
+		public var Nose:Default_Nose = new Default_Nose();
+		public var ShoulderL:Default_ShoulderL = new Default_ShoulderL();
+		public var ShoulderR:Default_ShoulderR = new Default_ShoulderR();
+		public var UpperLegL:Default_UpperLegL = new Default_UpperLegL();
+		public var UpperLegR:Default_UpperLegR = new Default_UpperLegR();
+		public var Vulva:Default_Vulva = new Default_Vulva();
 
-        public static const CharacterName:String = "Default";
-        public static const AnimationName:String = "Swivel";
-        public static const LayerInfo:String = '{"F0":{"NippleR":0,"AreolaR":1,"BoobR":2,"Mouth":3,"Nose":4,"HairFront":5,"HairSide2L":6,"HairSide2R":7,"HairSideL":8,"HairSideR":9,"EyeL":10,"EyeR":11,"Face":12,"EarR":13,"EarL":14,"EarringR":15,"EarringL":16,"HairSide3L":17,"HairSide3R":18,"Headwear":19,"Male_UpperBody":20,"Vulva":21,"Groin":22,"NippleL":23,"AreolaL":24,"BoobL":25,"ClavicleL":26,"ClavicleR":27,"Male_PenisHeadMask":28,"Male_PenisHead":29,"Male_PenisShaftMask":30,"Male_PenisShaft":31,"Male_LowerBody":32,"UpperLegL":33,"LowerLegL":34,"UpperLegR":35,"LowerLegR":36,"Navel":37,"Hips2":38,"Chest":39,"FrontButtL":40,"FrontButtR":41,"Neck":42,"ShoulderR":43,"ShoulderL":44,"ForearmR":45,"HandR":46,"ArmR":47,"Male_LegR":48,"ForearmL":49,"HandL":50,"ArmL":51,"Male_LegL":52,"HairBack":53}}';
+        public const CharacterName:String = "Default";
+        public const AnimationName:String = "Swivel";
+        public const LayerInfo:String = '{"F0":{"NippleR":0,"AreolaR":1,"BoobR":2,"Mouth":3,"Nose":4,"HairFront":5,"HairSide2L":6,"HairSide2R":7,"HairSideL":8,"HairSideR":9,"EyeL":10,"EyeR":11,"Face":12,"EarR":13,"EarL":14,"EarringR":15,"EarringL":16,"HairSide3L":17,"HairSide3R":18,"Headwear":19,"Male_UpperBody":20,"Vulva":21,"Groin":22,"NippleL":23,"AreolaL":24,"BoobL":25,"ClavicleL":26,"ClavicleR":27,"Male_PenisHeadMask":28,"Male_PenisHead":29,"Male_PenisShaftMask":30,"Male_PenisShaft":31,"Male_LowerBody":32,"UpperLegL":33,"LowerLegL":34,"UpperLegR":35,"LowerLegR":36,"Navel":37,"Hips2":38,"Chest":39,"FrontButtL":40,"FrontButtR":41,"Neck":42,"ShoulderR":43,"ShoulderL":44,"ForearmR":45,"HandR":46,"ArmR":47,"Male_LegR":48,"ForearmL":49,"HandL":50,"ArmL":51,"Male_LegL":52,"HairBack":53}}';
     }
 }
