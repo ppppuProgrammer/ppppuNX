@@ -2,113 +2,113 @@ package MotionXML.Default
 {
     public class DefaultGrindMotions
     {
-		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_AreolaL.xml", mimeType = "application/octet-stream")]
+		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_AreolaL.tdf", mimeType = "application/octet-stream")]
 		public static const AreolaL:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_AreolaR.xml", mimeType = "application/octet-stream")]
+		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_AreolaR.tdf", mimeType = "application/octet-stream")]
 		public static const AreolaR:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_Arm2R.xml", mimeType = "application/octet-stream")]
+		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_Arm2R.tdf", mimeType = "application/octet-stream")]
 		public static const Arm2R:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_ArmL.xml", mimeType = "application/octet-stream")]
+		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_ArmL.tdf", mimeType = "application/octet-stream")]
 		public static const ArmL:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_BoobL.xml", mimeType = "application/octet-stream")]
+		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_BoobL.tdf", mimeType = "application/octet-stream")]
 		public static const BoobL:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_BoobR.xml", mimeType = "application/octet-stream")]
+		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_BoobR.tdf", mimeType = "application/octet-stream")]
 		public static const BoobR:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_ClavicleL.xml", mimeType = "application/octet-stream")]
+		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_ClavicleL.tdf", mimeType = "application/octet-stream")]
 		public static const ClavicleL:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_ClavicleR.xml", mimeType = "application/octet-stream")]
+		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_ClavicleR.tdf", mimeType = "application/octet-stream")]
 		public static const ClavicleR:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_EarR.xml", mimeType = "application/octet-stream")]
+		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_EarR.tdf", mimeType = "application/octet-stream")]
 		public static const EarR:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_EarringL.xml", mimeType = "application/octet-stream")]
+		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_EarringL.tdf", mimeType = "application/octet-stream")]
 		public static const EarringL:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_EarringR.xml", mimeType = "application/octet-stream")]
+		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_EarringR.tdf", mimeType = "application/octet-stream")]
 		public static const EarringR:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_EyeL.xml", mimeType = "application/octet-stream")]
+		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_EyeL.tdf", mimeType = "application/octet-stream")]
 		public static const EyeL:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_EyeR.xml", mimeType = "application/octet-stream")]
+		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_EyeR.tdf", mimeType = "application/octet-stream")]
 		public static const EyeR:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_ForearmL.xml", mimeType = "application/octet-stream")]
+		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_ForearmL.tdf", mimeType = "application/octet-stream")]
 		public static const ForearmL:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_ForearmR.xml", mimeType = "application/octet-stream")]
+		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_ForearmR.tdf", mimeType = "application/octet-stream")]
 		public static const ForearmR:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_FrontButtL.xml", mimeType = "application/octet-stream")]
+		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_FrontButtL.tdf", mimeType = "application/octet-stream")]
 		public static const FrontButtL:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_FrontButtR.xml", mimeType = "application/octet-stream")]
+		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_FrontButtR.tdf", mimeType = "application/octet-stream")]
 		public static const FrontButtR:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_Groin.xml", mimeType = "application/octet-stream")]
+		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_Groin.tdf", mimeType = "application/octet-stream")]
 		public static const Groin:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_HairBack.xml", mimeType = "application/octet-stream")]
+		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_HairBack.tdf", mimeType = "application/octet-stream")]
 		public static const HairBack:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_HairFrontAngled.xml", mimeType = "application/octet-stream")]
+		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_HairFrontAngled.tdf", mimeType = "application/octet-stream")]
 		public static const HairFrontAngled:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_HairSide2L.xml", mimeType = "application/octet-stream")]
+		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_HairSide2L.tdf", mimeType = "application/octet-stream")]
 		public static const HairSide2L:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_HairSide2R.xml", mimeType = "application/octet-stream")]
+		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_HairSide2R.tdf", mimeType = "application/octet-stream")]
 		public static const HairSide2R:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_HairSide3L.xml", mimeType = "application/octet-stream")]
+		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_HairSide3L.tdf", mimeType = "application/octet-stream")]
 		public static const HairSide3L:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_HairSide3R.xml", mimeType = "application/octet-stream")]
+		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_HairSide3R.tdf", mimeType = "application/octet-stream")]
 		public static const HairSide3R:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_HairSideL.xml", mimeType = "application/octet-stream")]
+		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_HairSideL.tdf", mimeType = "application/octet-stream")]
 		public static const HairSideL:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_HairSideR.xml", mimeType = "application/octet-stream")]
+		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_HairSideR.tdf", mimeType = "application/octet-stream")]
 		public static const HairSideR:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_HandL.xml", mimeType = "application/octet-stream")]
+		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_HandL.tdf", mimeType = "application/octet-stream")]
 		public static const HandL:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_HandR.xml", mimeType = "application/octet-stream")]
+		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_HandR.tdf", mimeType = "application/octet-stream")]
 		public static const HandR:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_Headwear.xml", mimeType = "application/octet-stream")]
+		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_Headwear.tdf", mimeType = "application/octet-stream")]
 		public static const Headwear:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_LowerLegL.xml", mimeType = "application/octet-stream")]
+		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_LowerLegL.tdf", mimeType = "application/octet-stream")]
 		public static const LowerLegL:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_LowerLegR.xml", mimeType = "application/octet-stream")]
+		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_LowerLegR.tdf", mimeType = "application/octet-stream")]
 		public static const LowerLegR:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_Male_LegL.xml", mimeType = "application/octet-stream")]
+		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_Male_LegL.tdf", mimeType = "application/octet-stream")]
 		public static const Male_LegL:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_Male_LegR.xml", mimeType = "application/octet-stream")]
+		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_Male_LegR.tdf", mimeType = "application/octet-stream")]
 		public static const Male_LegR:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_Male_LowerBody.xml", mimeType = "application/octet-stream")]
+		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_Male_LowerBody.tdf", mimeType = "application/octet-stream")]
 		public static const Male_LowerBody:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_Male_PenisHead.xml", mimeType = "application/octet-stream")]
+		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_Male_PenisHead.tdf", mimeType = "application/octet-stream")]
 		public static const Male_PenisHead:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_Male_PenisHeadMask.xml", mimeType = "application/octet-stream")]
+		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_Male_PenisHeadMask.tdf", mimeType = "application/octet-stream")]
 		public static const Male_PenisHeadMask:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_Male_PenisShaft.xml", mimeType = "application/octet-stream")]
+		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_Male_PenisShaft.tdf", mimeType = "application/octet-stream")]
 		public static const Male_PenisShaft:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_Male_PenisShaftMask.xml", mimeType = "application/octet-stream")]
+		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_Male_PenisShaftMask.tdf", mimeType = "application/octet-stream")]
 		public static const Male_PenisShaftMask:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_Male_UpperBody.xml", mimeType = "application/octet-stream")]
+		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_Male_UpperBody.tdf", mimeType = "application/octet-stream")]
 		public static const Male_UpperBody:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_Mouth.xml", mimeType = "application/octet-stream")]
+		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_Mouth.tdf", mimeType = "application/octet-stream")]
 		public static const Mouth:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_Navel.xml", mimeType = "application/octet-stream")]
+		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_Navel.tdf", mimeType = "application/octet-stream")]
 		public static const Navel:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_Neck.xml", mimeType = "application/octet-stream")]
+		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_Neck.tdf", mimeType = "application/octet-stream")]
 		public static const Neck:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_NippleL.xml", mimeType = "application/octet-stream")]
+		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_NippleL.tdf", mimeType = "application/octet-stream")]
 		public static const NippleL:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_NippleR.xml", mimeType = "application/octet-stream")]
+		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_NippleR.tdf", mimeType = "application/octet-stream")]
 		public static const NippleR:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_Nose.xml", mimeType = "application/octet-stream")]
+		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_Nose.tdf", mimeType = "application/octet-stream")]
 		public static const Nose:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_ShoulderL.xml", mimeType = "application/octet-stream")]
+		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_ShoulderL.tdf", mimeType = "application/octet-stream")]
 		public static const ShoulderL:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_ShoulderR.xml", mimeType = "application/octet-stream")]
+		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_ShoulderR.tdf", mimeType = "application/octet-stream")]
 		public static const ShoulderR:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_TurnedFace2.xml", mimeType = "application/octet-stream")]
+		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_TurnedFace2.tdf", mimeType = "application/octet-stream")]
 		public static const TurnedFace2:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_TurnedHips.xml", mimeType = "application/octet-stream")]
+		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_TurnedHips.tdf", mimeType = "application/octet-stream")]
 		public static const TurnedHips:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_TurnedMidTorso.xml", mimeType = "application/octet-stream")]
+		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_TurnedMidTorso.tdf", mimeType = "application/octet-stream")]
 		public static const TurnedMidTorso:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_TurnedUpperTorso.xml", mimeType = "application/octet-stream")]
+		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_TurnedUpperTorso.tdf", mimeType = "application/octet-stream")]
 		public static const TurnedUpperTorso:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_TurnedVulva.xml", mimeType = "application/octet-stream")]
+		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_TurnedVulva.tdf", mimeType = "application/octet-stream")]
 		public static const TurnedVulva:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_UpperLegL.xml", mimeType = "application/octet-stream")]
+		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_UpperLegL.tdf", mimeType = "application/octet-stream")]
 		public static const UpperLegL:Class;
-		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_UpperLegR.xml", mimeType = "application/octet-stream")]
+		[Embed(source = "/../lib/MotionXML/Default/Grind/Default_UpperLegR.tdf", mimeType = "application/octet-stream")]
 		public static const UpperLegR:Class;
 
         public static const CharacterName:String = "Default";

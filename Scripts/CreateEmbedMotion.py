@@ -22,7 +22,7 @@ def searchWithinFolder(folderDir):
     print(sourceFolderDir)
     for filePath in folderDir.iterdir():
         if filePath.is_file():
-            if filePath.suffix in ('.xml'):
+            if filePath.suffix in ('.tdf'):
                 xmlClassName = filePath.name
                 ##print(xmlClassName)
                 
@@ -60,11 +60,9 @@ for dirIter in currDir.iterdir():
         ##Open layer info file
         layerInfo = ""
         layerInfoFilePath = Path(animationName + " Template layer info.json")
-        if layerInfoFilePath.is_file():
-            with layerInfoFilePath.open('r') as layerInfoFile:
-                layerInfo = layerInfoFile.read()
-        else:
-            layerInfo = "\"\""
+        with layerInfoFilePath.open('r') as layerInfoFile:
+            layerInfo = layerInfoFile.read()
+        
         
         scriptContents = '''package {0:s}
 {{
