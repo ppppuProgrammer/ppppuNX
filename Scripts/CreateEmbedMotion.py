@@ -80,10 +80,11 @@ for dirIter in currDir.iterdir():
         ##Create path that the file will be created in
         asFilePath = Path(fileName)
         ##Open layer info file
-        layerInfo = ""
+        layerInfo = "\"\""
         layerInfoFilePath = Path(animationName + " Template layer info.json")
-        with layerInfoFilePath.open('r') as layerInfoFile:
-            layerInfo = layerInfoFile.read()
+        if(layerInfoFilePath.exists()):
+            with layerInfoFilePath.open('r') as layerInfoFile:
+                layerInfo = layerInfoFile.read()
         
         
         scriptContents = '''package {0:s}

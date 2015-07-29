@@ -13,7 +13,7 @@ package ppppu
 	import flash.utils.Dictionary;
 	import flash.utils.getDefinitionByName;
 	import MotionXML.Default.DefaultAnalMotions;
-	import ppppu.XmlMotionToTweens;
+	import ppppu.TweenDataParser;
 	import com.greensock.plugins.*;
 	import com.greensock.data.TweenLiteVars;
 	import com.greensock.*;
@@ -38,16 +38,14 @@ package ppppu
 		private var keyDownStatus:Array = [];
 		//Contains the names of the various animations that the master template can switch between. The names are indexed by their position in the vector.
 		private var animationNameIndexes:Vector.<String> = new <String>["Cowgirl", "LeanBack", "LeanForward", "Grind", "ReverseCowgirl", "Paizuri", "Blowjob", "SideRide", "Swivel", "Anal"];
-		
-		private var DEBUG_animationFrame:int=1;
-		private var currentCharacter:String = "Default";
-		private var embedTweenDataConverter:XmlMotionToTweens = new XmlMotionToTweens();
-		private var amfObjPooler:AMFObjectPooler = new AMFObjectPooler();
-		public var initialized:Boolean = false;
+		private var characterNameList:Vector.<String> = new <String>["Peach", "Rosalina"];
+		private const defaultCharacter:String = characterNameList[0];
+		private var currentCharacter:String = defaultCharacter;
+		private var currentAnimationIndex:uint = 0;
+		private var embedTweenDataConverter:TweenDataParser = new TweenDataParser();
 		//Constructor
 		public function ppppuCore() 
 		{
-			
 			//Create the "main stage" that holds the character template and various other movieclips such as the transition and backlight 
 			mainStage = new MainStage();
 			mainStage.stop();
@@ -56,21 +54,11 @@ package ppppu
 			//mainStage.addEventListener(Event.ENTER_FRAME, RunLoop);
 			this.cacheAsBitmap = true;
 			this.scrollRect = new Rectangle(0, 0, 480, 720);
-			/*for (var i:uint = 0, l:uint = animationNameIndexes.length; i < l; ++i)
-			{
-
-			}*/
-			//Initialize();
-			
 		}
 		
 		//Sets up the various aspects of the flash to get it ready for performing.
 		public function Initialize():void
 		{
-			/*if (Capabilities.isDebugger)
-			{
-				addChild(new TheMiner());
-			}*/
 			//Add the key listeners
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, KeyPressCheck);
 			stage.addEventListener(KeyboardEvent.KEY_UP, KeyReleaseCheck);
@@ -79,25 +67,17 @@ package ppppu
 			//Set the default Ease for the tweens
 			TweenLite.defaultEase = Linear.ease;
 			TweenLite.defaultOverwrite = "none";
-			initialized = true;
-		}
-		
-		public function Setup():void
-		{
+			//Disable mouse interaction for various objects
+			mainStage.mouseEnabled = false;
+			//Master template element disabling
 			for (var i:int = 0, l:int = masterTemplate.numChildren; i < l; ++i)
 			{
 				(masterTemplate.getChildAt(i) as MovieClip).mouseChildren = false;
 				(masterTemplate.getChildAt(i) as MovieClip).mouseEnabled = false;
 			}
-			//mainStage.addChild(masterTemplate);
-			//Creates the template animation movie clips and adds them to the templateDict dictionary.
-			//SetupTemplates();
-			//Initializing the various default motion xmls for the animation templates.
-			//CreateAnimationTimelinesForCharacter("Default");
-			//CreateAnimationTimelinesForCharacter("Rosalina");
-			
-			
-			//mainStage.play();
+			mainStage.addChild(masterTemplate);
+			//Switch the first animation.
+			SwitchTemplateAnimation(0);
 		}
 		
 		//The "heart beat" of the flash. Ran every frame to monitor and react to certain, often frame sensitive, events
@@ -108,18 +88,13 @@ package ppppu
 			if (mainStageMC.currentFrame == 1)
 			{
 				mainStageMC.stop();
-				//CreateAnimationTimelinesForCharacter("Default");
-				//mainStageMC.play();
 			}
 			if (mainStageMC.currentFrame == 2)
 			{
 				//Go to the 
-				SwitchTemplateAnimation("Cowgirl");
-				//templateInUse.UpdateTimelines();
+				SwitchTemplateAnimation(currentAnimationIndex);
 				masterTemplate.PlayAnimation(mainStageMC.currentFrame);
-				//templateInUse.PlayAnimation(mainStageMC.currentFrame);
 			}
-			//templateInUse.UpdateTimelines();
 		}
 		
 		/*Responsible for processing all the motion xmls detailed in an animationMotions file, creating tweenLite tweens from them,
@@ -127,8 +102,8 @@ package ppppu
 		private function ProcessMotionStaticClass(motionClass:Class, template:DisplayObject):Vector.<TimelineMax>
 		{
 			
-			//Dirty test
-			var classTest:Object = new motionClass();
+			//Create an instance of the animation motion class
+			var animationMotionInstance:Object = new motionClass();
 			
 			var timelineVector:Vector.<TimelineMax>;// = new Vector.<TimelineMax>();
 			var templateAnimation:TemplateBase = template as TemplateBase;
@@ -139,9 +114,9 @@ package ppppu
 				return null;
 			}
 			
-			var charName:String = classTest.CharacterName; //Character the animation motion is for
-			var animName:String = classTest.AnimationName; //The type of animation template that the animation motion is for
-			var layerInfo:String = classTest.LayerInfo; //Contains information that is used to rearrange the depth of elements displayed.
+			var charName:String = animationMotionInstance.CharacterName; //Character the animation motion is for
+			var animName:String = animationMotionInstance.AnimationName; //The type of animation template that the animation motion is for
+			var layerInfo:String = animationMotionInstance.LayerInfo; //Contains information that is used to rearrange the depth of elements displayed.
 			
 			//LayerInfo was found, so process it
 			if (layerInfo != null && layerInfo.length > 0)
@@ -154,69 +129,83 @@ package ppppu
 				layerInfoDict[charName][animName] = layerInfoObject;
 			}
 			
-			//Rough code - describe type json based reflection
-			var describer:DescribeTypeJSON = new DescribeTypeJSON();
-			var description:Object = describer.describeType(motionClass, DescribeTypeJSON.INCLUDE_VARIABLES | DescribeTypeJSON.INCLUDE_TRAITS | DescribeTypeJSON.INCLUDE_ITRAITS);
+			//Get the description of the animation motion class
+			var jsonClassDescriber:DescribeTypeJSON = new DescribeTypeJSON();
+			var motionClassDescription:Object = jsonClassDescriber.describeType(motionClass, DescribeTypeJSON.INCLUDE_VARIABLES | DescribeTypeJSON.INCLUDE_TRAITS | DescribeTypeJSON.INCLUDE_ITRAITS);
 			
-			var varsInMotionClass:Array = description.traits.variables as Array;
+			//Get an array of the animation motion class' variables
+			var varsInMotionClass:Array = motionClassDescription.traits.variables as Array;
 			var currentVarInfo:Object;
-			var objectClassNames:Vector.<String> = new Vector.<String>(numberOfClassesInMotion);
-			var allTweenDataObjects:ByteArray = new ByteArray();
-			var tlVectorIndex:uint = 0, classNameIndex:uint = 0;
-			var numberOfClassesInMotion:int = 0;
+			var objectClassNames:Vector.<String> = new Vector.<String>();
 			
+			//Create the timeline vector
+			timelineVector = new Vector.<TimelineMax>();
+			
+			//Run through the variables array 
 			for (var index:int = 0, length:int = varsInMotionClass.length; index < length; ++index)
 			{
+				//Get the information of the variable at the index
 				currentVarInfo = varsInMotionClass[index];
 				var currentVarName:String = currentVarInfo.name as String;
 				
-				var currentVariable:Object = classTest[currentVarName];
+				//Get the actual instance of the variable from the instance of the animation motion created at the beginning of this function.
+				var currentVariable:Object = animationMotionInstance[currentVarName];
+				//Only care about the variable if it's a byte array
 				if (currentVariable is ByteArray)
 				{
-					++numberOfClassesInMotion;
-					objectClassNames[classNameIndex] = currentVarName;
-					++classNameIndex;
-					amfObjPooler.writeObject(currentVariable);
+					//Add the name of the element into the objectClassNames vector
+					objectClassNames[objectClassNames.length] = currentVarName;
+					if (currentVariable.length != 0)
+					{
+						//Deserialize the byte array into a vector of tween data objects
+						var vectorOfTweenData:Vector.<Object> = currentVariable.readObject() as Vector.<Object>;
+						
+						var templateElement:DisplayObject = templateAnimation[currentVarName];
+						
+						//Create the array of tweens, using the vector of tween data.
+						var tweens:Array = embedTweenDataConverter.IntegrateTweenData(templateElement, vectorOfTweenData);
+						//Create the timeline that will use the tweens
+						var timelineForMotion:TimelineMax = new TimelineMax( { useFrames:true, repeat: -1, paused:true } );
+						
+						//If the target element from the template exists
+						if (templateElement != null)
+						{
+							//Set the data of the timeline to have a property for the template's element 
+							timelineForMotion.data = { targetElement: templateElement };
+							//Add the tweens
+							timelineForMotion.add(tweens,"+=0", "sequence");
+						}
+						else
+						{
+							//Without the template element, tweening isn't possible.
+							trace("Critical Warning! Animation " + animName + " is unable to target Element \"" + objectClassNames[position] + "\"");
+						}
+						
+						//Dictionary existance checking. Create a dictionary if the specified one doesn't exist.
+						if (timelinesDict[charName] == null)
+						{
+							//Code in here is theoretically unreachable but keep it here until that is fully tested.
+							CreateTimelineDictionaryForCharacter(charName);
+							timelinesDict[charName] = new Dictionary();
+						}
+						if (timelinesDict[charName][animName] == null)
+						{
+							//Creates a dictionary in the charName dictionary that's contained in timelinesDict.
+							timelinesDict[charName][animName] = new Dictionary();
+						}
+						
+						//Setting the timelines dictionary to contain the created time line.
+						timelinesDict[charName][animName][currentVarName] = timelineForMotion;
+						//Adding the created timeline to timelineVector
+						timelineVector[timelineVector.length] = timelineForMotion;
+						//Tell the timeline to start paused, to help save on processing a little.
+						timelineForMotion.pause();
+					}
+					else
+					{
+						trace("Warning! Tween data for element " + templateElement.name + " of animation " + animName + " was empty. Timeline was not constructed.");
+					}
 				}	
-			}
-			
-			timelineVector = new Vector.<TimelineMax>(numberOfClassesInMotion);
-
-			amfObjPooler.finalize(allTweenDataObjects);
-			allTweenDataObjects.position = 0;
-			var tweenDataObjectsArray:Array = AMFObjectPooler.read(allTweenDataObjects);
-			var vectorOfTweenDataByteArray:ByteArray;
-			for (var position:int = 0; position < numberOfClassesInMotion; ++position)
-			{
-				vectorOfTweenDataByteArray = tweenDataObjectsArray[position] as ByteArray;
-				var vectorOfTweenData:Vector.<Object> = vectorOfTweenDataByteArray.readObject() as Vector.<Object>;
-				var templateElement:DisplayObject = templateAnimation[objectClassNames[position]];
-				var tweens:Array = embedTweenDataConverter.IntegrateTweenData(templateElement, vectorOfTweenData);
-				var timelineForMotion:TimelineMax = new TimelineMax( { useFrames:true, repeat: -1, paused:true } );
-				
-				if (templateElement != null)
-				{
-					timelineForMotion.data = { targetElement: templateElement };
-					timelineForMotion.add(tweens,"+=0", "sequence");
-				}
-				else
-				{
-					trace("Critical Warning! Animation " + animName + " is unable to target Element \"" + objectClassNames[position] + "\"");
-				}
-				
-				if (timelinesDict[charName] == null)
-				{
-					timelinesDict[charName] = new Dictionary();
-				}
-				if (timelinesDict[charName][animName] == null)
-				{
-					timelinesDict[charName][animName] = new Dictionary();
-				}
-				
-				timelinesDict[charName][animName][objectClassNames[position]] = timelineForMotion;
-				timelineVector[tlVectorIndex] = timelineForMotion;
-				++tlVectorIndex;
-				timelineForMotion.pause();
 			}
 			return timelineVector;
 		}
@@ -233,36 +222,13 @@ package ppppu
 		private function KeyPressCheck(keyEvent:KeyboardEvent):void
 		{
 			var keyPressed:int = keyEvent.keyCode;
-			if (keyPressed == Keyboard.LEFT)
-			{
-				//mainStage.prevFrame();
-				--DEBUG_animationFrame;
-				if (DEBUG_animationFrame <= 0)
-				{
-					DEBUG_animationFrame = 120;
-				}
-				masterTemplate.JumpToFrameAnimation(DEBUG_animationFrame);
-				trace("Frame: " + DEBUG_animationFrame);
-			}
-			else if (keyPressed == Keyboard.RIGHT)
-			{
-				DEBUG_animationFrame++;
-				if (DEBUG_animationFrame > 120)
-				{
-					DEBUG_animationFrame = 1;
-				}
-				masterTemplate.JumpToFrameAnimation(DEBUG_animationFrame);
-				trace("Frame: " + DEBUG_animationFrame);
-				//mainStage.nextFrame();
-				//masterTemplate.JumpToFrameAnimation(mainStage.currentFrame);
-				//trace("Frame: " + (((mainStage.currentFrame-1) % 120)+1));
-			}
+
 			if(keyDownStatus[keyPressed] == undefined || keyDownStatus[keyPressed] == false || (keyPressed == 48 || keyPressed == 96))
 			{
 				if((keyPressed == 48 || keyPressed == 96))
 				{
 					var randomAnimIndex:int = Math.floor(Math.random() * animationNameIndexes.length);
-					SwitchTemplateAnimation(animationNameIndexes[randomAnimIndex]);
+					SwitchTemplateAnimation(randomAnimIndex);
 				}
 				else if((!(49 > keyPressed) && !(keyPressed > 57)) ||  (!(97 > keyPressed) && !(keyPressed > 105)))
 				{
@@ -271,15 +237,18 @@ package ppppu
 					{
 						keyPressed = keyPressed - 48;
 					}
-					SwitchTemplateAnimation(animationNameIndexes[keyPressed - 49]);
+					SwitchTemplateAnimation(keyPressed - 49);
 				}
 				
 				if (keyPressed == Keyboard.Z)
 				{
-					currentCharacter = "Default";
+					currentCharacter = defaultCharacter;
 					masterTemplate.ChangeHair("Peach");
 					masterTemplate.ChangeHeadwear(currentCharacter);
 					masterTemplate.ChangeEarring(currentCharacter);
+					
+					//Lazy way of updating the timelines. In the future, create a method that will swap in the necessary timelines and use that
+					SwitchTemplateAnimation(currentAnimationIndex);
 				}
 				if (keyPressed == Keyboard.X)
 				{
@@ -287,6 +256,9 @@ package ppppu
 					masterTemplate.ChangeHair(currentCharacter);
 					masterTemplate.ChangeHeadwear(currentCharacter);
 					masterTemplate.ChangeEarring(currentCharacter);
+					
+					//Still using the lazy way of updating the timelines.
+					SwitchTemplateAnimation(currentAnimationIndex);
 				}
 				//Debugger
 				if (keyPressed == Keyboard.S)
@@ -300,8 +272,7 @@ package ppppu
 				}
 				else if (keyPressed == Keyboard.L)
 				{
-					CreateAnimationTimelinesForCharacter("Default");
-					mainStage.addChild(masterTemplate);
+					CreateTimelinesForAllCharacterAnimations(defaultCharacter);
 				}
 				
 			}
@@ -309,12 +280,18 @@ package ppppu
 		}
 		
 		//Switches to a templated animation of a specified name
-		private function SwitchTemplateAnimation(animationName:String):void
+		private function SwitchTemplateAnimation(animationIndex:uint):void
 		{
-			//var animationDictKey:Object;
-			//var animationDictionary:Dictionary = timelinesDict["Default"][animationName];
-			//var t
-			var defaultLayerInfo:Object = layerInfoDict["Default"][animationName];
+			var animationName:String = animationNameIndexes[animationIndex];
+			if (!(defaultCharacter in timelinesDict))
+			{
+				CreateTimelineDictionaryForCharacter(defaultCharacter);
+			}
+			if (!(animationName in timelinesDict[defaultCharacter]))
+			{
+				CreateTimelinesForCharacterAnimation(defaultCharacter, animationIndex);
+			}
+			var defaultLayerInfo:Object = layerInfoDict[defaultCharacter][animationName];
 			var templateChildrenCount:uint = masterTemplate.numChildren;
 			var templateElements:Vector.<DisplayObject> = new Vector.<DisplayObject>(templateChildrenCount);
 			var ShaftMask:DisplayObject = null, Shaft:DisplayObject = null, HeadMask:DisplayObject = null, Head:DisplayObject = null;
@@ -322,13 +299,6 @@ package ppppu
 			{
 				templateElements[i] = masterTemplate.getChildAt(i);
 			}
-			var depthCount:int = 0;
-			//Counts how many objects in the layer information
-			/*for (var elementObj in defaultLayerInfo.F0)
-			{
-				++depthCount;
-			}
-			var sortedDepthElements:Array = new Array(depthCount);*/
 			var sortedDepthElements:Array = new Array();
 			for (var childIndex:uint = 0; childIndex < templateChildrenCount; ++childIndex)
 			{
@@ -393,8 +363,17 @@ package ppppu
 					masterTemplate.ChangeDefaultTimelinesUsed(index);
 				}
 			}
-			if (currentCharacter != "Default")
+			if (currentCharacter != defaultCharacter)
 			{
+				//Checks if the dictionary is null. If so, attempt to create it.
+				if (!(currentCharacter in timelinesDict))
+				{
+					CreateTimelineDictionaryForCharacter(currentCharacter);
+				}
+				if (!(animationName in timelinesDict[currentCharacter]))
+				{
+					CreateTimelinesForCharacterAnimation(currentCharacter, animationIndex);
+				}
 				var timelinesForCharacter:Dictionary = timelinesDict[currentCharacter][animationName];
 				var currCharTimeline:TimelineMax;
 				for each(currCharTimeline in timelinesForCharacter)
@@ -404,13 +383,16 @@ package ppppu
 			}
 			//Sync the animation to the main stage's timeline (main stage's current frame - animation start frame % 120 + 1 to avoid setting it to frame 0)
 			masterTemplate.PlayAnimation((mainStage.currentFrame -2) % 120 + 1);
+			currentAnimationIndex = animationIndex;
 		}
 		
-		//Attempts to create animation timelines of a template for the specified character
-		private function CreateAnimationTimelinesForCharacter(characterName:String):void
+		//Attempts to create animation timelines of a template for the specified character. 
+		/*Left for legacy purposes, not to be used anymore due to the pause incurred by calling this function (this pause is
+		 * as little as 4-6 seconds for release builds and 10-12 seconds for debug builds.*/
+		private function CreateTimelinesForAllCharacterAnimations(characterName:String):void
 		{
 			//Reference to the class that has the embed motion xmls
-			var animationMotion:Class;
+			var animationMotion:Class = null;
 			//Have to specify the full package path to the animation motion class
 			var packagePath:String = "MotionXML." + characterName + ".";
 			var fullClassPath:String;
@@ -434,7 +416,7 @@ package ppppu
 				if (animationMotion != null)
 				{
 					//Checks if the character name is Default. If so, also set these timelines to be the default timelines for the template
-					if (characterName == "Default")
+					if (characterName == defaultCharacter)
 					{
 						masterTemplate.SetDefaultTimelines(ProcessMotionStaticClass(animationMotion, masterTemplate), i);
 					}
@@ -446,21 +428,51 @@ package ppppu
 			}
 		}
 		
-		function printObject(obj:Object, numTabs:int=0): void
+		/*Attempts to create timelines of a specified animation for the specified character.*/
+		private function CreateTimelinesForCharacterAnimation(characterName:String, animationIndex:uint):void
 		{
-			var tabs:String = "";
-			for (var i:int = 0; i < numTabs; ++i)
+			//Reference to the class that has the embed motion xmls
+			var animationMotion:Class = null;
+			//Have to specify the full package path to the animation motion class
+			var packagePath:String = "MotionXML." + characterName + ".";
+			var fullClassPath:String;
+			var animationName:String;
+			
+			//Iterate through all known animations and try to find their animationmotion class.
+			if(animationIndex < animationNameIndexes.length)
 			{
-				tabs += "\t";
-			}
-			for (var k:* in obj)
-			{
-				var v:* = obj[k];
-				trace(tabs + k + " = " + v);
-				if (v)
+				animationName = animationNameIndexes[animationIndex];
+				fullClassPath = packagePath + characterName + animationName + "Motions";
+				//
+				//try
+				//{
+					animationMotion = getDefinitionByName(fullClassPath) as Class;
+				/*}
+				catch (e:ReferenceError) //animation motion wasn't found
 				{
-					printObject(v, numTabs+1);
+					animationMotion = null;
+					trace("Character " + characterName + " has no animation motion definition for animation: " + animationName);
+				}*/
+				//animation motion was found, now to process it
+				if (animationMotion != null)
+				{
+					//Checks if the character name is Default. If so, also set these timelines to be the default timelines for the template
+					if (characterName == defaultCharacter)
+					{
+						masterTemplate.SetDefaultTimelines(ProcessMotionStaticClass(animationMotion, masterTemplate), animationIndex);
+					}
+					else //Otherwise just add the timelines to the timelines dictionary, where they'll wait to be swapped in at a later time.
+					{
+						ProcessMotionStaticClass(animationMotion, masterTemplate);
+					}
 				}
+			}
+		}
+		private function CreateTimelineDictionaryForCharacter(characterName:String):void
+		{
+			if (timelinesDict[characterName] === undefined)
+			{
+				timelinesDict[characterName] = new Dictionary();
 			}
 		}
 	}

@@ -143,6 +143,13 @@ package ppppu
 			//Quick check to make sure that there are timelines in the vector
 			if (defTimelines.length > 0)
 			{
+				for (var i:int = 0, l:int = animationIndex; i < l; ++i)
+				{
+					if (animationIndex > defaultTimelines.length)
+					{
+						defaultTimelines.push(null);
+					}
+				}
 				defaultTimelines[animationIndex] = defTimelines;
 			}
 		}
@@ -268,6 +275,9 @@ package ppppu
 		//Adds a specified Timeline to the master timeline.
 		public function AddTimeline(tlToAdd:TimelineMax):void
 		{
+			//If the timeline to add is null, return out the function.
+			if (tlToAdd == null) { return; }
+			
 			//The display object that the timeline controls
 			var timelineDisplayObject:DisplayObject = tlToAdd.data.targetElement as DisplayObject;
 			//Get the name of the element that the timeline controls
