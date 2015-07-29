@@ -139,7 +139,6 @@ package
 			scleraColorMenu.setValue(scleraWorkColorTransform);
 			lipsColorMenu.addEventListener(Event.CHANGE, LipsSliderChanged);
 			lipsColorMenu.setValue(lipsWorkColorTransform);
-			trace(templateInUse.EyeL.eye.innerEyeContainer.iris.transform.colorTransform);
 			irisLColorMenu.addEventListener(Event.CHANGE, IrisLSliderChanged);
 			irisLColorMenu.setValue(irisWorkColorTransform);
 			irisRColorMenu.addEventListener(Event.CHANGE, IrisRSliderChanged);

@@ -78,6 +78,9 @@ package ppppu
 			mainStage.addChild(masterTemplate);
 			//Switch the first animation.
 			SwitchTemplateAnimation(0);
+			
+			var menu:ppppuMenu = new ppppuMenu(masterTemplate);
+			addChild(menu);
 		}
 		
 		//The "heart beat" of the flash. Ran every frame to monitor and react to certain, often frame sensitive, events
