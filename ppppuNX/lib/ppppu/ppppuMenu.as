@@ -1,5 +1,6 @@
 package ppppu 
 {
+	import com.bit101.components.Label;
 	import com.bit101.components.Panel;
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -8,6 +9,7 @@ package ppppu
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import ui.HSVCMenu;
+	import ui.PopupButton;
 	import ui.RGBAMenu;
 	import ui.SlidingPanel;
 
@@ -18,7 +20,7 @@ package ppppu
 		private var lipsWorkColorTransform:ColorTransform = new ColorTransform(0, 0, 0, 0, 255, 153, 204, 255);
 		
 		private var hairColorMenu:ui.HSVCMenu = new ui.HSVCMenu("Hair");
-		private var skinColorMenu:ui.HSVCMenu = new ui.HSVCMenu("Skin");
+		private var skinColorMenu:ui.RGBAMenu = new ui.RGBAMenu("Skin");
 		private var scleraColorMenu:ui.RGBAMenu = new ui.RGBAMenu("Sclera");
 		private var irisLColorMenu:ui.RGBAMenu = new ui.RGBAMenu("IrisL");
 		private var irisRColorMenu:ui.RGBAMenu = new ui.RGBAMenu("IrisR");
@@ -40,6 +42,57 @@ package ppppu
 			var sp_Menu:SlidingPanel = new SlidingPanel(p_Menu, new Rectangle(0, 690, 480, 30), new Point(0, 720), new Point(0, 600));
 			addChild(sp_Menu);
 			
+			var p_GradientSubMenu:Panel = new Panel(null);
+			p_GradientSubMenu.setSize(100, 80);
+			//Add labels for skin gradients sub menu
+			var l_faceGradient:Label = new Label(p_GradientSubMenu, 0, 0, "Face");
+			var l_breastGradient:Label = new Label(p_GradientSubMenu, 0, 20, "Breast");
+			var l_vulvaGradient:Label = new Label(p_GradientSubMenu, 0, 40, "Vulva");
+			var l_anusGradient:Label = new Label(p_GradientSubMenu, 0, 60, "Anus");
+			
+			
+			//Add buttons for the gradient sub menu
+			
+			//Face/Ear buttons
+			var pb_faceGradPoint1:PopupButton = new PopupButton(p_GradientSubMenu, 35, 1);
+			pb_faceGradPoint1.setSize(16, 16);
+			pb_faceGradPoint1.addChild(new ColorButtonGraphic);
+			
+			var pb_faceGradPoint2:PopupButton = new PopupButton(p_GradientSubMenu, 55, 1);
+			pb_faceGradPoint2.setSize(16, 16);
+			pb_faceGradPoint2.addChild(new ColorButtonGraphic);
+			
+			//Vulva buttons
+			var pb_vulvaGradPoint1:PopupButton = new PopupButton(p_GradientSubMenu, 35, 41);
+			pb_vulvaGradPoint1.setSize(16, 16);
+			pb_vulvaGradPoint1.addChild(new ColorButtonGraphic);
+			
+			var pb_vulvaGradPoint2:PopupButton = new PopupButton(p_GradientSubMenu, 55, 41);
+			pb_vulvaGradPoint2.setSize(16, 16);
+			pb_vulvaGradPoint2.addChild(new ColorButtonGraphic);
+			
+			//Anus buttons
+			var pb_anusGradPoint1:PopupButton = new PopupButton(p_GradientSubMenu, 35, 61);
+			pb_anusGradPoint1.setSize(16, 16);
+			pb_anusGradPoint1.addChild(new ColorButtonGraphic);
+			
+			var pb_anusGradPoint2:PopupButton = new PopupButton(p_GradientSubMenu, 55, 61);
+			pb_anusGradPoint2.setSize(16, 16);
+			pb_anusGradPoint2.addChild(new ColorButtonGraphic);
+			
+			//Breast buttons
+			var pb_breastGradPoint1:PopupButton = new PopupButton(p_GradientSubMenu, 35, 21);
+			pb_breastGradPoint1.setSize(16, 16);
+			pb_breastGradPoint1.addChild(new ColorButtonGraphic);
+			
+			var pb_breastGradPoint2:PopupButton = new PopupButton(p_GradientSubMenu, 55, 21);
+			pb_breastGradPoint2.setSize(16, 16);
+			pb_breastGradPoint2.addChild(new ColorButtonGraphic);
+			
+			var pb_breastGradPoint3:PopupButton = new PopupButton(p_GradientSubMenu, 75, 21);
+			pb_breastGradPoint3.setSize(16, 16);
+			pb_breastGradPoint3.addChild(new ColorButtonGraphic);
+			
 			var con_iris:Sprite = new Sprite();
 			irisRColorMenu.x = 160;
 			con_iris.addChild(irisLColorMenu);
@@ -58,6 +111,9 @@ package ppppu
 			
 			var pb_skin:ui.PopupButton = new ui.PopupButton(p_Menu, 10, 90, "Skin");
 			pb_skin.bindPopup(skinColorMenu, "rightOuter", "bottomInner");
+			
+			var pb_skinGradients:PopupButton = new PopupButton(p_Menu, 120, 90, "Skin Gradients");
+			pb_skinGradients.bindPopup(p_GradientSubMenu, "rightOuter", "bottomInner");
 			
 			hairColorMenu.addEventListener(Event.CHANGE, HairSlidersChange);
 			skinColorMenu.addEventListener(Event.CHANGE, SkinSlidersChange);
@@ -80,58 +136,91 @@ package ppppu
 		{
 			var m:ui.RGBAMenu = e.target as ui.RGBAMenu;
 			var ct:ColorTransform = new ColorTransform(0, 0, 0, 0, m.R, m.G, m.B, m.A);
-			templateInUse.EyeL.eye.scleraContainer.scleraColor.transform.colorTransform = ct;
-			templateInUse.EyeR.eye.scleraContainer.scleraColor.transform.colorTransform = ct;
+			templateInUse.EyeL.Element.ScleraSettings.Sclera.scleraColor.transform.colorTransform = ct;
+			templateInUse.EyeR.Element.ScleraSettings.Sclera.scleraColor.transform.colorTransform = ct;
 		}
 		private function IrisLSliderChanged(e:Event)
 		{
 			var m:ui.RGBAMenu = e.target as ui.RGBAMenu;
 			var ct:ColorTransform = new ColorTransform(0, 0, 0, 0, m.R, m.G, m.B, m.A);
-			templateInUse.EyeL.eye.innerEyeContainer.iris.transform.colorTransform = ct;
+			templateInUse.EyeL.Element.InnerEyeSettings.InnerEye.Iris.transform.colorTransform = ct;
 		}
 		private function IrisRSliderChanged(e:Event)
 		{
 			var m:ui.RGBAMenu = e.target as ui.RGBAMenu;
 			var ct:ColorTransform = new ColorTransform(0, 0, 0, 0, m.R, m.G, m.B, m.A);
-			templateInUse.EyeR.eye.innerEyeContainer.iris.transform.colorTransform = ct;
+			templateInUse.EyeR.Element.InnerEyeSettings.InnerEye.Iris.transform.colorTransform = ct;
 		}
 		
 		public function SkinSlidersChange(e:Event)
 		{
-			var m:ui.HSVCMenu = e.target as ui.HSVCMenu;
-			var cmf:ColorMatrixFilter = GetColorMatrixFilter(m.H, m.S, m.V, m.C);
+			var m:ui.RGBAMenu = e.target as ui.RGBAMenu;
+			//Alpha is to never be adjustable
+			var ct:ColorTransform = new ColorTransform(0, 0, 0, 0, m.R, m.G, m.B, 255);
+			//var cmf:ColorMatrixFilter = GetColorMatrixFilter(m.H, m.S, m.V, m.C);
 			
-			templateInUse.UpperLegL.UpperLeg.Skin.filters = [cmf];
-			templateInUse.UpperLegR.UpperLeg.Skin.filters = [cmf];
-			templateInUse.Groin.Groin.Skin.filters = [cmf];
-			templateInUse.Labia.Labia.Skin.filters = [cmf];
-			templateInUse.Hips.Hips.Skin.filters = [cmf];
-			templateInUse.Chest.Chest.Skin.filters = [cmf];
-			templateInUse.ArmL.Arm.Skin.filters = [cmf];
-			templateInUse.ArmR.Arm.Skin.filters = [cmf];
-			templateInUse.ForearmL.Forearm.Skin.filters = [cmf];
-			templateInUse.ForearmR.Forearm.Skin.filters = [cmf];
-			templateInUse.ShoulderL.Shoulder.Skin.filters = [cmf];
-			templateInUse.ShoulderR.Shoulder.Skin.filters = [cmf];
-			templateInUse.Neck.Neck.Skin.filters = [cmf];
-			templateInUse.FrontButtL.FrontButt.Skin.filters = [cmf];
-			templateInUse.FrontButtR.FrontButt.Skin.filters = [cmf];
-			templateInUse.Navel.Navel.Skin.filters = [cmf];
-			templateInUse.Face.face.Skin.filters = [cmf];
-			templateInUse.AreolaL.Areola.filters = [cmf];
-			templateInUse.AreolaR.Areola.filters = [cmf];
-			templateInUse.NippleL.Nipple.filters = [cmf];
-			templateInUse.NippleR.Nipple.filters = [cmf];
-			templateInUse.EyeL.eye.eyelidContainer.eyelid.filters = [cmf];
-			templateInUse.EyeR.eye.eyelidContainer.eyelid.filters = [cmf];
-			templateInUse.EyeL.eye.scleraContainer.Skin.filters = [cmf];
-			templateInUse.EyeR.eye.scleraContainer.Skin.filters = [cmf];
-			templateInUse.BoobL.Breast.Skin.filters = [cmf];
-			templateInUse.BoobR.Breast.Skin.filters = [cmf];
-			templateInUse.EarL.Ear.Skin.filters = [cmf];
-			templateInUse.EarR.Ear.Skin.filters = [cmf];
-			templateInUse.HandL.Hand.Skin.filters = [cmf];
-			templateInUse.HandR.Hand.Skin.filters = [cmf];
+			//Color only
+			templateInUse.UpperLegL.Element.Skin.transform.colorTransform = ct;
+			templateInUse.UpperLegR.Element.Skin.transform.colorTransform = ct;
+			templateInUse.Groin.Element.Skin.transform.colorTransform = ct;
+			templateInUse.Groin2.Element.Skin.transform.colorTransform = ct;
+			templateInUse.Hips.Element.Skin.transform.colorTransform = ct;
+			templateInUse.Hips2.Element.Skin.transform.colorTransform = ct;
+			templateInUse.TurnedHips.Element.Skin.transform.colorTransform = ct;
+			templateInUse.TurnedMidTorso.Element.Skin.transform.colorTransform = ct;
+			templateInUse.TurnedUpperTorso.Element.Skin.transform.colorTransform = ct;
+			//templateInUse.Vulva.Element.SkinGradient.transform.colorTransform = ct;
+			templateInUse.Vulva2.Element.Skin.transform.colorTransform = ct;
+			//templateInUse.VulvaBackview.Element.SkinGradient.transform.colorTransform = ct;
+			//templateInUse.TurnedVulva.Element.SkinGradient.transform.colorTransform = ct;
+			//templateInUse.Anus.Element.SkinGradient.transform.colorTransform = ct;
+			templateInUse.MidTorso.Element.Skin.transform.colorTransform = ct;
+			templateInUse.UpperTorso.Element.Skin.transform.colorTransform = ct;
+			templateInUse.MidBack.Element.Skin.transform.colorTransform = ct;
+			templateInUse.UpperBack.Element.Skin.transform.colorTransform = ct;
+			templateInUse.LowerBack.Element.Skin.transform.colorTransform = ct;
+			templateInUse.Chest.Element.Skin.transform.colorTransform = ct;
+			templateInUse.ArmL.Element.Skin.transform.colorTransform = ct;
+			templateInUse.ArmR.Element.Skin.transform.colorTransform = ct;
+			templateInUse.Arm2L.Element.Skin.transform.colorTransform = ct;
+			templateInUse.Arm2R.Element.Skin.transform.colorTransform = ct;
+			templateInUse.Arm3L.Element.Skin.transform.colorTransform = ct;
+			templateInUse.Arm3R.Element.Skin.transform.colorTransform = ct;
+			templateInUse.ForearmL.Element.Skin.transform.colorTransform = ct;
+			templateInUse.ForearmR.Element.Skin.transform.colorTransform = ct;
+			templateInUse.ShoulderL.Element.Skin.transform.colorTransform = ct;
+			templateInUse.ShoulderR.Element.Skin.transform.colorTransform = ct;
+			templateInUse.Neck.Element.Skin.transform.colorTransform = ct;
+			templateInUse.FrontButtL.Element.Skin.transform.colorTransform = ct;
+			templateInUse.FrontButtR.Element.Skin.transform.colorTransform = ct;
+			templateInUse.ButtCheekL.Element.Skin.transform.colorTransform = ct;
+			templateInUse.ButtCheekR.Element.Skin.transform.colorTransform = ct;
+			templateInUse.Navel.Element.Skin.transform.colorTransform = ct;
+			//templateInUse.Face.Element.SkinGradient.transform.colorTransform = ct;
+			templateInUse.TurnedFace.Element.Skin.transform.colorTransform = ct;
+			templateInUse.TurnedFace2.Element.Skin.transform.colorTransform = ct;
+			templateInUse.TurnedFace3.Element.Skin.transform.colorTransform = ct;
+			//templateInUse.AreolaL.Element.transform.colorTransform = ct;
+			//templateInUse.AreolaR.Element.transform.colorTransform = ct;
+			//templateInUse.NippleL.Element.transform.colorTransform = ct;
+			//templateInUse.NippleR.Element.transform.colorTransform = ct;
+			templateInUse.EyeL.Element.EyelidSettings.Eyelid.transform.colorTransform = ct;
+			templateInUse.EyeR.Element.EyelidSettings.Eyelid.transform.colorTransform = ct;
+			templateInUse.EyeL.Element.ScleraSettings.Sclera.Skin.transform.colorTransform = ct;
+			templateInUse.EyeR.Element.ScleraSettings.Sclera.Skin.transform.colorTransform = ct;
+			templateInUse.BoobL.Element.Skin.transform.colorTransform = ct;
+			templateInUse.BoobR.Element.Skin.transform.colorTransform = ct;
+			//templateInUse.Boob2L.Element.SkinGradient.transform.colorTransform = ct;
+			//templateInUse.Boob2R.Element.SkinGradient.transform.colorTransform = ct;
+			//templateInUse.Boob3L.Element.SkinGradient.transform.colorTransform = ct;
+			//templateInUse.Boob3R.Element.SkinGradient.transform.colorTransform = ct;
+			templateInUse.SideBoobL.Element.Skin.transform.colorTransform = ct;
+			//templateInUse.EarL.Element.SkinGradient.transform.colorTransform = ct;
+			//templateInUse.EarR.Element.SkinGradient.transform.colorTransform = ct;
+			templateInUse.HandL.Element.Skin.transform.colorTransform = ct;
+			templateInUse.HandR.Element.Skin.transform.colorTransform = ct;
+			templateInUse.Hand2L.Element.Skin.transform.colorTransform = ct;
+			templateInUse.Hand2R.Element.Skin.transform.colorTransform = ct;
 		}
 		private function GetColorMatrixFilter(hue:Number, saturation:Number, brightness:Number, contrast:Number):ColorMatrixFilter
 		{
@@ -181,6 +270,8 @@ package ppppu
 				templateInUse.HairSide2R.filters = [cmf];
 				templateInUse.HairSide3R.filters = [cmf];
 				templateInUse.HairFront.filters = [cmf];
+				templateInUse.HairFrontAngled.filters = [cmf];
+				templateInUse.HairFrontAngled2.filters = [cmf];
 				templateInUse.HairBack.filters = [cmf];
 			}
 		}

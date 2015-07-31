@@ -50,8 +50,8 @@ package ppppu
 			//addEventListener(Event.ADDED_TO_STAGE, StageSetup);
 			SetupEyeContainer(EyeL);
 			SetupEyeContainer(EyeR);
-			if (EarL) { EarL.Element.gotoAndStop(1); EarL.Element.Skin.gotoAndStop(1); EarL.Element.Lines.gotoAndStop(1); }
-			if(EarR) {EarR.Element.gotoAndStop(1); EarR.Element.Skin.gotoAndStop(1); EarR.Element.Lines.gotoAndStop(1);}
+			if (EarL) { EarL.Element.gotoAndStop(1); EarL.Element.SkinGradient.gotoAndStop(1); EarL.Element.Lines.gotoAndStop(1); }
+			if(EarR) {EarR.Element.gotoAndStop(1); EarR.Element.SkinGradient.gotoAndStop(1); EarR.Element.Lines.gotoAndStop(1);}
 			EarringL.Element.gotoAndStop(1);
 			EarringR.Element.gotoAndStop(1);
 			Mouth.MouthBase.gotoAndStop(1);
