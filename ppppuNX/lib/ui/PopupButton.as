@@ -8,6 +8,7 @@ package ui
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.geom.Rectangle;
+	import ppppu.ppppuMenu;
 	public class PopupButton extends PushButton
 	{
 		private const panelPadding:uint = 10;
@@ -16,6 +17,7 @@ package ui
 		private var valign:String = null;
 		private var panel:Panel = null;
 		private var boundSprite:DisplayObjectContainer;
+		private var eventPriority:int = -1;
 		
 		public function PopupButton(parent:DisplayObjectContainer, xpos:Number = 0, ypos:Number =  0, label:String = "")
 		{
@@ -29,11 +31,13 @@ package ui
 			stage.removeEventListener(MouseEvent.MOUSE_DOWN, handleClick);
 		}
 		
-		private function adjustPanel(_visible:Boolean) : void
+		public function adjustPanel(_visible:Boolean) : void
 		{
 			if (panel == null) return;
-			if (panel.parent == null && _visible)  parent.addChild(panel);
-			if (panel.parent != null && !_visible) parent.removeChild(panel);
+			if (panel.parent == null && _visible)  
+			parent.addChild(panel);
+			if (panel.parent != null && !_visible) 
+			parent.removeChild(panel);
 		}
 		
 		private function togglePopup(e:Event):void 
@@ -80,7 +84,26 @@ package ui
 			}
 			adjustPanel(panel.parent == null);
 			
-			if (panel.visible) stage.addEventListener(MouseEvent.MOUSE_DOWN, handleClick);
+			if (panel.visible) 
+			{
+				/*To allow for submenus, the event listener needs information on the order to execute. Otherwise
+				 * the earliest added button will have it's handleClick done first, leaving its children to no longer
+				 * have access to the stage, causing an error if they have a function relying on the stage (like handleClick).*/
+				if (eventPriority == -1)
+				{
+					var currentContainer:DisplayObjectContainer = this;
+					//If the parent is an instance of the main menu, stop.
+					while (!(currentContainer.parent is ppppuMenu))
+					{
+						//Set currentContainer to its parent
+						currentContainer = currentContainer.parent;
+						//Increase event priority
+						++eventPriority;
+					}
+					if (eventPriority == -1) { eventPriority = 0 }; //Fail safe
+				}
+				stage.addEventListener(MouseEvent.MOUSE_DOWN, handleClick, false, eventPriority);
+			}
 			else stage.removeEventListener(MouseEvent.MOUSE_DOWN, handleClick);
 			
 		}

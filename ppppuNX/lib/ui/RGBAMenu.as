@@ -39,6 +39,7 @@ package ui
 			
 			for (var i:int = 0; i < 4; i++)
 			{
+				name = title;
 				var yOffset:uint = titleHeight + i * (sliderHeight + sliderSpacing)
 				var l:Label = new Label(this, 0, yOffset, labelStrings[i] + ":");
 				var es:ui.EditSlider = new ui.EditSlider(sliderWidth, sliderHeight, textWidth, sliderRangesMin[i], sliderRangesMax[i], sliderRangesTick[i], sliderRangesValue[i]);
@@ -97,10 +98,11 @@ package ui
 		public function setValue(ct:ColorTransform) : void
 		{
 			sliders[0].value = ct.redOffset;
-			sliders[1].value = ct.blueOffset;
-			sliders[2].value = ct.greenOffset;
+			sliders[1].value = ct.greenOffset;
+			sliders[2].value = ct.blueOffset;
 			sliders[3].value = ct.alphaOffset;
 			cc.value = ct.color;
+			dispatchEvent(new Event(Event.CHANGE));
 		}
 	}
 }
