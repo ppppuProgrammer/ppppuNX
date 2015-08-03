@@ -3,6 +3,7 @@ package ppppu
 	import avmplus.DescribeTypeJSON;
 	import com.greensock.easing.Linear;
 	import flash.display.DisplayObject;
+	import flash.display.DisplayObjectContainer;
 	import flash.display.MovieClip;
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
@@ -38,7 +39,7 @@ package ppppu
 		private var keyDownStatus:Array = [];
 		//Contains the names of the various animations that the master template can switch between. The names are indexed by their position in the vector.
 		private var animationNameIndexes:Vector.<String> = new <String>["Cowgirl", "LeanBack", "LeanForward", "Grind", "ReverseCowgirl", "Paizuri", "Blowjob", "SideRide", "Swivel", "Anal"];
-		private var characterNameList:Vector.<String> = new <String>["Peach", "Rosalina"];
+		private var characterNameList:Vector.<String> = new <String>["Peach"/*, "Rosalina"*/];
 		private const defaultCharacter:String = characterNameList[0];
 		private var currentCharacter:String = defaultCharacter;
 		private var currentAnimationIndex:uint = 0;
@@ -72,8 +73,8 @@ package ppppu
 			//Master template element disabling
 			for (var i:int = 0, l:int = masterTemplate.numChildren; i < l; ++i)
 			{
-				(masterTemplate.getChildAt(i) as MovieClip).mouseChildren = false;
-				(masterTemplate.getChildAt(i) as MovieClip).mouseEnabled = false;
+				(masterTemplate.getChildAt(i) as DisplayObjectContainer).mouseChildren = false;
+				(masterTemplate.getChildAt(i) as DisplayObjectContainer).mouseEnabled = false;
 			}
 			mainStage.addChild(masterTemplate);
 			//Switch the first animation.
@@ -246,14 +247,14 @@ package ppppu
 				if (keyPressed == Keyboard.Z)
 				{
 					currentCharacter = defaultCharacter;
-					masterTemplate.ChangeHair("Peach");
+					masterTemplate.ChangeHair(currentCharacter);
 					masterTemplate.ChangeHeadwear(currentCharacter);
 					masterTemplate.ChangeEarring(currentCharacter);
 					
 					//Lazy way of updating the timelines. In the future, create a method that will swap in the necessary timelines and use that
 					SwitchTemplateAnimation(currentAnimationIndex);
 				}
-				if (keyPressed == Keyboard.X)
+				/*if (keyPressed == Keyboard.X)
 				{
 					currentCharacter = "Rosalina";
 					masterTemplate.ChangeHair(currentCharacter);
@@ -262,7 +263,7 @@ package ppppu
 					
 					//Still using the lazy way of updating the timelines.
 					SwitchTemplateAnimation(currentAnimationIndex);
-				}
+				}*/
 				//Debugger
 				if (keyPressed == Keyboard.S)
 				{

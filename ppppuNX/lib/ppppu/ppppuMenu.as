@@ -251,7 +251,7 @@ package ppppu
 		public function SkinSlidersChange(e:Event)
 		{
 			var m:ui.RGBAMenu = e.target as ui.RGBAMenu;
-			//Alpha is to never be adjustable
+			//Alpha is to never be adjusted
 			var ct:ColorTransform = new ColorTransform(0, 0, 0, 0, m.R, m.G, m.B, 255);
 			
 			//Color only
@@ -506,9 +506,6 @@ package ppppu
 								gradientFill.colors[1] = earEdgeColor;
 							}
 							graphicsData[i] = gradientFill;
-							
-							//There should only be one gradient fill encountered, so break out the for loop.
-							break;
 						}
 					}
 					

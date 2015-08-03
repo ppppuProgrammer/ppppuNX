@@ -68,7 +68,7 @@ package ui
 			dispatchEvent(new Event(Event.CHANGE));
 		}
 		
-		public function get H():uint
+		public function get H():int
 		{
 			return sliders[labelStrings.indexOf("H")].value;
 		}
