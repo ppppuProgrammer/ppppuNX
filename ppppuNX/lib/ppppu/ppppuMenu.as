@@ -3,10 +3,14 @@ package ppppu
 	import com.bit101.components.CheckBox;
 	import com.bit101.components.Label;
 	import com.bit101.components.Panel;
+	import com.bit101.components.PushButton;
+	import flash.display.Bitmap;
 	import flash.display.Sprite;
 	import flash.display.Shape;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import io.FileReferenceHelper;
+	import io.ByteArrayLoadedEvent;
 	//import flash.events.MouseEvent;
 	import flash.filters.ColorMatrixFilter;
 	import flash.geom.ColorTransform;
@@ -184,6 +188,8 @@ package ppppu
 			var pb_skinGradients:PopupButton = new PopupButton(p_Menu, 120, 90, "Skin Gradients");
 			pb_skinGradients.bindPopup(p_GradientSubMenu, "rightOuter", "bottomInner");
 			
+			var b_File:PushButton = new PushButton(p_Menu, 230, 10, "Load File", loadFile);
+			
 			var peachBaseSkin:ColorTransform = new ColorTransform(0, 0, 0, 0, 255, 220, 198, 255);
 			var peachNippleColor:ColorTransform = new ColorTransform(0, 0, 0, 0, 255, 175, 255, 255);
 			hairColorMenu.addEventListener(Event.CHANGE, HairSlidersChange);
@@ -220,6 +226,17 @@ package ppppu
 			anusPoint1ColorMenu.setValue(peachAnusPoint1Skin);
 			anusPoint2ColorMenu.addEventListener(Event.CHANGE, AnusGradientSlidersChange);
 			anusPoint2ColorMenu.setValue(peachBaseSkin);
+		}
+		
+		private function loadFile(e:MouseEvent):void 
+		{
+			var f:FileReferenceHelper = new FileReferenceHelper(handler, "Images", "*.jpg;*.gif;*.png");
+		}
+		
+		private function handler(e:ByteArrayLoadedEvent):void 
+		{
+			var bmp:Bitmap = e.getBitmap();
+			//And do nothing with it...
 		}
 		
 		private function LipsSliderChanged(e:Event)
