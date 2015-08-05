@@ -72,9 +72,14 @@ package ui
 			
 			panelContainer.mouseEnabled = panelContainer.mouseChildren = slideActive;
 			
-			//oh god oh god oh god, hack to collapse possible active PopupButton.
+			//Triggered once when menu is closing.
 			if (!slideActive && timeoutTicks == TIMEOUT)
-				stage.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_DOWN, true, false, -1000, -1000));
+			{
+				//Mouse up event releases active dragging on sliders.
+				stage.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_UP, true, false, -1000, -1000, stage));
+				//Mouse down collapses popup buttons.
+				stage.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_DOWN, true, false, -1000, -1000, stage));
+			}
 			
 			//Prevent rounding nonsense, snap to target if distance < threshold.
 			var targetPoint:Point = slideActive ? endPoint : startPoint;
