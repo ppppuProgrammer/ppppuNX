@@ -55,6 +55,11 @@ package ppppu
 			//mainStage.addEventListener(Event.ENTER_FRAME, RunLoop);
 			this.cacheAsBitmap = true;
 			this.scrollRect = new Rectangle(0, 0, 480, 720);
+			var test:CustomElementBase = new CustomElementBase();
+			test.AddSprites(null, new DaisyHairBack(), null, new RosalinaHairBack());
+			test.x = test.y = 200; 
+			addChild(test);
+			
 		}
 		
 		//Sets up the various aspects of the flash to get it ready for performing.
@@ -274,10 +279,6 @@ package ppppu
 				{
 					masterTemplate.ResumePlayingAnimation();
 				}
-				else if (keyPressed == Keyboard.L)
-				{
-					CreateTimelinesForAllCharacterAnimations(defaultCharacter);
-				}
 				
 			}
 			keyDownStatus[keyEvent.keyCode] = true;
@@ -388,48 +389,6 @@ package ppppu
 			//Sync the animation to the main stage's timeline (main stage's current frame - animation start frame % 120 + 1 to avoid setting it to frame 0)
 			masterTemplate.PlayAnimation((mainStage.currentFrame -2) % 120 + 1);
 			currentAnimationIndex = animationIndex;
-		}
-		
-		//Attempts to create animation timelines of a template for the specified character. 
-		/*Left for legacy purposes, not to be used anymore due to the pause incurred by calling this function (this pause is
-		 * as little as 4-6 seconds for release builds and 10-12 seconds for debug builds.*/
-		private function CreateTimelinesForAllCharacterAnimations(characterName:String):void
-		{
-			//Reference to the class that has the embed motion xmls
-			var animationMotion:Class = null;
-			//Have to specify the full package path to the animation motion class
-			var packagePath:String = "MotionXML." + characterName + ".";
-			var fullClassPath:String;
-			var animationName:String;
-			//Iterate through all known animations and try to find their animationmotion class.
-			for (var i:uint = 0, l:uint = animationNameIndexes.length; i < l; ++i)
-			{
-				animationName = animationNameIndexes[i];
-				fullClassPath = packagePath + characterName + animationName + "Motions";
-				//
-				//try
-				//{
-					animationMotion = getDefinitionByName(fullClassPath) as Class;
-				/*}
-				catch (e:ReferenceError) //animation motion wasn't found
-				{
-					animationMotion = null;
-					trace("Character " + characterName + " has no animation motion definition for animation: " + animationName);
-				}*/
-				//animation motion was found, now to process it
-				if (animationMotion != null)
-				{
-					//Checks if the character name is Default. If so, also set these timelines to be the default timelines for the template
-					if (characterName == defaultCharacter)
-					{
-						masterTemplate.SetDefaultTimelines(ProcessMotionStaticClass(animationMotion, masterTemplate), i);
-					}
-					else //Otherwise just add the timelines to the timelines dictionary, where they'll wait to be swapped in at a later time.
-					{
-						ProcessMotionStaticClass(animationMotion, masterTemplate);
-					}
-				}
-			}
 		}
 		
 		/*Attempts to create timelines of a specified animation for the specified character.*/
