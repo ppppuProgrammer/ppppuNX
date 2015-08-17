@@ -16,13 +16,13 @@ package ppppu
 			addChild(new Sprite());
 			addChild(new Sprite());
 		}
-		public function ChangeBodyLayer(bodyMC:Sprite)
+		public function ChangeBodyLayer(bodyMC:Sprite):void
 		{
 			removeChildAt(1);
 			addChildAt(bodyMC, 1);
 		}
 		
-		public function ChangeCostumeLayer(costumeMC:Sprite)
+		public function ChangeCostumeLayer(costumeMC:Sprite):void
 		{
 			costumeMC.visible = true;
 			costumeMC.y = -(costumeMC.height / 2);
@@ -33,7 +33,7 @@ package ppppu
 			//addChild(costumeMC);
 		}
 		
-		public function ChangeCostumeVisibility(visibility:Boolean)
+		public function ChangeCostumeVisibility(visibility:Boolean):void
 		{
 			getChildAt(2).visible = visibility;
 		}

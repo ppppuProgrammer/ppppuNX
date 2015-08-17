@@ -80,7 +80,7 @@ package ppppu
 			InitMenu();
 		}
 				
-		private function InitMenu() : void
+		private function InitMenu():void
 		{
 			var p_Menu:Panel = new Panel(null);
 			p_Menu.setSize(480, 120);
@@ -239,33 +239,33 @@ package ppppu
 			//And do nothing with it...
 		}
 		
-		private function LipsSliderChanged(e:Event)
+		private function LipsSliderChanged(e:Event):void
 		{
 			var m:ui.RGBAMenu = e.target as ui.RGBAMenu;
 			var ct:ColorTransform = new ColorTransform(0, 0, 0, 0, m.R, m.G, m.B, m.A);
 			templateInUse.Mouth.LipsColor.transform.colorTransform = ct;
 		}
-		private function ScleraSliderChanged(e:Event)
+		private function ScleraSliderChanged(e:Event):void
 		{
 			var m:ui.RGBAMenu = e.target as ui.RGBAMenu;
 			var ct:ColorTransform = new ColorTransform(0, 0, 0, 0, m.R, m.G, m.B, m.A);
 			templateInUse.EyeL.Element.ScleraSettings.Sclera.scleraColor.transform.colorTransform = ct;
 			templateInUse.EyeR.Element.ScleraSettings.Sclera.scleraColor.transform.colorTransform = ct;
 		}
-		private function IrisLSliderChanged(e:Event)
+		private function IrisLSliderChanged(e:Event):void
 		{
 			var m:ui.RGBAMenu = e.target as ui.RGBAMenu;
 			var ct:ColorTransform = new ColorTransform(0, 0, 0, 0, m.R, m.G, m.B, m.A);
 			templateInUse.EyeL.Element.InnerEyeSettings.InnerEye.Iris.transform.colorTransform = ct;
 		}
-		private function IrisRSliderChanged(e:Event)
+		private function IrisRSliderChanged(e:Event):void
 		{
 			var m:ui.RGBAMenu = e.target as ui.RGBAMenu;
 			var ct:ColorTransform = new ColorTransform(0, 0, 0, 0, m.R, m.G, m.B, m.A);
 			templateInUse.EyeR.Element.InnerEyeSettings.InnerEye.Iris.transform.colorTransform = ct;
 		}
 		
-		public function SkinSlidersChange(e:Event)
+		public function SkinSlidersChange(e:Event):void
 		{
 			var m:ui.RGBAMenu = e.target as ui.RGBAMenu;
 			//Alpha is to never be adjusted
@@ -362,14 +362,21 @@ package ppppu
 			//colorMatrixValues[19] = 0;
 			return new ColorMatrixFilter(colorMatrixValues);
 		}
-		public function HairSlidersChange(e:Event)
+		public function HairSlidersChange(e:Event):void
 		{
 			var m:ui.HSVCMenu = e.target as ui.HSVCMenu;
 			var cmf:ColorMatrixFilter = GetColorMatrixFilter(m.H, m.S, m.V, m.C);
 			
 			if (templateInUse)
 			{
-				templateInUse.HairSideL.filters = [cmf];
+				/*Hair Elements are no longer a part of the master template at compile time. They must be added
+				 * during run time and when this happens they are added to a vector.*/
+				var masterTemplate:MasterTemplate = templateInUse as MasterTemplate;
+				for (var i:int = 0, l:int = masterTemplate.customHairElements.length; i < l; ++i)
+				{
+					masterTemplate.customHairElements[i].filters = [cmf];
+				}
+				/*templateInUse.HairSideL.filters = [cmf];
 				templateInUse.HairSide2L.filters = [cmf];
 				templateInUse.HairSide3L.filters = [cmf];
 				templateInUse.HairSideR.filters = [cmf];
@@ -378,10 +385,10 @@ package ppppu
 				templateInUse.HairFront.filters = [cmf];
 				templateInUse.HairFrontAngled.filters = [cmf];
 				templateInUse.HairFrontAngled2.filters = [cmf];
-				templateInUse.HairBack.filters = [cmf];
+				templateInUse.HairBack.filters = [cmf];*/
 			}
 		}
-		public function NipplesSlidersChanged(e:Event)
+		public function NipplesSlidersChanged(e:Event):void
 		{
 			var m:ui.RGBAMenu = e.target as ui.RGBAMenu;
 			var ct:ColorTransform = new ColorTransform(0, 0, 0, 0, m.R, m.G, m.B, m.A);
@@ -391,7 +398,7 @@ package ppppu
 			areolaGradientValues[1] = GetColorUintValue(m.R, m.G, m.B, 0);
 			GradientChange(AREOLAGRADIENT, areolaGradientChangingElements);
 		}
-		public function FaceGradientSlidersChange(e:Event)
+		public function FaceGradientSlidersChange(e:Event):void
 		{
 			var m:RGBAMenu = e.target as RGBAMenu;
 			switch(m.name)
@@ -406,7 +413,7 @@ package ppppu
 			GradientChange(FACEGRADIENT, faceGradientChangingElements);
 		}
 		
-		public function BreastGradientSlidersChange(e:Event)
+		public function BreastGradientSlidersChange(e:Event):void
 		{
 			var m:RGBAMenu = e.target as RGBAMenu;
 			switch(m.name)
@@ -424,7 +431,7 @@ package ppppu
 			GradientChange(BREASTGRADIENT, breastGradientChangingElements);
 		}
 		
-		public function VulvaGradientSlidersChange(e:Event)
+		public function VulvaGradientSlidersChange(e:Event):void
 		{
 			var m:RGBAMenu = e.target as RGBAMenu;
 			switch(m.name)
@@ -439,7 +446,7 @@ package ppppu
 			GradientChange(VULVAGRADIENT, vulvaGradientChangingElements);
 		}
 		
-		public function AnusGradientSlidersChange(e:Event)
+		public function AnusGradientSlidersChange(e:Event):void
 		{
 			var m:RGBAMenu = e.target as RGBAMenu;
 			switch(m.name)
@@ -456,7 +463,7 @@ package ppppu
 			GradientChange(ANUSGRADIENT, anusGradientChangingElements);
 		}
 		
-		private function AutoAdjustColorHandler(e:MouseEvent)
+		private function AutoAdjustColorHandler(e:MouseEvent):void
 		{
 			var cbox:CheckBox = e.target as CheckBox;
 			autoAdjustGradientsToBaseSkin = cbox.selected;

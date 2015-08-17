@@ -4,6 +4,7 @@ package ppppu
 	import com.greensock.TimelineMax;
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
+	import flash.display.Sprite;
 	import flash.events.Event;
 	//import EyeContainer;
 	//import MouthContainer;
@@ -19,13 +20,17 @@ package ppppu
 		//Master template version this array contains arrays of timelines. To access the index of the appropriate animation, refer to the animationNameIndexes array in ppppuCore.
 		private var defaultTimelines:Vector.<Vector.<TimelineMax>> = new Vector.<Vector.<TimelineMax>>();
 		
+		private var customElementsList:Vector.<AnchoredElementBase> = new Vector.<AnchoredElementBase>();
+		public var currentAnimationName:String = "None";
+		
+		
 		/*public var EyeL:EyeContainer;
 		public var EyeR:EyeContainer;*/
 		public var EarringL:EarringContainer;
 		public var EarringR:EarringContainer;
 		public var Headwear:HeadwearContainer;
 		public var Mouth:MouthContainer;
-		public var HairBack:HairBackContainer;
+		/*public var HairBack:HairBackContainer;
 		public var HairSideL:BaseHairSide;
 		public var HairSideR:BaseHairSide;
 		public var HairSide2L:BaseHairSide2;
@@ -34,7 +39,7 @@ package ppppu
 		public var HairSide3R:BaseHairSide3;
 		public var HairFront:BaseHairFront;
 		public var HairFrontAngled:BaseFrontAngledHair;
-		public var HairFrontAngled2:BaseFrontAngled2Hair;
+		public var HairFrontAngled2:BaseFrontAngled2Hair;*/
 		public var LowerLegL:LowerLegContainer;
 		public var LowerLegR:LowerLegContainer;
 		public var EarL:MovieClip;
@@ -44,6 +49,9 @@ package ppppu
 		
 		//private var millisecPerFrame:Number;
 		/*public var HairFront:BaseHairFront;*/
+		
+		public var customSkinElements:Vector.<AnchoredElementBase> = new Vector.<AnchoredElementBase>();
+		public var customHairElements:Vector.<AnchoredElementBase> = new Vector.<AnchoredElementBase>();
 		
 		public function TemplateBase()
 		{
@@ -60,7 +68,7 @@ package ppppu
 			Mouth.Tongue.Element.gotoAndStop(1);
 			Mouth.Tongue.visible = false;
 			Headwear.Element.gotoAndStop(1);
-			SetupHair();
+			//SetupHair();
 			if(LowerLegL) LowerLegL.Element.Color.gotoAndStop(1);
 			if(LowerLegR) LowerLegR.Element.Color.gotoAndStop(1);
 		}
@@ -71,7 +79,32 @@ package ppppu
 			millisecPerFrame = 1000.0 / stage.frameRate;
 			removeEventListener(Event.ADDED_TO_STAGE, StageSetup);
 		}*/
-		private function SetupHair():void
+		public function AddNewElementToTemplate(element:AnchoredElementBase):void
+		{
+			if (element)
+			{
+				//Add the object to the display object list
+				addChild(element);
+				//Add a property for the element.
+				this[element.name] = element;
+				//Add the element to the custom elements list. This is for updating purposes.
+				customElementsList[customElementsList.length] = element;
+				if (element.type == AnchoredElementBase.HAIRELEMENT)
+				{
+					customHairElements[customHairElements.length] = element;
+				}
+			}
+		}
+		
+		public function UpdateAnchoredElements():void
+		{
+			for (var i:int = 0, l:int = customElementsList.length; i < l; ++i )
+			{
+				customElementsList[i].Update();
+			}
+		}
+		
+		/*private function SetupHair():void
 		{
 			HairBack.Element.gotoAndStop(1);
 			HairSideL.gotoAndStop(1);
@@ -86,9 +119,9 @@ package ppppu
 			}
 			HairFrontAngled.gotoAndStop(1);
 			HairFrontAngled2.gotoAndStop(1);
-		}
+		}*/
 		
-		public function ChangeHair(character:String):void
+		/*public function ChangeHair(character:String):void
 		{
 			HairBack.Element.gotoAndStop(character);
 			HairSideL.gotoAndStop(character);
@@ -103,7 +136,7 @@ package ppppu
 			}
 			HairFrontAngled.gotoAndStop(character);
 			HairFrontAngled2.gotoAndStop(character);
-		}
+		}*/
 		
 		public function ChangeHeadwear(character:String):void
 		{

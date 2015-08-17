@@ -20,7 +20,7 @@
 			//this.addEventListener(Event.ENTER_FRAME, this.FrameCheck);
 		}
 		
-		public function ChangeMouth(mouthType:String)
+		public function ChangeMouth(mouthType:String):void
 		{
 			MouthBase.gotoAndStop(mouthType);
 			LipsColor.gotoAndStop(MouthBase.currentFrame);

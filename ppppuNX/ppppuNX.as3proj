@@ -21,7 +21,7 @@
   <!-- Build options -->
   <build>
     <option accessible="False" />
-    <option advancedTelemetry="True" />
+    <option advancedTelemetry="False" />
     <option allowSourcePathOverlap="True" />
     <option benchmark="False" />
     <option es="False" />

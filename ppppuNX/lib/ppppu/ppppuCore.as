@@ -1,19 +1,20 @@
 package ppppu 
 {
 	import avmplus.DescribeTypeJSON;
+	import CharacterHair.*;
 	import com.greensock.easing.Linear;
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 	import flash.display.MovieClip;
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
+	import flash.geom.Point;
 	import flash.net.registerClassAlias;
 	import flash.system.Capabilities;
 	import flash.utils.ByteArray;
 	import flash.utils.describeType;
 	import flash.utils.Dictionary;
 	import flash.utils.getDefinitionByName;
-	import MotionXML.Default.DefaultAnalMotions;
 	import ppppu.TweenDataParser;
 	import com.greensock.plugins.*;
 	import com.greensock.data.TweenLiteVars;
@@ -52,13 +53,13 @@ package ppppu
 			mainStage.stop();
 			addChild(mainStage);
 			//Add an event listener that'll allow for frame checking.
-			//mainStage.addEventListener(Event.ENTER_FRAME, RunLoop);
+			mainStage.addEventListener(Event.ENTER_FRAME, RunLoop);
 			this.cacheAsBitmap = true;
 			this.scrollRect = new Rectangle(0, 0, 480, 720);
-			var test:CustomElementBase = new CustomElementBase();
+			/*var test:CustomElementContainer = new CustomElementContainer();
 			test.AddSprites(null, new DaisyHairBack(), null, new RosalinaHairBack());
 			test.x = test.y = 200; 
-			addChild(test);
+			addChild(test);*/
 			
 		}
 		
@@ -75,15 +76,88 @@ package ppppu
 			TweenLite.defaultOverwrite = "none";
 			//Disable mouse interaction for various objects
 			mainStage.mouseEnabled = false;
-			//Master template element disabling
-			for (var i:int = 0, l:int = masterTemplate.numChildren; i < l; ++i)
-			{
-				(masterTemplate.getChildAt(i) as DisplayObjectContainer).mouseChildren = false;
-				(masterTemplate.getChildAt(i) as DisplayObjectContainer).mouseEnabled = false;
-			}
+			//Master template mouse event disabling
+			masterTemplate.mouseChildren = false;
+			masterTemplate.mouseEnabled = false;
 			mainStage.addChild(masterTemplate);
 			//Switch the first animation.
 			SwitchTemplateAnimation(0);
+			
+			//Testing new way of handling hair
+			var hairFront:AnchoredElementBase = new AnchoredElementBase("HairFront", AnchoredElementBase.HAIRELEMENT);
+			hairFront.AddNewDefinition(new PeachHairFrontDef());
+			hairFront.AddNewDefinition(new RosalinaHairFrontDef());
+			//hairFront.ChangeDisplayedSprite(0);
+			hairFront.SetAnchorObjectForAnimation(masterTemplate["Face"],"Cowgirl", "LeanBack", "LeanForward", "Paizuri", "Swivel");
+			
+			var hairFrontAngled:AnchoredElementBase = new AnchoredElementBase("HairFrontAngled", AnchoredElementBase.HAIRELEMENT);
+			hairFrontAngled.AddNewDefinition(new PeachHairFrontAngledDef);
+			hairFrontAngled.SetAnchorObjectForAnimation(masterTemplate["TurnedFace2"], "Grind", "SideRide");
+			hairFrontAngled.SetAnchorObjectForAnimation(masterTemplate["TurnedFace3"], "Blowjob");
+			
+			var hairFrontAngled2:AnchoredElementBase = new AnchoredElementBase("HairFrontAngled2", AnchoredElementBase.HAIRELEMENT);
+			hairFrontAngled2.AddNewDefinition(new PeachHairFrontAngled2Def);
+			hairFrontAngled2.SetAnchorObjectForAnimation(masterTemplate["TurnedFace"], "Anal", "ReverseCowgirl");
+			
+			
+			var hairSideL:AnchoredElementBase = new AnchoredElementBase("HairSideL", AnchoredElementBase.HAIRELEMENT);
+			hairSideL.AddNewDefinition(new PeachHairSideLDef);
+			hairSideL.SetAnchorObjectForAnimation(masterTemplate["Face"], "Cowgirl", "LeanBack", "LeanForward", "Paizuri", "Swivel");
+			hairSideL.SetAnchorObjectForAnimation(masterTemplate["TurnedFace2"], "Grind", "SideRide");
+			hairSideL.SetAnchorObjectForAnimation(masterTemplate["TurnedFace3"], "Blowjob");
+			hairSideL.SetAnchorObjectForAnimation(masterTemplate["TurnedFace"], "Anal", "ReverseCowgirl");
+			
+			var hairSideR:AnchoredElementBase = new AnchoredElementBase("HairSideR", AnchoredElementBase.HAIRELEMENT);
+			hairSideR.AddNewDefinition(new PeachHairSideRDef);
+			hairSideR.SetAnchorObjectForAnimation(masterTemplate["Face"], "Cowgirl", "LeanBack", "LeanForward", "Paizuri", "Swivel");
+			hairSideR.SetAnchorObjectForAnimation(masterTemplate["TurnedFace2"], "Grind", "SideRide");
+			hairSideR.SetAnchorObjectForAnimation(masterTemplate["TurnedFace3"], "Blowjob");
+			hairSideR.SetAnchorObjectForAnimation(masterTemplate["TurnedFace"], "Anal", "ReverseCowgirl");
+			
+			var hairSide2L:AnchoredElementBase = new AnchoredElementBase("HairSide2L", AnchoredElementBase.HAIRELEMENT);
+			hairSide2L.AddNewDefinition(new PeachHairSide2LDef);
+			hairSide2L.SetAnchorObjectForAnimation(masterTemplate["Face"], "Cowgirl", "LeanBack", "LeanForward", "Paizuri", "Swivel");
+			hairSide2L.SetAnchorObjectForAnimation(masterTemplate["TurnedFace2"], "Grind", "SideRide");
+			hairSide2L.SetAnchorObjectForAnimation(masterTemplate["TurnedFace3"], "Blowjob");
+			hairSide2L.SetAnchorObjectForAnimation(masterTemplate["TurnedFace"], "Anal", "ReverseCowgirl");
+			
+			var hairSide2R:AnchoredElementBase = new AnchoredElementBase("HairSide2R", AnchoredElementBase.HAIRELEMENT);
+			hairSide2R.AddNewDefinition(new PeachHairSide2RDef);
+			hairSide2R.SetAnchorObjectForAnimation(masterTemplate["Face"], "Cowgirl", "LeanBack", "LeanForward", "Paizuri", "Swivel");
+			hairSide2R.SetAnchorObjectForAnimation(masterTemplate["TurnedFace2"], "Grind", "SideRide");
+			hairSide2R.SetAnchorObjectForAnimation(masterTemplate["TurnedFace3"], "Blowjob");
+			hairSide2R.SetAnchorObjectForAnimation(masterTemplate["TurnedFace"], "Anal", "ReverseCowgirl");
+			
+			var hairSide3L:AnchoredElementBase = new AnchoredElementBase("HairSide3L", AnchoredElementBase.HAIRELEMENT);
+			hairSide3L.AddNewDefinition(new PeachHairSide3LDef);
+			hairSide3L.SetAnchorObjectForAnimation(masterTemplate["Face"], "Cowgirl", "LeanBack", "LeanForward", "Paizuri", "Swivel");
+			hairSide3L.SetAnchorObjectForAnimation(masterTemplate["TurnedFace2"], "Grind", "SideRide");
+			hairSide3L.SetAnchorObjectForAnimation(masterTemplate["TurnedFace3"], "Blowjob");
+			hairSide3L.SetAnchorObjectForAnimation(masterTemplate["TurnedFace"], "Anal", "ReverseCowgirl");
+			
+			var hairSide3R:AnchoredElementBase = new AnchoredElementBase("HairSide3R", AnchoredElementBase.HAIRELEMENT);
+			hairSide3R.AddNewDefinition(new PeachHairSide3RDef);
+			hairSide3R.SetAnchorObjectForAnimation(masterTemplate["Face"], "Cowgirl", "LeanBack", "LeanForward", "Paizuri", "Swivel");
+			hairSide3R.SetAnchorObjectForAnimation(masterTemplate["TurnedFace2"], "Grind", "SideRide");
+			hairSide3R.SetAnchorObjectForAnimation(masterTemplate["TurnedFace3"], "Blowjob");
+			hairSide3R.SetAnchorObjectForAnimation(masterTemplate["TurnedFace"], "Anal", "ReverseCowgirl");
+			
+			var hairBack:AnchoredElementBase = new AnchoredElementBase("HairBack", AnchoredElementBase.HAIRELEMENT);
+			
+			//masterTemplate.AddNewElementToTemplate(hairBack); //Not to be uncommented until better layer control has been coded
+			masterTemplate.AddNewElementToTemplate(hairSideL);
+			masterTemplate.AddNewElementToTemplate(hairSideR);
+			masterTemplate.AddNewElementToTemplate(hairFront);
+			masterTemplate.AddNewElementToTemplate(hairSide2L);
+			masterTemplate.AddNewElementToTemplate(hairSide2R);
+			//masterTemplate.AddNewElementToTemplate(hairSide3L);
+			//masterTemplate.AddNewElementToTemplate(hairSide3R);
+			
+			
+			
+			
+			masterTemplate.AddNewElementToTemplate(hairFrontAngled);
+			masterTemplate.AddNewElementToTemplate(hairFrontAngled2);
 			
 			var menu:ppppuMenu = new ppppuMenu(masterTemplate);
 			addChild(menu);
@@ -93,6 +167,7 @@ package ppppu
 		private function RunLoop(e:Event):void
 		{
 			var mainStageMC:MovieClip = (e.target as MovieClip);
+			masterTemplate.UpdateAnchoredElements();
 			//2nd frame is the start point of the animations and playing of Beep block skyway.
 			if (mainStageMC.currentFrame == 1)
 			{
@@ -173,12 +248,14 @@ package ppppu
 						
 						//Create the array of tweens, using the vector of tween data.
 						var tweens:Array = embedTweenDataConverter.IntegrateTweenData(templateElement, vectorOfTweenData);
-						//Create the timeline that will use the tweens
-						var timelineForMotion:TimelineMax = new TimelineMax( { useFrames:true, repeat: -1, paused:true } );
+						//Declare the timeline for the tweens
+						var timelineForMotion:TimelineMax = null; 
 						
 						//If the target element from the template exists
 						if (templateElement != null)
 						{
+							//Create the timeline that will use the tweens
+							timelineForMotion = new TimelineMax( { useFrames:true, repeat: -1, paused:true } );
 							//Set the data of the timeline to have a property for the template's element 
 							timelineForMotion.data = { targetElement: templateElement };
 							//Add the tweens
@@ -187,7 +264,7 @@ package ppppu
 						else
 						{
 							//Without the template element, tweening isn't possible.
-							trace("Critical Warning! Animation " + animName + " is unable to target Element \"" + objectClassNames[position] + "\"");
+							trace("Critical Warning! Animation " + animName + " is unable to target Element \"" + currentVarName + "\"");
 						}
 						
 						//Dictionary existance checking. Create a dictionary if the specified one doesn't exist.
@@ -203,12 +280,15 @@ package ppppu
 							timelinesDict[charName][animName] = new Dictionary();
 						}
 						
-						//Setting the timelines dictionary to contain the created time line.
-						timelinesDict[charName][animName][currentVarName] = timelineForMotion;
-						//Adding the created timeline to timelineVector
-						timelineVector[timelineVector.length] = timelineForMotion;
-						//Tell the timeline to start paused, to help save on processing a little.
-						timelineForMotion.pause();
+						if (timelineForMotion)
+						{
+							//Setting the timelines dictionary to contain the created time line.
+							timelinesDict[charName][animName][currentVarName] = timelineForMotion;
+							//Adding the created timeline to timelineVector
+							timelineVector[timelineVector.length] = timelineForMotion;
+							//Tell the timeline to start paused, to help save on processing a little.
+							timelineForMotion.pause();
+						}
 					}
 					else
 					{
@@ -251,13 +331,37 @@ package ppppu
 				
 				if (keyPressed == Keyboard.Z)
 				{
-					currentCharacter = defaultCharacter;
+					/*currentCharacter = defaultCharacter;
 					masterTemplate.ChangeHair(currentCharacter);
 					masterTemplate.ChangeHeadwear(currentCharacter);
 					masterTemplate.ChangeEarring(currentCharacter);
 					
 					//Lazy way of updating the timelines. In the future, create a method that will swap in the necessary timelines and use that
-					SwitchTemplateAnimation(currentAnimationIndex);
+					SwitchTemplateAnimation(currentAnimationIndex);*/
+				}
+				if (keyPressed == Keyboard.Q)
+				{
+					masterTemplate.HairFront.ChangeDisplayedSprite(0);
+				}
+				else if (keyPressed == Keyboard.W)
+				{
+					masterTemplate["HairFront"].ChangeDisplayedSprite(1);
+				}
+				if (keyPressed == Keyboard.X)
+				{
+					masterTemplate.Face.Element.scaleX *= .75;
+				}
+				if (keyPressed == Keyboard.C)
+				{
+					masterTemplate.Face.Element.scaleX *= 1.25;
+				}
+				if (keyPressed == Keyboard.V)
+				{
+					masterTemplate.Face.Element.scaleY *= .75;
+				}
+				if (keyPressed == Keyboard.B)
+				{
+					masterTemplate.Face.Element.scaleY *= 1.25;
 				}
 				/*if (keyPressed == Keyboard.X)
 				{
@@ -340,7 +444,8 @@ package ppppu
 			var topDepth:int = templateChildrenCount - 1;
 			for (var arrayPosition:int = sortedDepthElements.length -1; arrayPosition >= 0; --arrayPosition )
 			{
-				masterTemplate.setChildIndex(sortedDepthElements[arrayPosition], topDepth - arrayPosition);
+				if(sortedDepthElements[arrayPosition])
+				{masterTemplate.setChildIndex(sortedDepthElements[arrayPosition], topDepth - arrayPosition);}
 			}
 			//If a mask-masked pair exists, set the mask. Otherwise, nullify the mask.
 			if (Shaft && ShaftMask)
@@ -389,6 +494,7 @@ package ppppu
 			//Sync the animation to the main stage's timeline (main stage's current frame - animation start frame % 120 + 1 to avoid setting it to frame 0)
 			masterTemplate.PlayAnimation((mainStage.currentFrame -2) % 120 + 1);
 			currentAnimationIndex = animationIndex;
+			masterTemplate.currentAnimationName = animationName;
 		}
 		
 		/*Attempts to create timelines of a specified animation for the specified character.*/

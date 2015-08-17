@@ -5,9 +5,7 @@ package ppppu
 	import com.greensock.TweenLite;
 	import flash.geom.Matrix;
 	import flash.utils.Dictionary;
-	import flash.xml.*;
 	import flash.display.DisplayObject;
-	import mx.utils.XMLUtil;
 	import com.greensock.data.TweenLiteVars;
 	/**
 	 * ...
@@ -23,6 +21,7 @@ package ppppu
 		
 		public function IntegrateTweenData(targetObject:DisplayObject, tweenDataObjects:Vector.<Object>):Array
 		{
+			if (!targetObject) { return null;}
 			//var targetName:String = ;
 			//trace(targetObject.name);
 			var tweensArray:Array = new Array();
