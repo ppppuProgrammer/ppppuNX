@@ -60,7 +60,7 @@ package ppppu
 			test.AddSprites(null, new DaisyHairBack(), null, new RosalinaHairBack());
 			test.x = test.y = 200; 
 			addChild(test);*/
-			
+			masterTemplate.visible = false;
 		}
 		
 		//Sets up the various aspects of the flash to get it ready for performing.
@@ -79,7 +79,12 @@ package ppppu
 			//Master template mouse event disabling
 			masterTemplate.mouseChildren = false;
 			masterTemplate.mouseEnabled = false;
+			for (var childIndex:uint = 0, templateChildrenCount:uint = masterTemplate.numChildren; childIndex < templateChildrenCount; ++childIndex)
+			{
+				masterTemplate.getChildAt(childIndex).visible = false;
+			}
 			mainStage.addChild(masterTemplate);
+			
 			//Switch the first animation.
 			SwitchTemplateAnimation(0);
 			
@@ -147,11 +152,11 @@ package ppppu
 			//masterTemplate.AddNewElementToTemplate(hairBack); //Not to be uncommented until better layer control has been coded
 			masterTemplate.AddNewElementToTemplate(hairSideL);
 			masterTemplate.AddNewElementToTemplate(hairSideR);
-			masterTemplate.AddNewElementToTemplate(hairFront);
+			masterTemplate.AddNewElementToTemplate(hairSide3L);
+			masterTemplate.AddNewElementToTemplate(hairSide3R);
 			masterTemplate.AddNewElementToTemplate(hairSide2L);
 			masterTemplate.AddNewElementToTemplate(hairSide2R);
-			//masterTemplate.AddNewElementToTemplate(hairSide3L);
-			//masterTemplate.AddNewElementToTemplate(hairSide3R);
+			masterTemplate.AddNewElementToTemplate(hairFront);
 			
 			
 			
@@ -161,20 +166,24 @@ package ppppu
 			
 			var menu:ppppuMenu = new ppppuMenu(masterTemplate);
 			addChild(menu);
+			
+			mainStage.play();
 		}
 		
 		//The "heart beat" of the flash. Ran every frame to monitor and react to certain, often frame sensitive, events
 		private function RunLoop(e:Event):void
 		{
 			var mainStageMC:MovieClip = (e.target as MovieClip);
+			masterTemplate.Update(((mainStageMC.currentFrame -2) % 120) + 1);
 			masterTemplate.UpdateAnchoredElements();
 			//2nd frame is the start point of the animations and playing of Beep block skyway.
-			if (mainStageMC.currentFrame == 1)
+			/*if (mainStageMC.currentFrame == 1)
 			{
-				mainStageMC.stop();
-			}
+				
+			}*/
 			if (mainStageMC.currentFrame == 2)
 			{
+				masterTemplate.visible = true;
 				//Go to the 
 				SwitchTemplateAnimation(currentAnimationIndex);
 				masterTemplate.PlayAnimation(mainStageMC.currentFrame);
@@ -381,6 +390,7 @@ package ppppu
 				}
 				else if (keyPressed == Keyboard.R)
 				{
+					mainStage.play();
 					masterTemplate.ResumePlayingAnimation();
 				}
 				
@@ -392,6 +402,7 @@ package ppppu
 		private function SwitchTemplateAnimation(animationIndex:uint):void
 		{
 			var animationName:String = animationNameIndexes[animationIndex];
+			masterTemplate.currentAnimationName = animationName;
 			if (!(defaultCharacter in timelinesDict))
 			{
 				CreateTimelineDictionaryForCharacter(defaultCharacter);
@@ -401,7 +412,15 @@ package ppppu
 				CreateTimelinesForCharacterAnimation(defaultCharacter, animationIndex);
 			}
 			var defaultLayerInfo:Object = layerInfoDict[defaultCharacter][animationName];
-			var templateChildrenCount:uint = masterTemplate.numChildren;
+			var currentCharLayerInfo:Object=null;
+			if (defaultCharacter != currentCharacter)
+			{
+				currentCharLayerInfo = layerInfoDict[currentCharacter][animationName];
+			}
+			masterTemplate.SetElementDepthLayout(defaultLayerInfo);
+			masterTemplate.ImmediantLayoutUpdate((mainStage.currentFrame -2) % 120 + 1);
+			//masterTemplate.ChangeElementDepths(defaultLayerInfo);
+			/*var templateChildrenCount:uint = masterTemplate.numChildren;
 			var templateElements:Vector.<DisplayObject> = new Vector.<DisplayObject>(templateChildrenCount);
 			var ShaftMask:DisplayObject = null, Shaft:DisplayObject = null, HeadMask:DisplayObject = null, Head:DisplayObject = null;
 			for (var i:uint = 0; i < templateChildrenCount; ++i)
@@ -464,7 +483,7 @@ package ppppu
 			else if (Head && !HeadMask)
 			{
 				Head.mask = null;
-			}
+			}*/
 			
 			for (var index:uint = 0, length:uint = animationNameIndexes.length; index < length; ++index)
 			{
@@ -494,7 +513,7 @@ package ppppu
 			//Sync the animation to the main stage's timeline (main stage's current frame - animation start frame % 120 + 1 to avoid setting it to frame 0)
 			masterTemplate.PlayAnimation((mainStage.currentFrame -2) % 120 + 1);
 			currentAnimationIndex = animationIndex;
-			masterTemplate.currentAnimationName = animationName;
+			
 		}
 		
 		/*Attempts to create timelines of a specified animation for the specified character.*/

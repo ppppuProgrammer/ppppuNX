@@ -12,14 +12,12 @@ package CharacterHair
 		public function PeachHairSideLDef() 
 		{
 			super();
-			//mySprite = new PeachHairSide();
 			SetSprite(new PeachHairSide());
 			SetInitialMatrix(13.6, -166.4);
 			
 			pairedCharacter = "Peach";
 			
 			SetScaleFactors([.505, .61], "Cowgirl", "Swivel", "LeanBack", "LeanForward", "Paizuri");
-			//SetAttachPoints(new Point(-34.975 - 15, 19.25 - 3.5), "Cowgirl", "Swivel", "LeanBack", "LeanForward", "Paizuri");
 			SetAttachPoints(new Point(-34.975 - 15, 19.25), "Cowgirl", "Swivel", "LeanBack", "LeanForward", "Paizuri");
 			
 			SetScaleFactors([.377, .538], "Anal", "ReverseCowgirl");
@@ -31,6 +29,7 @@ package CharacterHair
 			scaleFactors["Blowjob"] = [.347, .588];
 			attachPoints["Blowjob"] = new Point(38.5, 154.5);
 			
+			depthOffsets["Cowgirl"] = 6;
 		}
 		
 	}

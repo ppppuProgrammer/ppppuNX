@@ -23,6 +23,11 @@ package ppppu
 		private var customElementsList:Vector.<AnchoredElementBase> = new Vector.<AnchoredElementBase>();
 		public var currentAnimationName:String = "None";
 		
+		//An Object that contains a number of depth layout change Objects for specified frames of the current animation.
+		private var currentAnimationElementDepthLayout:Object;
+		//The element depth layout for the latest frame based depth change of the animation.
+		private var latestFrameDepthLayout:Object;
+		private var elementDepthLayoutChangeFrames:Array;
 		
 		/*public var EyeL:EyeContainer;
 		public var EyeR:EyeContainer;*/
@@ -93,6 +98,197 @@ package ppppu
 				{
 					customHairElements[customHairElements.length] = element;
 				}
+			}
+		}
+		
+		/*Function that tests if there is a element depth layout change that it to occur on the specified frame and if so, start using
+		 * that layout. Should be called every frame.*/
+		public function Update(animFrame:int):void
+		{
+			var depthChangeIndex:int = elementDepthLayoutChangeFrames.indexOf("F"+animFrame);
+			if (depthChangeIndex != -1)
+			{
+				//var currentFrameDepthLayout:Object = currentElementDepthLayout.("F" + animFrame);
+				latestFrameDepthLayout = currentAnimationElementDepthLayout[elementDepthLayoutChangeFrames[depthChangeIndex]];
+				ChangeElementDepths(latestFrameDepthLayout);
+			}
+		}
+		
+		/*Modifies the elements depth layout to match the latest layout that should be used. For example, if an animation has 3 layout changes
+		 * at frame 1, 34 and 90 and there is a switch to this animation on the 89th frame, the layout for the 34th frame will be used. 
+		 * This function should be called when the animation is switched*/
+		public function ImmediantLayoutUpdate(animFrame:int):void
+		{
+			//Start at the end and work backwards
+			for (var i:int = elementDepthLayoutChangeFrames.length - 1; i >= 0; --i)
+			{
+				var frame:String = elementDepthLayoutChangeFrames[i];
+				frame = frame.substring(1);
+				var depthChangeFrame:int = parseInt(frame, 10);
+				if (animFrame >= depthChangeFrame)
+				{
+					latestFrameDepthLayout = currentAnimationElementDepthLayout[elementDepthLayoutChangeFrames[i]];
+					ChangeElementDepths(latestFrameDepthLayout);
+				}
+			}
+		}
+		
+		public function ChangeElementDepths(depthLayout:Object):void
+		{
+			var templateChildrenCount:uint = numChildren;
+			var templateElements:Vector.<DisplayObject> = new Vector.<DisplayObject>(templateChildrenCount);
+			var ShaftMask:DisplayObject = null, Shaft:DisplayObject = null, HeadMask:DisplayObject = null, Head:DisplayObject = null;
+			for (var i:uint = 0; i < templateChildrenCount; ++i)
+			{
+				templateElements[i] = getChildAt(i);
+			}
+			var sortedDepthElements:Array = new Array();
+			for (var childIndex:uint = 0; childIndex < templateChildrenCount; ++childIndex)
+			{
+				var element:DisplayObject = templateElements[childIndex];
+				element.visible = false;
+				var elementName:String = element.name;
+
+				if (elementName in depthLayout)
+				{	
+					sortedDepthElements[depthLayout[elementName]] = element;
+					//Mask checking
+					
+					//Shaft
+					if (elementName.indexOf("PenisShaft") != -1 && elementName.indexOf("Mask") != -1)
+					{
+						ShaftMask = element;
+					}
+					else if (elementName.indexOf("PenisShaft") != -1)
+					{
+						Shaft = element;
+					}
+					
+					//Head
+					if (elementName.indexOf("PenisHead") != -1 && elementName.indexOf("Mask") != -1)
+					{
+						HeadMask = element;
+					}
+					else if (elementName.indexOf("PenisHead") != -1)
+					{
+						Head = element;
+					}
+				}
+			}
+			
+			//With the base list sorted, now custom elements can be added.
+			var sortedCustomHairElements:Vector.<AnchoredElementBase> = customHairElements.sort(Helper_SortCustomElementDepthsFunc);
+			var firstNegativeDepthElement:Boolean = true;
+			var lastNegativeNumber:int = 0;
+			//var 
+			for (var customHairIndex:int = 0, customHairLength:int = customHairElements.length; customHairIndex < customHairLength; ++customHairIndex)
+			{
+				var customElement:AnchoredElementBase = sortedCustomHairElements[customHairIndex];
+				if (currentAnimationName in customElement.anchoredDisplayObjectDict)
+				{
+					//sortedCustomHairElements[customHairIndex];
+					var hairDepthOffset:int = customElement.GetCurrentDepthOffset();
+					
+					var anchoredObjectIndex:int = sortedDepthElements.indexOf(this[customElement.GetAnchoredObjectName()]);
+					var anchoredObjectBaseDepth:int = depthLayout[customElement.GetAnchoredObjectName()];
+					var anchorDepthDiff:int = anchoredObjectIndex - anchoredObjectBaseDepth;
+					var combinedDepth:int = hairDepthOffset + anchoredObjectIndex;
+					if (hairDepthOffset < 0) 
+					{
+						combinedDepth -= anchorDepthDiff;
+						//if(firstNegativeDepthElement)
+						//{++combinedDepth; firstNegativeDepthElement = false; }
+					}
+					sortedDepthElements.splice(combinedDepth, 0, customElement);
+				}
+				//First, sort the custom hair elements by their depth offsets
+				/*var customElement:AnchoredElementBase = customHairElements[customHairIndex];
+				if (currentAnimationName in customElement.anchoredDisplayObjectDict)
+				{
+					if (sortedCustomHairElements.length == 0)
+					{
+						sortedCustomHairElements[sortedCustomHairElements.length] = customElement;
+					}
+					else
+					{
+						if(customElement.GetCurrentDepthOffset() > 
+					}
+				}*/
+				
+				//var customElement:AnchoredElementBase = customHairElements[customHairIndex];
+				/*if (currentAnimationName in customElement.anchoredDisplayObjectDict)
+				{
+					var hairDepthOffset:int = customElement.GetCurrentDepthOffset();
+					var anchoredObjectIndex:int = sortedDepthElements.indexOf(this[customElement.GetAnchoredObjectName()]);
+					//trace(anchoredObjectIndex);
+					var anchoredObjectBaseDepth:int = depthLayout[customElement.GetAnchoredObjectName()];
+					//var anchoredObjectCurrentDepth:int = getChildIndex(this[customElement.GetAnchoredObjectName()]);
+					//var anchorDepthDiff:int = anchoredObjectCurrentDepth - anchoredObjectBaseDepth;
+					//var combinedDepth:int = hairDepthOffset + anchoredObjectCurrentDepth + anchorDepthDiff;
+					var combinedDepth:int = hairDepthOffset + anchoredObjectIndex + ( anchoredObjectIndex - anchoredObjectBaseDepth);
+					sortedDepthElements.splice(combinedDepth, 0, customElement);
+				}*/
+				//customHairElements[customHairIndex].ChangeLayerDepth(latestFrameDepthLayout);
+			}
+			//orig version
+			/*for (var customHairIndex:int = 0, customHairLength:int = customHairElements.length; customHairIndex < customHairLength; ++customHairIndex)
+			{
+				//First, sort the custom hair elements by their depth offsets
+				
+				var customElement:AnchoredElementBase = customHairElements[customHairIndex];
+				if (currentAnimationName in customElement.anchoredDisplayObjectDict)
+				{
+					var hairDepthOffset:int = customElement.GetCurrentDepthOffset();
+					var anchoredObjectIndex:int = sortedDepthElements.indexOf(this[customElement.GetAnchoredObjectName()]);
+					//trace(anchoredObjectIndex);
+					var anchoredObjectBaseDepth:int = depthLayout[customElement.GetAnchoredObjectName()];
+					//var anchoredObjectCurrentDepth:int = getChildIndex(this[customElement.GetAnchoredObjectName()]);
+					//var anchorDepthDiff:int = anchoredObjectCurrentDepth - anchoredObjectBaseDepth;
+					//var combinedDepth:int = hairDepthOffset + anchoredObjectCurrentDepth + anchorDepthDiff;
+					var combinedDepth:int = hairDepthOffset + anchoredObjectIndex + ( anchoredObjectIndex - anchoredObjectBaseDepth);
+					sortedDepthElements.splice(combinedDepth, 0, customElement);
+				}
+				//customHairElements[customHairIndex].ChangeLayerDepth(latestFrameDepthLayout);
+			}*/
+			
+			var topDepth:int = templateChildrenCount - 1;
+			for (var arrayPosition:int = 0, length:int = sortedDepthElements.length; arrayPosition < length; ++arrayPosition )
+			{
+				if(sortedDepthElements[arrayPosition])
+				{
+					setChildIndex(sortedDepthElements[arrayPosition], numChildren - 1);
+					(sortedDepthElements[arrayPosition] as Sprite).visible = true;
+					trace(arrayPosition + ": " + sortedDepthElements[arrayPosition].name);
+				}
+			}
+			//version for layer info json files that used 0 as front 
+			/*for (var arrayPosition:int = sortedDepthElements.length -1; arrayPosition >= 0; --arrayPosition )
+			{
+				if(sortedDepthElements[arrayPosition])
+				{
+					setChildIndex(sortedDepthElements[arrayPosition], topDepth - arrayPosition);
+					(sortedDepthElements[arrayPosition] as Sprite).visible = true;
+				}
+			}*/
+			
+			
+			//If a mask-masked pair exists, set the mask. Otherwise, nullify the mask.
+			if (Shaft && ShaftMask)
+			{
+				Shaft.mask = ShaftMask;
+			}
+			else if (Shaft && !ShaftMask)
+			{
+				Shaft.mask = null;
+			}
+			
+			if (Head && HeadMask)
+			{
+				Head.mask = HeadMask;
+			}
+			else if (Head && !HeadMask)
+			{
+				Head.mask = null;
 			}
 		}
 		
@@ -291,8 +487,6 @@ package ppppu
 			}
 			//Remove the array of timelines from the master timeline, leaving it clear for another animation.
 			masterTimeline.remove(childTimelines);
-			//Unused, if remove() calls actually kills timelines (as in, no longer exist in memory), then use clear()
-			//masterTimeline.clear();
 		}
 		
 		//Adds the timelines contained in a vector to the master timeline.
@@ -362,6 +556,17 @@ package ppppu
 			}
 		}
 		
+		public function SetElementDepthLayout(layout:Object):void
+		{
+			
+			elementDepthLayoutChangeFrames  = new Array();
+			for(var index:String in layout)
+			{
+				elementDepthLayoutChangeFrames[elementDepthLayoutChangeFrames.length] = index;
+			}
+			currentAnimationElementDepthLayout = layout;
+			
+		}
 		//public function GetName():String{return this.name}
 		
 		/*public function TemplateBase() 
@@ -376,6 +581,16 @@ package ppppu
 			EyeL.ResetInitialTransforms();
 			EyeR.ResetInitialTransforms();
 		}*/
+		
+		private function Helper_SortCustomElementDepthsFunc(elementOne:AnchoredElementBase, elementTwo:AnchoredElementBase):int
+		{
+			var eOneDepth:int = elementOne.GetCurrentDepthOffset(); 
+			var eTwoDepth:int = elementTwo.GetCurrentDepthOffset();
+			
+			if (eOneDepth < eTwoDepth){return -1;}
+			else if (eOneDepth > eTwoDepth){return 1;}
+			else { return 0;}
+		}
 		
 	}
 

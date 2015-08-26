@@ -20,14 +20,16 @@ package ppppu
 		 * Value - The Point relative of the attached to element to be positioned at*/
 		public var attachPoints:Dictionary;// = new Dictionary();
 		public var pairedCharacter:String; //The character this hair belongs to
-		//private static const fallbackScale:Number = 1.0;
-		//private static const fallbackAttachPoint:Point = Point();
-		//public var attachPointOverride:Point = null;
+		/*Dictionary that tells how far away from the anchored object the element containing this definition
+		 * should be. The base depth layout (found in the "[animation name] layer info.json" files) should be used as a reference
+		 * for what the depth offset should be.*/
+		public var depthOffsets:Dictionary; 
 		private const DegToRad:Number = (Math.PI / 180.0);
 		public function HairDefinition() 
 		{
 			scaleFactors = new Dictionary();
 			attachPoints = new Dictionary();
+			depthOffsets = new Dictionary();
 			//scaleFactors["Fallback"] = 1.0;
 			//attachPoints["Fallback"] = Point(0,0);
 		}

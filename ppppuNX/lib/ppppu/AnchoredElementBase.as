@@ -129,6 +129,54 @@ package ppppu
 				}
 			}
 		}
+		
+		public function GetCurrentDepthOffset():int
+		{
+			var depthOffsetValue:int = 0;
+			if (masterTemplate && masterTemplate.currentAnimationName in currentDefinitionUsed.depthOffsets)
+			{
+				depthOffsetValue = currentDefinitionUsed.depthOffsets[masterTemplate.currentAnimationName];
+			}
+			return depthOffsetValue;
+		}
+		
+		public function ChangeLayerDepth(layoutInfo:Object):void
+		{
+			if (masterTemplate && currentlyAnchoredObject)
+			{
+				var anchoredObjIndex:int = layoutInfo[currentlyAnchoredObject.name];
+				var anchoredObjIndex2:int = masterTemplate.getChildIndex(currentlyAnchoredObject);
+				var depthOffset:int = 0;
+				if (masterTemplate.currentAnimationName in currentDefinitionUsed.depthOffsets)
+				{
+					depthOffset = currentDefinitionUsed.depthOffsets[masterTemplate.currentAnimationName];
+				}
+				//currentlyAnchoredObject.getChildIndex
+				masterTemplate.setChildIndex(this, anchoredObjIndex + depthOffset);
+			}
+		}
+		
+		public function GetAnchoredObjectDepth():int
+		{
+			var anchorDepth:int = -1;
+			if (currentlyAnchoredObject && masterTemplate)
+			{
+				anchorDepth = masterTemplate.getChildIndex(currentlyAnchoredObject);
+			}
+			
+			
+			return anchorDepth;
+		}
+		
+		public function GetAnchoredObjectName():String
+		{
+			if (currentlyAnchoredObject)
+			{
+				return currentlyAnchoredObject.name;
+			}
+			
+			return null;
+		}
 	}
 
 }

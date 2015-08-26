@@ -19,35 +19,59 @@ var i = 0;
 var currentLayer;
 var currentElementName;
 var currentElement;
-var textToWrite = "\'{\"F0\":{";
+var thisFrameDepthLayout;
+var frameString = "F" + (mcTl.currentFrame+1);
+var textToWrite = "\'{";
+thisFrameDepthLayout = "\"" + frameString + "\":{";
 var fileSaveURI = flash.documents[0].pathURI;
 var fileSaveURI = fileSaveURI.slice(0, fileSaveURI.lastIndexOf("/")+1) + mcTl.name + " layer info.json";
-//fl.outputPanel.clear();
+fl.outputPanel.clear();
 var layerDepth = 0;
-for(i; i < l; ++i)
+//back to front version (matches Flash's depth management behavior)
+//depth of 0 is the back 
+for(i=l-1; i >= 0; --i)
 {
 	currentLayer = mcTl.layers[i];
 	//fl.trace(currentLayer.name);
 	//fl.trace(currentLayer.layerType);
-	if(currentLayer.frameCount > 0 && currentLayer.layerType != "guide" && currentLayer.layerType != "folder")
+	if(currentLayer.frameCount > 0 && currentLayer.layerType != "guide" && currentLayer.layerType != "folder" && currentLayer.visible == true && currentLayer.outline == false)
 	{
-		textToWrite += "\"" + currentLayer.name + "\":" + layerDepth.toString();
-		if(i+1 < l){textToWrite += ","}
-		++layerDepth;
-		/*currentElement = currentLayer.frames[0].elements[0];
-		if(currentElement)
+		if(layerDepth > 0)
 		{
-			if(currentElement.elementType == "instance")
-			{
-				currentElementName = currentElement.name;
-				//fl.trace(currentElementName);
-				if(currentElementName != "" && currentElementName != null)
-				{
-					currentLayer.name = currentElementName;
-				}
-			}
-		}*/
+			thisFrameDepthLayout += ",";
+		}
+		thisFrameDepthLayout += "\"" + currentLayer.name + "\":" + layerDepth.toString();
+		++layerDepth;
 	}
 }
-textToWrite += "}}\'";
-FLfile.write(fileSaveURI, textToWrite);
+
+// front to back version
+//depth of 0 is the front
+/*for(i; i < l; ++i)
+{
+	currentLayer = mcTl.layers[i];
+	//fl.trace(currentLayer.name);
+	//fl.trace(currentLayer.layerType);
+	if(currentLayer.frameCount > 0 && currentLayer.layerType != "guide" && currentLayer.layerType != "folder" && currentLayer.visible == true && currentLayer.outline == false)
+	{
+		if(layerDepth > 0)
+		{
+			thisFrameDepthLayout += ",";
+		}
+		thisFrameDepthLayout += "\"" + currentLayer.name + "\":" + layerDepth.toString();
+		++layerDepth;
+	}
+}*/
+thisFrameDepthLayout += "}";
+textToWrite += thisFrameDepthLayout;
+textToWrite += "}\'";
+if(frameString == "F1")
+{
+	FLfile.write(fileSaveURI, textToWrite);
+	fl.trace("Successfully saved");
+}
+else
+{
+	fl.trace("Place the following text into " + mcTl.name + " layer info.json before the last instance of \"}\" (if it doesn't exist, please run this script again with the first frame selected on the timeline) :");
+	fl.trace("," + thisFrameDepthLayout);
+}

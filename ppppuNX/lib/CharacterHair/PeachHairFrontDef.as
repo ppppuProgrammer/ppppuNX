@@ -17,6 +17,8 @@ package CharacterHair
 			//attachPoints["Cowgirl"] = attachPoints["Swivel"] = attachPoints["LeanBack"]= attachPoints["LeanForward"] = attachPoints["Paizuri"] = new Point(3.6, -57.3);
 			mySprite = new PeachHairFront();
 			pairedCharacter = "Peach";
+			
+			depthOffsets["Cowgirl"] = 9;
 		}
 	}
 }

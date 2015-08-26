@@ -30,6 +30,8 @@ package CharacterHair
 			
 			scaleFactors["Blowjob"] = [.347, .588];
 			attachPoints["Blowjob"] = new Point(38.5, 154.5);
+			
+			depthOffsets["Cowgirl"] = 5;
 		}
 		
 	}
