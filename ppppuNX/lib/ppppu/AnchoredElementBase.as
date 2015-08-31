@@ -18,7 +18,6 @@ package ppppu
 		private var currentDefinitionUsed:HairDefinition;
 		private var currentlyDisplayedSprite:Sprite = null;
 		private var currentlyAnchoredObject:Sprite = null;
-		//public var attachPointDict:Dictionary = new Dictionary();
 		public var anchoredDisplayObjectDict:Dictionary = new Dictionary();
 		public var type:int;
 		public static const SKINELEMENT:int = 1;
@@ -127,12 +126,35 @@ package ppppu
 					 * the element visible here.*/
 					this.visible = true; 
 				}
+				else
+				{
+					//Element wasn't set properly, don't let it be visible.
+					this.visible = false;
+				}
 			}
 		}
 		
-		public function GetCurrentDepthOffset():int
+		//Ensures that the anchored element is using the anchor display object for the current animation.
+		public function RefreshCurrentAnchor():void
 		{
-			var depthOffsetValue:int = 0;
+			if (masterTemplate)
+			{
+				var currentAnimationName:String = masterTemplate.currentAnimationName;
+				//Check if the object this is anchored to is invisible. If so, time to find the object this should be anchored to now.
+				if (currentlyAnchoredObject == null || currentlyAnchoredObject.visible == false)
+				{
+					currentlyAnchoredObject = null;
+					if (masterTemplate.currentAnimationName in anchoredDisplayObjectDict)
+					{
+						currentlyAnchoredObject = anchoredDisplayObjectDict[currentAnimationName];
+					}
+				}
+			}
+		}
+		
+		public function GetCurrentDepthOffset():Number
+		{
+			var depthOffsetValue:Number = 0.0;
 			if (masterTemplate && masterTemplate.currentAnimationName in currentDefinitionUsed.depthOffsets)
 			{
 				depthOffsetValue = currentDefinitionUsed.depthOffsets[masterTemplate.currentAnimationName];
@@ -151,7 +173,6 @@ package ppppu
 				{
 					depthOffset = currentDefinitionUsed.depthOffsets[masterTemplate.currentAnimationName];
 				}
-				//currentlyAnchoredObject.getChildIndex
 				masterTemplate.setChildIndex(this, anchoredObjIndex + depthOffset);
 			}
 		}

@@ -17,6 +17,10 @@ package CharacterHair
 			//attachPoints["Anal"] = attachPoints["ReverseCowgirl"] = new Point(3.6, -57.3);
 			mySprite = new PeachHairFrontAngled2();
 			pairedCharacter = "Peach";
+			
+			//depthOffsets["Anal"] = ;
+			//depthOffsets["ReverseCowgirl"] = ;
+			SetDepthOffsets(8.2, "Anal", "ReverseCowgirl");
 		}
 		
 	}

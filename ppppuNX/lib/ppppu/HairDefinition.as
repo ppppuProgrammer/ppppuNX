@@ -17,7 +17,8 @@ package ppppu
 		public var scaleFactors:Dictionary;// = new Dictionary();
 		/*Dictionary that details how the element should be scale in relation to its attached to object.
 		 * Key - String of the animation name
-		 * Value - The Point relative of the attached to element to be positioned at*/
+		 * Value - The Point relative of the attached to element to be positioned at
+		 * Formula for approximating attach point (using flash ide reference): ((anchor element's x/y) - (anchored element's x/y)) * .75  */
 		public var attachPoints:Dictionary;// = new Dictionary();
 		public var pairedCharacter:String; //The character this hair belongs to
 		/*Dictionary that tells how far away from the anchored object the element containing this definition
@@ -37,11 +38,11 @@ package ppppu
 		protected function SetSprite(defSprite:Sprite):void
 		{
 			
-			var mat:Matrix = defSprite.transform.matrix;
+			/*var mat:Matrix = defSprite.transform.matrix;
 			var bounds:Rectangle = defSprite.getBounds(defSprite); // get the bounds relative to the movie clip
 			mat.tx = -bounds.left; //left and top will be the registration point of the clip
 			mat.ty = -bounds.top; 
-			defSprite.transform.matrix = mat;
+			defSprite.transform.matrix = mat;*/
 			mySprite = defSprite;
 		}
 		
@@ -76,6 +77,20 @@ package ppppu
 				if (animationName)
 				{
 					attachPoints[animationName] = attachPoint;
+				}
+			}
+		}
+		
+		//Helper function to set the same depth offset for multiple animations
+		 
+		public function SetDepthOffsets(offset:Number, ... args):void
+		{
+			for (var argIndex:int = 0, argsLength:int = args.length; argIndex < argsLength; ++argIndex)
+			{
+				var animationName:String = args[argIndex] as String;
+				if (animationName)
+				{
+					depthOffsets[animationName] = offset;
 				}
 			}
 		}

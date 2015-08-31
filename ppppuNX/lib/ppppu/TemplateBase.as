@@ -35,25 +35,12 @@ package ppppu
 		public var EarringR:EarringContainer;
 		public var Headwear:HeadwearContainer;
 		public var Mouth:MouthContainer;
-		/*public var HairBack:HairBackContainer;
-		public var HairSideL:BaseHairSide;
-		public var HairSideR:BaseHairSide;
-		public var HairSide2L:BaseHairSide2;
-		public var HairSide2R:BaseHairSide2;
-		public var HairSide3L:BaseHairSide3;
-		public var HairSide3R:BaseHairSide3;
-		public var HairFront:BaseHairFront;
-		public var HairFrontAngled:BaseFrontAngledHair;
-		public var HairFrontAngled2:BaseFrontAngled2Hair;*/
 		public var LowerLegL:LowerLegContainer;
 		public var LowerLegR:LowerLegContainer;
 		public var EarL:MovieClip;
 		public var EarR:MovieClip;
 		public var EyeL:EyeContainer;
 		public var EyeR:EyeContainer;
-		
-		//private var millisecPerFrame:Number;
-		/*public var HairFront:BaseHairFront;*/
 		
 		public var customSkinElements:Vector.<AnchoredElementBase> = new Vector.<AnchoredElementBase>();
 		public var customHairElements:Vector.<AnchoredElementBase> = new Vector.<AnchoredElementBase>();
@@ -176,17 +163,18 @@ package ppppu
 				}
 			}
 			
+			/*Anchored elements need to be updated now to be up to date on the current animation and if need be, change their anchored
+			DisplayObject object.*/
+			RefreshAnchorForAnchoredElements();
+			
 			//With the base list sorted, now custom elements can be added.
 			var sortedCustomHairElements:Vector.<AnchoredElementBase> = customHairElements.sort(Helper_SortCustomElementDepthsFunc);
-			var firstNegativeDepthElement:Boolean = true;
-			var lastNegativeNumber:int = 0;
 			//var 
 			for (var customHairIndex:int = 0, customHairLength:int = customHairElements.length; customHairIndex < customHairLength; ++customHairIndex)
 			{
 				var customElement:AnchoredElementBase = sortedCustomHairElements[customHairIndex];
 				if (currentAnimationName in customElement.anchoredDisplayObjectDict)
 				{
-					//sortedCustomHairElements[customHairIndex];
 					var hairDepthOffset:int = customElement.GetCurrentDepthOffset();
 					
 					var anchoredObjectIndex:int = sortedDepthElements.indexOf(this[customElement.GetAnchoredObjectName()]);
@@ -196,60 +184,10 @@ package ppppu
 					if (hairDepthOffset < 0) 
 					{
 						combinedDepth -= anchorDepthDiff;
-						//if(firstNegativeDepthElement)
-						//{++combinedDepth; firstNegativeDepthElement = false; }
 					}
 					sortedDepthElements.splice(combinedDepth, 0, customElement);
 				}
-				//First, sort the custom hair elements by their depth offsets
-				/*var customElement:AnchoredElementBase = customHairElements[customHairIndex];
-				if (currentAnimationName in customElement.anchoredDisplayObjectDict)
-				{
-					if (sortedCustomHairElements.length == 0)
-					{
-						sortedCustomHairElements[sortedCustomHairElements.length] = customElement;
-					}
-					else
-					{
-						if(customElement.GetCurrentDepthOffset() > 
-					}
-				}*/
-				
-				//var customElement:AnchoredElementBase = customHairElements[customHairIndex];
-				/*if (currentAnimationName in customElement.anchoredDisplayObjectDict)
-				{
-					var hairDepthOffset:int = customElement.GetCurrentDepthOffset();
-					var anchoredObjectIndex:int = sortedDepthElements.indexOf(this[customElement.GetAnchoredObjectName()]);
-					//trace(anchoredObjectIndex);
-					var anchoredObjectBaseDepth:int = depthLayout[customElement.GetAnchoredObjectName()];
-					//var anchoredObjectCurrentDepth:int = getChildIndex(this[customElement.GetAnchoredObjectName()]);
-					//var anchorDepthDiff:int = anchoredObjectCurrentDepth - anchoredObjectBaseDepth;
-					//var combinedDepth:int = hairDepthOffset + anchoredObjectCurrentDepth + anchorDepthDiff;
-					var combinedDepth:int = hairDepthOffset + anchoredObjectIndex + ( anchoredObjectIndex - anchoredObjectBaseDepth);
-					sortedDepthElements.splice(combinedDepth, 0, customElement);
-				}*/
-				//customHairElements[customHairIndex].ChangeLayerDepth(latestFrameDepthLayout);
 			}
-			//orig version
-			/*for (var customHairIndex:int = 0, customHairLength:int = customHairElements.length; customHairIndex < customHairLength; ++customHairIndex)
-			{
-				//First, sort the custom hair elements by their depth offsets
-				
-				var customElement:AnchoredElementBase = customHairElements[customHairIndex];
-				if (currentAnimationName in customElement.anchoredDisplayObjectDict)
-				{
-					var hairDepthOffset:int = customElement.GetCurrentDepthOffset();
-					var anchoredObjectIndex:int = sortedDepthElements.indexOf(this[customElement.GetAnchoredObjectName()]);
-					//trace(anchoredObjectIndex);
-					var anchoredObjectBaseDepth:int = depthLayout[customElement.GetAnchoredObjectName()];
-					//var anchoredObjectCurrentDepth:int = getChildIndex(this[customElement.GetAnchoredObjectName()]);
-					//var anchorDepthDiff:int = anchoredObjectCurrentDepth - anchoredObjectBaseDepth;
-					//var combinedDepth:int = hairDepthOffset + anchoredObjectCurrentDepth + anchorDepthDiff;
-					var combinedDepth:int = hairDepthOffset + anchoredObjectIndex + ( anchoredObjectIndex - anchoredObjectBaseDepth);
-					sortedDepthElements.splice(combinedDepth, 0, customElement);
-				}
-				//customHairElements[customHairIndex].ChangeLayerDepth(latestFrameDepthLayout);
-			}*/
 			
 			var topDepth:int = templateChildrenCount - 1;
 			for (var arrayPosition:int = 0, length:int = sortedDepthElements.length; arrayPosition < length; ++arrayPosition )
@@ -260,17 +198,7 @@ package ppppu
 					(sortedDepthElements[arrayPosition] as Sprite).visible = true;
 					trace(arrayPosition + ": " + sortedDepthElements[arrayPosition].name);
 				}
-			}
-			//version for layer info json files that used 0 as front 
-			/*for (var arrayPosition:int = sortedDepthElements.length -1; arrayPosition >= 0; --arrayPosition )
-			{
-				if(sortedDepthElements[arrayPosition])
-				{
-					setChildIndex(sortedDepthElements[arrayPosition], topDepth - arrayPosition);
-					(sortedDepthElements[arrayPosition] as Sprite).visible = true;
-				}
-			}*/
-			
+			}	
 			
 			//If a mask-masked pair exists, set the mask. Otherwise, nullify the mask.
 			if (Shaft && ShaftMask)
@@ -299,23 +227,13 @@ package ppppu
 				customElementsList[i].Update();
 			}
 		}
-		
-		/*private function SetupHair():void
+		public function RefreshAnchorForAnchoredElements():void
 		{
-			HairBack.Element.gotoAndStop(1);
-			HairSideL.gotoAndStop(1);
-			HairSideR.gotoAndStop(1);
-			HairSide2L.gotoAndStop(1);
-			HairSide2R.gotoAndStop(1);
-			HairSide3L.gotoAndStop(1);
-			HairSide3R.gotoAndStop(1);
-			if (HairFront)
+			for (var i:int = 0, l:int = customElementsList.length; i < l; ++i )
 			{
-				HairFront.gotoAndStop(1);
+				customElementsList[i].RefreshCurrentAnchor();
 			}
-			HairFrontAngled.gotoAndStop(1);
-			HairFrontAngled2.gotoAndStop(1);
-		}*/
+		}
 		
 		/*public function ChangeHair(character:String):void
 		{
@@ -395,17 +313,6 @@ package ppppu
 				//Tell the child timeline to play at the specified time
 				(childTimelines[i] as TimelineMax).play(startAtFrame);
 			}
-			
-			//masterTimeline.
-			//The timelines and tweens are time based, so there needs to be a conversion from frame to time (in milliseconds)
-			//masterTimeline.play((startAtFrame * millisecPerFrame) / 1000.0);
-			//Get all timelines currently used
-			/*var childTimelines:Array = masterTimeline.getChildren(!true, false);
-			for (var i:int = 0, l:int = childTimelines.length; i < l; ++i)
-			{
-				//Tell the child timeline to play at the specified time
-				(childTimelines[i] as TimelineMax).play((startAtFrame * millisecPerFrame)/1000.0 );
-			}*/
 		}
 		
 		public function ResumePlayingAnimation():void
@@ -431,14 +338,12 @@ package ppppu
 			else
 			{
 				var childTimelines:Array = masterTimeline.getChildren(true, false);
-				//var time:Number = ((startAtFrame * millisecPerFrame) / 1000.0)+0.01;
 				
 				for (var i:int = 0, l:int = childTimelines.length; i < l; ++i)
 				{
 					(childTimelines[i] as TimelineMax).seek(time);
 				}
 			}
-			//trace(time);
 		}
 		
 		/*Pauses the animation. Currently used, it's just here in case there is a time where the animation needs to be paused. 
@@ -509,6 +414,7 @@ package ppppu
 			var timelineDisplayObject:DisplayObject = tlToAdd.data.targetElement as DisplayObject;
 			//Get the name of the element that the timeline controls
 			var timelineForPart:String = timelineDisplayObject.name;
+			
 			//Make the display object visible
 			timelineDisplayObject.visible = true;
 			var currentFrame:int = this.currentFrame;
@@ -584,11 +490,31 @@ package ppppu
 		
 		private function Helper_SortCustomElementDepthsFunc(elementOne:AnchoredElementBase, elementTwo:AnchoredElementBase):int
 		{
-			var eOneDepth:int = elementOne.GetCurrentDepthOffset(); 
-			var eTwoDepth:int = elementTwo.GetCurrentDepthOffset();
+			var eOneDepth:Number = elementOne.GetCurrentDepthOffset(); 
+			var eTwoDepth:Number = elementTwo.GetCurrentDepthOffset();
 			
-			if (eOneDepth < eTwoDepth){return -1;}
-			else if (eOneDepth > eTwoDepth){return 1;}
+			var eOneDepthInt:int = int(eOneDepth);
+			var eTwoDepthInt:int = int(eTwoDepth);
+			
+			var orderingSign:int = 1;
+			/*For when the objects are fighting for the same base depth. In order for the object that should be on the top  to actually be
+			in the right position, the element with the highest depth value has to actually be put before the compared element with the lower depth value.
+			Reason for this is due to how flash handles depth collisions, with the most recently added element taking the depth set and pushing the original element at that place and everything else on top up by 1.
+			i.e. element1(e1) has depth offset of 4, element2(e2) has depth offset of 4.1 and the anchor has a depth of 40. The intention is to that e2 should be on top of e1. 
+			Without the below check though, it would be ordered [e1, e2], so when it's time to set the index, e1 is added first, 
+			with a depth of 44 and e2 then added at 44, pushing e1 to 45, erronously making e1 top of e2*/
+			if (eOneDepthInt == eTwoDepthInt)
+			{
+				//Reverse how the sorting is done.
+				orderingSign = -1;
+				/*if (eOneDepth < eTwoDepth){return 1;}
+				else if (eOneDepth > eTwoDepth){return -1;}
+				else { return 0;}*/
+			}
+			
+			//For radically different depth values
+			if (eOneDepth < eTwoDepth){return -1*orderingSign;}
+			else if (eOneDepth > eTwoDepth){return 1*orderingSign;}
 			else { return 0;}
 		}
 		

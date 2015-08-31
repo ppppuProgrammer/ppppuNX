@@ -17,9 +17,13 @@ package CharacterHair
 			//attachPoints["Grind"] = attachPoints["SideRide"] = new Point(3.6, -57.3);
 			scaleFactors["Blowjob"] = [.80, .46];
 			attachPoints["Blowjob"] = new Point(3.6, -57.3);
-			depthOffsets["Blowjob"];
+			//depthOffsets["Blowjob"];
 			mySprite = new PeachHairFrontAngled();
 			pairedCharacter = "Peach";
+			
+			//depthOffsets["SideRide"] = ;
+			//depthOffsets["Grind"] = ;
+			depthOffsets["Blowjob"] = 8.2;
 		}
 		
 	}

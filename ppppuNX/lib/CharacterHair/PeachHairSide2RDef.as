@@ -18,9 +18,7 @@ package CharacterHair
 			pairedCharacter = "Peach";
 			
 			SetScaleFactors([.7518, .5753], "Cowgirl", "Swivel", "LeanBack", "LeanForward", "Paizuri");
-			//SetAttachPoints(new Point(-34.975 - 15, 19.25 - 3.5), "Cowgirl", "Swivel", "LeanBack", "LeanForward", "Paizuri");
-			//SetAttachPoints(new Point(85.5, -63/2), "Cowgirl", "Swivel", "LeanBack", "LeanForward", "Paizuri");
-			SetAttachPoints(new Point(30.475*2, -63/2), "Cowgirl", "Swivel", "LeanBack", "LeanForward", "Paizuri");
+			SetAttachPoints(new Point(64.125, -47.25), "Cowgirl", "Swivel", "LeanBack", "LeanForward", "Paizuri");
 			
 			SetScaleFactors([.377, .538], "Anal", "ReverseCowgirl");
 			SetAttachPoints(new Point(98.85, 102.8), "Anal", "ReverseCowgirl");
@@ -31,7 +29,17 @@ package CharacterHair
 			scaleFactors["Blowjob"] = [.347, .588];
 			attachPoints["Blowjob"] = new Point(38.5, 154.5);
 			
-			depthOffsets["Cowgirl"] = 7;
+			depthOffsets["Cowgirl"] = 5.2;
+			SetDepthOffsets(3.2, "LeanBack", "Swivel", "LeanForward");
+			depthOffsets["Paizuri"] = 2.2;
+			SetDepthOffsets( -0.1, "Anal", "ReverseCowgirl");
+			SetDepthOffsets(8.1, "SideRide", "Grind");
+			//depthOffsets["Anal"] = ;
+			//depthOffsets["Paizuri"] = ;
+			//depthOffsets["ReverseCowgirl"] = ;
+			//depthOffsets["SideRide"] = ;
+			//depthOffsets["Grind"] = ;
+			depthOffsets["Blowjob"] = 8.1;
 		}
 		
 	}

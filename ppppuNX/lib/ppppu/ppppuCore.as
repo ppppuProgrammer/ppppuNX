@@ -87,7 +87,7 @@ package ppppu
 			
 			//Switch the first animation.
 			SwitchTemplateAnimation(0);
-			
+			//SwitchTemplateAnimation(8);
 			//Testing new way of handling hair
 			var hairFront:AnchoredElementBase = new AnchoredElementBase("HairFront", AnchoredElementBase.HAIRELEMENT);
 			hairFront.AddNewDefinition(new PeachHairFrontDef());
@@ -148,8 +148,13 @@ package ppppu
 			hairSide3R.SetAnchorObjectForAnimation(masterTemplate["TurnedFace"], "Anal", "ReverseCowgirl");
 			
 			var hairBack:AnchoredElementBase = new AnchoredElementBase("HairBack", AnchoredElementBase.HAIRELEMENT);
+			hairBack.AddNewDefinition(new PeachHairBackDef);
+			hairBack.SetAnchorObjectForAnimation(masterTemplate["Face"], "Cowgirl", "LeanBack", "LeanForward", "Paizuri", "Swivel");
+			hairBack.SetAnchorObjectForAnimation(masterTemplate["TurnedFace2"], "Grind", "SideRide");
+			hairBack.SetAnchorObjectForAnimation(masterTemplate["TurnedFace3"], "Blowjob");
+			hairBack.SetAnchorObjectForAnimation(masterTemplate["TurnedFace"], "Anal", "ReverseCowgirl");
 			
-			//masterTemplate.AddNewElementToTemplate(hairBack); //Not to be uncommented until better layer control has been coded
+			masterTemplate.AddNewElementToTemplate(hairBack);
 			masterTemplate.AddNewElementToTemplate(hairSideL);
 			masterTemplate.AddNewElementToTemplate(hairSideR);
 			masterTemplate.AddNewElementToTemplate(hairSide3L);
@@ -419,71 +424,6 @@ package ppppu
 			}
 			masterTemplate.SetElementDepthLayout(defaultLayerInfo);
 			masterTemplate.ImmediantLayoutUpdate((mainStage.currentFrame -2) % 120 + 1);
-			//masterTemplate.ChangeElementDepths(defaultLayerInfo);
-			/*var templateChildrenCount:uint = masterTemplate.numChildren;
-			var templateElements:Vector.<DisplayObject> = new Vector.<DisplayObject>(templateChildrenCount);
-			var ShaftMask:DisplayObject = null, Shaft:DisplayObject = null, HeadMask:DisplayObject = null, Head:DisplayObject = null;
-			for (var i:uint = 0; i < templateChildrenCount; ++i)
-			{
-				templateElements[i] = masterTemplate.getChildAt(i);
-			}
-			var sortedDepthElements:Array = new Array();
-			for (var childIndex:uint = 0; childIndex < templateChildrenCount; ++childIndex)
-			{
-				var element:DisplayObject = templateElements[childIndex];
-				element.visible = false;
-				var elementName:String = element.name;
-
-				if (elementName in defaultLayerInfo.F0)
-				{	
-					sortedDepthElements[defaultLayerInfo.F0[elementName]] = element;
-					//Mask checking
-					
-					//Shaft
-					if (elementName.indexOf("PenisShaft") != -1 && elementName.indexOf("Mask") != -1)
-					{
-						ShaftMask = element;
-					}
-					else if (elementName.indexOf("PenisShaft") != -1)
-					{
-						Shaft = element;
-					}
-					
-					//Head
-					if (elementName.indexOf("PenisHead") != -1 && elementName.indexOf("Mask") != -1)
-					{
-						HeadMask = element;
-					}
-					else if (elementName.indexOf("PenisHead") != -1)
-					{
-						Head = element;
-					}
-				}
-			}
-			var topDepth:int = templateChildrenCount - 1;
-			for (var arrayPosition:int = sortedDepthElements.length -1; arrayPosition >= 0; --arrayPosition )
-			{
-				if(sortedDepthElements[arrayPosition])
-				{masterTemplate.setChildIndex(sortedDepthElements[arrayPosition], topDepth - arrayPosition);}
-			}
-			//If a mask-masked pair exists, set the mask. Otherwise, nullify the mask.
-			if (Shaft && ShaftMask)
-			{
-				Shaft.mask = ShaftMask;
-			}
-			else if (Shaft && !ShaftMask)
-			{
-				Shaft.mask = null;
-			}
-			
-			if (Head && HeadMask)
-			{
-				Head.mask = HeadMask;
-			}
-			else if (Head && !HeadMask)
-			{
-				Head.mask = null;
-			}*/
 			
 			for (var index:uint = 0, length:uint = animationNameIndexes.length; index < length; ++index)
 			{

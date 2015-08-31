@@ -18,7 +18,7 @@ package CharacterHair
 			pairedCharacter = "Peach";
 			
 			SetScaleFactors([.505, .61], "Cowgirl", "Swivel", "LeanBack", "LeanForward", "Paizuri");
-			SetAttachPoints(new Point(-34.975 - 15, 19.25), "Cowgirl", "Swivel", "LeanBack", "LeanForward", "Paizuri");
+			SetAttachPoints(new Point(-51.20, 14.4375), "Cowgirl", "Swivel", "LeanBack", "LeanForward", "Paizuri");
 			
 			SetScaleFactors([.377, .538], "Anal", "ReverseCowgirl");
 			SetAttachPoints(new Point(98.85, 102.8), "Anal", "ReverseCowgirl");
@@ -29,7 +29,12 @@ package CharacterHair
 			scaleFactors["Blowjob"] = [.347, .588];
 			attachPoints["Blowjob"] = new Point(38.5, 154.5);
 			
-			depthOffsets["Cowgirl"] = 6;
+			depthOffsets["Cowgirl"] = 5.1;
+			SetDepthOffsets(3.1, "LeanBack", "Swivel", "LeanForward");
+			depthOffsets["Paizuri"] = 2.1;
+			SetDepthOffsets(7, "Anal", "ReverseCowgirl");
+			SetDepthOffsets(0, "SideRide", "Grind");
+			depthOffsets["Blowjob"] = 0;
 		}
 		
 	}
