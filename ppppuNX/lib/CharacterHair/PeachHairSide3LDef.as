@@ -28,8 +28,8 @@ package CharacterHair
 			SetScaleFactors([.3059, .552], "SideRide", "Grind");
 			SetAttachPoints(new Point(-41.4, 135.25), "SideRide", "Grind");
 			
-			scaleFactors["Blowjob"] = [.347, .588];
-			attachPoints["Blowjob"] = new Point(38.5, 154.5);
+			scaleFactors["Blowjob"] = [0.5873, 0.5152];
+			attachPoints["Blowjob"] = new Point(22.700000000000003, 5.9);
 			
 			depthOffsets["Cowgirl"] = -3;
 			SetDepthOffsets( -4, "LeanBack", "Swivel", "LeanForward", "Paizuri");

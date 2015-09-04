@@ -11,8 +11,8 @@ package CharacterHair
 		
 		public function PeachHairFrontAngled2Def() 
 		{
-			SetScaleFactors([.80, .46], "Anal", "ReverseCowgirl");
-			SetAttachPoints(new Point(3.6, -57.3), "Anal", "ReverseCowgirl");
+			SetScaleFactors([0.8276, 0.5103], "Anal", "ReverseCowgirl");
+			SetAttachPoints(new Point(30.15, 18.2), "Anal", "ReverseCowgirl");
 			//scaleFactors["Anal"] = scaleFactors["ReverseCowgirl"] = [.80, .46];
 			//attachPoints["Anal"] = attachPoints["ReverseCowgirl"] = new Point(3.6, -57.3);
 			mySprite = new PeachHairFrontAngled2();

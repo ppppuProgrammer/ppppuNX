@@ -6,6 +6,7 @@ package ppppu
 	import flash.events.Event;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
+	import flash.geom.Rectangle;
 	import flash.utils.Dictionary;
 	/**
 	 * ...
@@ -110,7 +111,7 @@ package ppppu
 					//Insert movement code involving anchor points, the anchored object, localtoglobal, skew, and scale here.
 					if ("Element" in currentlyAnchoredObject)
 					{
-						basePlacementPoint = currentlyAnchoredObject.Element.localToGlobal(currentDefinitionUsed.attachPoints[currentAnimationName]);
+						basePlacementPoint = currentlyAnchoredObject["Element"].localToGlobal(currentDefinitionUsed.attachPoints[currentAnimationName]);
 					}
 					else
 					{
@@ -118,6 +119,7 @@ package ppppu
 					}
 					//var basePlacementPoint:Point = currentlyAnchoredObject.localToGlobal(new Point(0, 0));
 					this.x = basePlacementPoint.x; this.y = basePlacementPoint.y;
+					//currentlyDisplayedSprite.x = basePlacementPoint.x; currentlyDisplayedSprite.y = basePlacementPoint.y;
 					this.width = currentlyAnchoredObject.width * currentDefinitionUsed.scaleFactors[currentAnimationName][0];
 					this.height = currentlyAnchoredObject.height * currentDefinitionUsed.scaleFactors[currentAnimationName][1];
 					/*The switch template animation function in ppppuCore sets all elements in the master template to be invisible. While

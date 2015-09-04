@@ -169,14 +169,18 @@ package ppppu
 			
 			//With the base list sorted, now custom elements can be added.
 			var sortedCustomHairElements:Vector.<AnchoredElementBase> = customHairElements.sort(Helper_SortCustomElementDepthsFunc);
-			//var 
+			//For loop for negative depth offsets
+			var hairDepthOffset:int = 0;
 			for (var customHairIndex:int = 0, customHairLength:int = customHairElements.length; customHairIndex < customHairLength; ++customHairIndex)
 			{
 				var customElement:AnchoredElementBase = sortedCustomHairElements[customHairIndex];
 				if (currentAnimationName in customElement.anchoredDisplayObjectDict)
 				{
-					var hairDepthOffset:int = customElement.GetCurrentDepthOffset();
-					
+					hairDepthOffset = customElement.GetCurrentDepthOffset();
+					if (hairDepthOffset > 0)
+					{
+						break;
+					}
 					var anchoredObjectIndex:int = sortedDepthElements.indexOf(this[customElement.GetAnchoredObjectName()]);
 					var anchoredObjectBaseDepth:int = depthLayout[customElement.GetAnchoredObjectName()];
 					var anchorDepthDiff:int = anchoredObjectIndex - anchoredObjectBaseDepth;
@@ -188,6 +192,26 @@ package ppppu
 					sortedDepthElements.splice(combinedDepth, 0, customElement);
 				}
 			}
+			//For loop for positive depth offsets. Works in "reverse" to avoid various depth issues.
+			hairDepthOffset = 1;
+			for (var posCustomHairIndex:int = customHairElements.length -1; posCustomHairIndex >= 0; --posCustomHairIndex)
+			{
+				var customElement2:AnchoredElementBase = sortedCustomHairElements[posCustomHairIndex];
+				if (currentAnimationName in customElement.anchoredDisplayObjectDict)
+				{
+					hairDepthOffset = customElement2.GetCurrentDepthOffset();
+					if (hairDepthOffset <= 0)
+					{
+						break;
+					}
+					var anchoredObjectIndex2:int = sortedDepthElements.indexOf(this[customElement2.GetAnchoredObjectName()]);
+					var anchoredObjectBaseDepth2:int = depthLayout[customElement2.GetAnchoredObjectName()];
+					var anchorDepthDiff2:int = anchoredObjectIndex - anchoredObjectBaseDepth2;
+					var combinedDepth2:int = hairDepthOffset + anchoredObjectIndex2;
+					sortedDepthElements.splice(combinedDepth2, 0, customElement2);
+				}
+			}
+			
 			
 			var topDepth:int = templateChildrenCount - 1;
 			for (var arrayPosition:int = 0, length:int = sortedDepthElements.length; arrayPosition < length; ++arrayPosition )
@@ -493,28 +517,8 @@ package ppppu
 			var eOneDepth:Number = elementOne.GetCurrentDepthOffset(); 
 			var eTwoDepth:Number = elementTwo.GetCurrentDepthOffset();
 			
-			var eOneDepthInt:int = int(eOneDepth);
-			var eTwoDepthInt:int = int(eTwoDepth);
-			
-			var orderingSign:int = 1;
-			/*For when the objects are fighting for the same base depth. In order for the object that should be on the top  to actually be
-			in the right position, the element with the highest depth value has to actually be put before the compared element with the lower depth value.
-			Reason for this is due to how flash handles depth collisions, with the most recently added element taking the depth set and pushing the original element at that place and everything else on top up by 1.
-			i.e. element1(e1) has depth offset of 4, element2(e2) has depth offset of 4.1 and the anchor has a depth of 40. The intention is to that e2 should be on top of e1. 
-			Without the below check though, it would be ordered [e1, e2], so when it's time to set the index, e1 is added first, 
-			with a depth of 44 and e2 then added at 44, pushing e1 to 45, erronously making e1 top of e2*/
-			if (eOneDepthInt == eTwoDepthInt)
-			{
-				//Reverse how the sorting is done.
-				orderingSign = -1;
-				/*if (eOneDepth < eTwoDepth){return 1;}
-				else if (eOneDepth > eTwoDepth){return -1;}
-				else { return 0;}*/
-			}
-			
-			//For radically different depth values
-			if (eOneDepth < eTwoDepth){return -1*orderingSign;}
-			else if (eOneDepth > eTwoDepth){return 1*orderingSign;}
+			if (eOneDepth < eTwoDepth){return -1;}
+			else if (eOneDepth > eTwoDepth){return 1;}
 			else { return 0;}
 		}
 		

@@ -26,17 +26,17 @@ package CharacterHair
 			SetAttachPoints(new Point(98.85, 102.8), "Anal", "ReverseCowgirl");
 			
 			SetScaleFactors([.3059, .552], "SideRide", "Grind");
-			SetAttachPoints(new Point(-41.4, 135.25), "SideRide", "Grind");
+			SetAttachPoints(new Point( -41.4, 135.25), "SideRide", "Grind");
 			
-			scaleFactors["Blowjob"] = [.347, .588];
-			attachPoints["Blowjob"] = new Point(38.5, 154.5);
+			scaleFactors["Blowjob"] = [0.4508, 0.6018];
+			attachPoints["Blowjob"] = new Point(118.4, 91.10000000000001);
 			
 			depthOffsets["Cowgirl"] = 5;
 			SetDepthOffsets(3, "LeanBack", "Swivel", "LeanForward");
 			depthOffsets["Paizuri"] = 2;
 			SetDepthOffsets(0, "Anal", "ReverseCowgirl");
-			SetDepthOffsets(7, "SideRide", "Grind");
-			depthOffsets["Blowjob"] = 7;
+			SetDepthOffsets(7, "SideRide", "Grind", "Blowjob");
+			//depthOffsets["Blowjob"] = 7;
 		}
 		
 	}

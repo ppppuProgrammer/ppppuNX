@@ -13,7 +13,7 @@ package CharacterHair
 		{
 			super();
 			SetSprite(new PeachHairSide());
-			SetInitialMatrix(13.6, -166.4);
+			SetInitialMatrix(18, -156.944);
 			
 			pairedCharacter = "Peach";
 			
@@ -26,8 +26,8 @@ package CharacterHair
 			SetScaleFactors([.3059, .552], "SideRide", "Grind");
 			SetAttachPoints(new Point(-41.4, 135.25), "SideRide", "Grind");
 			
-			scaleFactors["Blowjob"] = [.347, .588];
-			attachPoints["Blowjob"] = new Point(38.5, 154.5);
+			scaleFactors["Blowjob"] = [0.3471, 0.5889];
+			attachPoints["Blowjob"] = new Point(12.8/*22.8*/, 96.15);
 			
 			depthOffsets["Cowgirl"] = 5.1;
 			SetDepthOffsets(3.1, "LeanBack", "Swivel", "LeanForward");
