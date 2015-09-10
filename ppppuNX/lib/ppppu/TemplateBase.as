@@ -220,7 +220,7 @@ package ppppu
 				{
 					setChildIndex(sortedDepthElements[arrayPosition], numChildren - 1);
 					(sortedDepthElements[arrayPosition] as Sprite).visible = true;
-					trace(arrayPosition + ": " + sortedDepthElements[arrayPosition].name);
+					//trace(arrayPosition + ": " + sortedDepthElements[arrayPosition].name);
 				}
 			}	
 			

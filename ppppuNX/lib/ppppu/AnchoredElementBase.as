@@ -108,10 +108,12 @@ package ppppu
 				if (currentlyAnchoredObject && currentDefinitionUsed && currentAnimationName in currentDefinitionUsed.attachPoints)
 				{
 					var basePlacementPoint:Point;
+					
 					//Insert movement code involving anchor points, the anchored object, localtoglobal, skew, and scale here.
 					if ("Element" in currentlyAnchoredObject)
 					{
 						basePlacementPoint = currentlyAnchoredObject["Element"].localToGlobal(currentDefinitionUsed.attachPoints[currentAnimationName]);
+						
 					}
 					else
 					{
@@ -119,14 +121,31 @@ package ppppu
 					}
 					//var basePlacementPoint:Point = currentlyAnchoredObject.localToGlobal(new Point(0, 0));
 					this.x = basePlacementPoint.x; this.y = basePlacementPoint.y;
+					/*if (currentAnimationName == "Paizuri" && this.name == "HairBack")
+					{
+						trace("Current Frame: " + ((masterTemplate.parent.currentFrame - 2) % 120 + 1));
+						trace(currentlyAnchoredObject.name + "'s position: { x:" + currentlyAnchoredObject.x + ", y:" + currentlyAnchoredObject.y + " }");
+						trace(this.name + "'s position: { x:" + this.x + ", y:" + this.y + " }");
+						//trace(currentlyAnchoredObject.name + "'s dimensions: " + currentlyAnchoredObject.width + ", " + currentlyAnchoredObject.height);
+						trace("Distance: { x:" + (this.x - currentlyAnchoredObject.x) + ", y:" + (this.y - currentlyAnchoredObject.y) + " }")
+						trace("Test: x: " + (currentlyAnchoredObject.x + currentDefinitionUsed.attachPoints[currentAnimationName].x) + " y: " + (currentlyAnchoredObject.y + currentDefinitionUsed.attachPoints[currentAnimationName].y));
+					}*/
 					//currentlyDisplayedSprite.x = basePlacementPoint.x; currentlyDisplayedSprite.y = basePlacementPoint.y;
-					this.width = currentlyAnchoredObject.width * currentDefinitionUsed.scaleFactors[currentAnimationName][0];
-					this.height = currentlyAnchoredObject.height * currentDefinitionUsed.scaleFactors[currentAnimationName][1];
+					/*this.width = currentlyAnchoredObject.width * currentDefinitionUsed.scaleFactors[currentAnimationName][0];
+					this.height = currentlyAnchoredObject.height * currentDefinitionUsed.scaleFactors[currentAnimationName][1];*/
+					var anchoredObjBaseShapeWidth:Number = currentlyAnchoredObject.getChildAt(0).width;
+					var anchoredObjBaseShapeHeight:Number = currentlyAnchoredObject.getChildAt(0).height;
+					this.width = (anchoredObjBaseShapeWidth * currentlyAnchoredObject.scaleX) * currentDefinitionUsed.scaleFactors[currentAnimationName][0];
+					this.height = (anchoredObjBaseShapeHeight * currentlyAnchoredObject.scaleY) * currentDefinitionUsed.scaleFactors[currentAnimationName][1];
+					
+					//need way to track rotation of face. try observing the difference in nose positioning for up/down head tilts.
+					
 					/*The switch template animation function in ppppuCore sets all elements in the master template to be invisible. While
 					 * most elements needed will be set to be visible later, this is done in the add timeline function of template base.
 					 * Getting to the point, anchored elements miss being set to visible because they aren't tied to a timeline. So make 
 					 * the element visible here.*/
 					this.visible = true; 
+					//this.rotation = currentlyAnchoredObject.rotation;
 				}
 				else
 				{

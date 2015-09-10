@@ -2,6 +2,7 @@ package ppppu
 {
 	import avmplus.DescribeTypeJSON;
 	import CharacterHair.*;
+	import Characters.PeachCharacter;
 	import com.greensock.easing.Linear;
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
@@ -40,11 +41,20 @@ package ppppu
 		private var keyDownStatus:Array = [];
 		//Contains the names of the various animations that the master template can switch between. The names are indexed by their position in the vector.
 		private var animationNameIndexes:Vector.<String> = new <String>["Cowgirl", "LeanBack", "LeanForward", "Grind", "ReverseCowgirl", "Paizuri", "Blowjob", "SideRide", "Swivel", "Anal"];
-		private var characterNameList:Vector.<String> = new <String>["Peach"/*, "Rosalina"*/];
-		private const defaultCharacter:String = characterNameList[0];
-		private var currentCharacter:String = defaultCharacter;
+		private var characterList:Vector.<ppppuCharacter> = new <ppppuCharacter>[new PeachCharacter];
+		private const defaultCharacter:ppppuCharacter = characterList[0];
+		private const defaultCharacterName:String = defaultCharacter.GetName();
+		private var currentCharacter:ppppuCharacter = defaultCharacter;
+		//private var characterNameList:Vector.<String> = new <String>["Peach"/*, "Rosalina"*/];
+		//private const defaultCharacter:String = characterNameList[0];
+		//private var currentCharacter:String = defaultCharacter;
 		private var currentAnimationIndex:uint = 0;
 		private var embedTweenDataConverter:TweenDataParser = new TweenDataParser();
+		
+		//Main menu for the program.
+		private var menu:ppppuMenu;
+		private var charVoiceSystem:SoundEffectSystem;
+		
 		//Constructor
 		public function ppppuCore() 
 		{
@@ -79,6 +89,7 @@ package ppppu
 			//Master template mouse event disabling
 			masterTemplate.mouseChildren = false;
 			masterTemplate.mouseEnabled = false;
+			masterTemplate.currentCharacter = defaultCharacter;
 			for (var childIndex:uint = 0, templateChildrenCount:uint = masterTemplate.numChildren; childIndex < templateChildrenCount; ++childIndex)
 			{
 				masterTemplate.getChildAt(childIndex).visible = false;
@@ -169,8 +180,11 @@ package ppppu
 			masterTemplate.AddNewElementToTemplate(hairFrontAngled);
 			masterTemplate.AddNewElementToTemplate(hairFrontAngled2);
 			
-			var menu:ppppuMenu = new ppppuMenu(masterTemplate);
+			menu = new ppppuMenu(masterTemplate);
+			menu.ChangeSlidersToCharacterValues(currentCharacter);
 			addChild(menu);
+			
+			charVoiceSystem = new SoundEffectSystem();
 			
 			mainStage.play();
 		}
@@ -179,8 +193,10 @@ package ppppu
 		private function RunLoop(e:Event):void
 		{
 			var mainStageMC:MovieClip = (e.target as MovieClip);
-			masterTemplate.Update(((mainStageMC.currentFrame -2) % 120) + 1);
+			var animationFrame:int = ((mainStageMC.currentFrame -2) % 120) + 1;
+			masterTemplate.Update(animationFrame);
 			masterTemplate.UpdateAnchoredElements();
+			charVoiceSystem.Tick(animationFrame);
 			//2nd frame is the start point of the animations and playing of Beep block skyway.
 			/*if (mainStageMC.currentFrame == 1)
 			{
@@ -407,20 +423,21 @@ package ppppu
 		private function SwitchTemplateAnimation(animationIndex:uint):void
 		{
 			var animationName:String = animationNameIndexes[animationIndex];
+			var currentCharacterName:String = currentCharacter.GetName();
 			masterTemplate.currentAnimationName = animationName;
-			if (!(defaultCharacter in timelinesDict))
+			if (!(defaultCharacterName in timelinesDict))
 			{
-				CreateTimelineDictionaryForCharacter(defaultCharacter);
+				CreateTimelineDictionaryForCharacter(defaultCharacterName);
 			}
-			if (!(animationName in timelinesDict[defaultCharacter]))
+			if (!(animationName in timelinesDict[defaultCharacterName]))
 			{
-				CreateTimelinesForCharacterAnimation(defaultCharacter, animationIndex);
+				CreateTimelinesForCharacterAnimation(defaultCharacterName, animationIndex);
 			}
-			var defaultLayerInfo:Object = layerInfoDict[defaultCharacter][animationName];
+			var defaultLayerInfo:Object = layerInfoDict[defaultCharacterName][animationName];
 			var currentCharLayerInfo:Object=null;
 			if (defaultCharacter != currentCharacter)
 			{
-				currentCharLayerInfo = layerInfoDict[currentCharacter][animationName];
+				currentCharLayerInfo = layerInfoDict[currentCharacterName][animationName];
 			}
 			masterTemplate.SetElementDepthLayout(defaultLayerInfo);
 			masterTemplate.ImmediantLayoutUpdate((mainStage.currentFrame -2) % 120 + 1);
@@ -435,15 +452,15 @@ package ppppu
 			if (currentCharacter != defaultCharacter)
 			{
 				//Checks if the dictionary is null. If so, attempt to create it.
-				if (!(currentCharacter in timelinesDict))
+				if (!(currentCharacterName in timelinesDict))
 				{
-					CreateTimelineDictionaryForCharacter(currentCharacter);
+					CreateTimelineDictionaryForCharacter(currentCharacterName);
 				}
-				if (!(animationName in timelinesDict[currentCharacter]))
+				if (!(animationName in timelinesDict[currentCharacterName]))
 				{
-					CreateTimelinesForCharacterAnimation(currentCharacter, animationIndex);
+					CreateTimelinesForCharacterAnimation(currentCharacterName, animationIndex);
 				}
-				var timelinesForCharacter:Dictionary = timelinesDict[currentCharacter][animationName];
+				var timelinesForCharacter:Dictionary = timelinesDict[currentCharacterName][animationName];
 				var currCharTimeline:TimelineMax;
 				for each(currCharTimeline in timelinesForCharacter)
 				{
@@ -485,7 +502,7 @@ package ppppu
 				if (animationMotion != null)
 				{
 					//Checks if the character name is Default. If so, also set these timelines to be the default timelines for the template
-					if (characterName == defaultCharacter)
+					if (characterName == defaultCharacterName)
 					{
 						masterTemplate.SetDefaultTimelines(ProcessMotionStaticClass(animationMotion, masterTemplate), animationIndex);
 					}

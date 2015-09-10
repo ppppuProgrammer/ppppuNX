@@ -18,8 +18,11 @@ package CharacterHair
 			
 			pairedCharacter = "Peach";
 			
-			SetScaleFactors([.7518, .5753], "Cowgirl", "Swivel", "LeanBack", "LeanForward", "Paizuri");
-			SetAttachPoints(new Point(-67.5, -45.85), "Cowgirl", "Swivel", "LeanBack", "LeanForward", "Paizuri");
+			SetScaleFactors([.7518, .5753], "Cowgirl", "Swivel", "LeanBack", "LeanForward");
+			SetAttachPoints(new Point(-67.5, -45.85), "Cowgirl", "Swivel", "LeanBack", "LeanForward");
+			
+			scaleFactors["Paizuri"] = [0.664, 0.5033];
+			attachPoints["Paizuri"] = new Point(-61, -42.150000000000006);
 			
 			SetScaleFactors([.377, .538], "Anal", "ReverseCowgirl");
 			SetAttachPoints(new Point(98.85, 102.8), "Anal", "ReverseCowgirl");

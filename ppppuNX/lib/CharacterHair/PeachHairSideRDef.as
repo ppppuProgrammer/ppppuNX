@@ -19,8 +19,11 @@ package CharacterHair
 			
 			SetInitialMatrix(-9.5, -9.8);
 			
-			SetScaleFactors([.505, .61], "Cowgirl", "Swivel", "LeanBack", "LeanForward", "Paizuri");
-			SetAttachPoints(new Point(50.95, 14.025), "Cowgirl", "Swivel", "LeanBack", "LeanForward", "Paizuri");
+			SetScaleFactors([.505, .61], "Cowgirl", "Swivel", "LeanBack", "LeanForward");
+			SetAttachPoints(new Point(50.95, 14.025), "Cowgirl", "Swivel", "LeanBack", "LeanForward");
+			
+			attachPoints["Paizuri"] = new Point(48.4, 19.05);
+			scaleFactors["Paizuri"] = [0.424, 0.6024];
 			
 			SetScaleFactors([.377, .538], "Anal", "ReverseCowgirl");
 			SetAttachPoints(new Point(98.85, 102.8), "Anal", "ReverseCowgirl");

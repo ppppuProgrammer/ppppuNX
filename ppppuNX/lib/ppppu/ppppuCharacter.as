@@ -9,30 +9,36 @@
 		//private var m_InDiamondMC:MovieClip = null;
 		//private var m_OutDiamondMC:MovieClip = null;
 		//private var m_ColorTransform:ColorTransform = null;
-		private var m_BacklightColorTransform:ColorTransform = null;
+		//private var m_BacklightColor:uint = null;
 		//private var m_TransitionDiamondMC:MovieClip = null;
 		//private var m_defOutDiaMC:Boolean = true;
 		//private var m_defInDiaMC:Boolean = true;
 		//private var m_defTransDiaMC:Boolean = true;
-		private var m_playAnimationFrame:int = 0;
-		private var m_randomizePlayAnim:Boolean = true;
-		private var m_lockedAnimation:Vector.<Boolean>; //Keeps track if an animation can be switched to.
-		//private var m_useBacklight:Boolean = true;
-		private var m_diamondColor1:ColorTransform;
-		private var m_diamondColor2:ColorTransform;
-		private var m_diamondColor3:ColorTransform;
-		private var m_defaultSkinColor:uint;
-		private var m_defaultSkinGradient_Face:Array;//2
-		private var m_defaultSkinGradient_Breasts:Array;//3
-		private var m_defaultSkinGradient_Vulva:Array;//2
-		private var m_defaultSkinGradient_Anus:Array;//2
-		private var m_defaultIrisLColor:uint;
-		private var m_defaultIrisRColor:uint;
-		private var m_defaultScleraColor:uint;
-		private var m_defaultNippleColor:uint;
-		private var m_defaultLipColor:uint;
-		private var m_hairColor:ColorMatrixFilter;
-		private var m_voiceBank:Array; //Holds voices specific to a character.
+		
+		protected var m_name:String;
+		protected var m_playAnimationFrame:int = 0;
+		protected var m_randomizePlayAnim:Boolean = true;
+		protected var m_lockedAnimation:Vector.<Boolean>; //Keeps track if an animation can be switched to.
+		//protected var m_useBacklight:Boolean = true;
+		protected var m_diamondColor1:uint;
+		protected var m_diamondColor2:uint;
+		protected var m_diamondColor3:uint;
+		protected var m_outerDiamondColor:uint;
+		protected var m_defaultSkinColor:uint;
+		protected var m_defaultSkinGradient_Face:Array;//2
+		protected var m_defaultSkinGradient_Breasts:Array;//3
+		protected var m_defaultSkinGradient_Vulva:Array;//2
+		protected var m_defaultSkinGradient_Anus:Array;//2
+		protected var m_defaultIrisLColor:uint;
+		protected var m_defaultIrisRColor:uint;
+		protected var m_defaultScleraColor:uint;
+		protected var m_defaultNippleColor:uint;
+		protected var m_defaultLipColor:uint;
+		//protected var m_hairColor:ColorMatrixFilter;
+		protected var m_voiceBank:Array; //Holds voices specific to a character.
+		protected var m_voicePlayRate:int;
+		protected var m_voicePlayChance:int;
+		protected var m_voiceVolume:int;
 		
 		//private var m_scleraLColor:uint;
 		//private var m_scleraRColor:uint;
@@ -41,7 +47,7 @@
 		private var m_wornEarring:String; //Indicates which earring the character is wearing. Unsure if it should be the frame number or the name of the earring.
 		//private var m_numOfLockedAnimations:int = 0;
 		
-		public function ppppuCharacter(charMC:MovieClip,characterColorTransform:ColorTransform, outDiamondMC:MovieClip, defOutDiaMC:Boolean, inDiamondMC:MovieClip, defInDiaMC:Boolean, transitionDiamondMC:MovieClip, defTransDiaMC:Boolean, BacklightColorTransform:ColorTransform, useLight:Boolean=true) 
+		/*public function ppppuCharacter(charMC:MovieClip,characterColorTransform:ColorTransform, outDiamondMC:MovieClip, defOutDiaMC:Boolean, inDiamondMC:MovieClip, defInDiaMC:Boolean, transitionDiamondMC:MovieClip, defTransDiaMC:Boolean, BacklightColorTransform:ColorTransform, useLight:Boolean=true) 
 		{
 			m_CharMC = charMC;
 			m_InDiamondMC = inDiamondMC;
@@ -53,9 +59,25 @@
 			m_defTransDiaMC = defTransDiaMC;
 			m_BacklightColorTransform = BacklightColorTransform;
 			m_useBacklight = useLight;
-		}
-
-		public function RandomizePlayAnim()
+		}*/
+		public function GetName():String { return m_name; }
+		public function GetDiamondColor1():uint { return m_diamondColor1;}
+		public function GetDiamondColor2():uint{ return m_diamondColor2;}
+		public function GetDiamondColor3():uint { return m_diamondColor3;}
+		public function GetOuterDiamondColor():uint { return m_outerDiamondColor;}
+		public function GetSkinColor():uint { return m_defaultSkinColor;}
+		public function GetFaceGradients():Array{ return m_defaultSkinGradient_Face;}//2
+		public function GetBreastGradients():Array{ return m_defaultSkinGradient_Breasts;}//3
+		public function GetVulvaGradients():Array{ return m_defaultSkinGradient_Vulva;}//2
+		public function GetAnusGradients():Array{ return m_defaultSkinGradient_Anus;}//2
+		public function GetIrisLColor():uint { return m_defaultIrisLColor;}
+		public function GetIrisRColor():uint { return m_defaultIrisRColor;}
+		public function GetScleraColor():uint { return m_defaultScleraColor;}
+		public function GetNippleColor():uint { return m_defaultNippleColor;}
+		public function GetLipColor():uint { return m_defaultLipColor; }
+		public function GetVoiceBank():Array { return m_voiceBank;}
+		
+		public function RandomizePlayAnim():void
 		{
 			//15 frame movie clip has 14 actual animations
 			//array[0-13]
@@ -85,7 +107,7 @@
 		}
 
 		//Used when there is no character or related movie clips on the stage. To be used when switching to a different character
-		public function AddCharacterClipsToAnotherMovieClip(parentMC:MovieClip, backlightMC:MovieClip)
+		public function AddCharacterClipsToAnotherMovieClip(parentMC:MovieClip, backlightMC:MovieClip):void
 		{
 			var clipFrameNum:int = ((parentMC.currentFrame - 7) % 120) + 1;
 
@@ -95,7 +117,7 @@
 			PlayAnimation();
 		}
 		
-		public function SetPlayAnimation(animNumber:int)
+		public function SetPlayAnimation(animNumber:int):void
 		{
 			if(animNumber < 1)
 			{
@@ -108,7 +130,7 @@
 			m_playAnimationFrame = animNumber + 1;
 		}
 		
-		public function SetRandomizeAnimation(randomStatus:Boolean)
+		public function SetRandomizeAnimation(randomStatus:Boolean):void
 		{
 			m_randomizePlayAnim = randomStatus;
 		}
@@ -116,7 +138,7 @@
 		{
 			return m_randomizePlayAnim;
 		}
-		public function ToggleRandomizeAnimation()
+		public function ToggleRandomizeAnimation():void
 		{
 			m_randomizePlayAnim = !m_randomizePlayAnim;
 		}
@@ -125,7 +147,7 @@
 			//have to convert animindex(starts from 1) into an array index (starts at 0)
 			return m_lockedAnimation[int(animIndex-1)];
 		}
-		public function SetAnimationLockedStatus(animIndex:int, lockStatus:Boolean)
+		public function SetAnimationLockedStatus(animIndex:int, lockStatus:Boolean):void
 		{
 			if(animIndex < 1 || animIndex > GetNumberOfAnimations())
 			{
@@ -144,7 +166,7 @@
 		public function GetNumberOfLockedAnimations():int
 		{
 			var lockedAnimNum:int = 0;
-			for(var i:int = 0, l = m_lockedAnimation.length; i < l; ++i)
+			for(var i:int = 0, l:int = m_lockedAnimation.length; i < l; ++i)
 			{
 				if(m_lockedAnimation[i])
 				{
@@ -153,13 +175,13 @@
 			}
 			return lockedAnimNum;
 		}
-		private function PlayingLockedAnimCheck()
+		private function PlayingLockedAnimCheck():void
 		{
 			//Only 1 animation is available, so search for it and use it.
 			if(GetAnimationLockedStatus(m_playAnimationFrame-1) && (GetNumberOfAnimations() - GetNumberOfLockedAnimations() == 1))
 			{
 				var unlockedAnimNum:int = 1;
-				for each(var locked in m_lockedAnimation)
+				for each(var locked:Boolean in m_lockedAnimation)
 				{
 					if(!locked)
 					{

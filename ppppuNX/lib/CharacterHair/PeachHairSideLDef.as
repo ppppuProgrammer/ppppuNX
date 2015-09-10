@@ -13,12 +13,15 @@ package CharacterHair
 		{
 			super();
 			SetSprite(new PeachHairSide());
-			SetInitialMatrix(18, -156.944);
+			SetInitialMatrix(10, -166.944);
 			
 			pairedCharacter = "Peach";
 			
 			SetScaleFactors([.505, .61], "Cowgirl", "Swivel", "LeanBack", "LeanForward", "Paizuri");
-			SetAttachPoints(new Point(-51.20, 14.4375), "Cowgirl", "Swivel", "LeanBack", "LeanForward", "Paizuri");
+			SetAttachPoints(new Point(-49.20, 16.4375), "Cowgirl", "Swivel", "LeanBack", "LeanForward");
+			
+			attachPoints["Paizuri"] = new Point( -47.05, 19.7);
+			//scaleFactors["Paizuri"] = [0.4672, 0.6136];
 			
 			SetScaleFactors([.377, .538], "Anal", "ReverseCowgirl");
 			SetAttachPoints(new Point(98.85, 102.8), "Anal", "ReverseCowgirl");

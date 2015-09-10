@@ -24,9 +24,9 @@ package ppppu
 	import flash.display.GraphicsGradientFill;
 	public class ppppuMenu extends Sprite
 	{
-		private var irisWorkColorTransform:ColorTransform = new ColorTransform(0,0,0,0,54,113,193,255);
-		private var scleraWorkColorTransform:ColorTransform = new ColorTransform(0,0,0,0,255,255,255,255);
-		private var lipsWorkColorTransform:ColorTransform = new ColorTransform(0, 0, 0, 0, 255, 153, 204, 255);
+		//private var irisWorkColorTransform:ColorTransform = new ColorTransform(0,0,0,0,54,113,193,255);
+		//private var scleraWorkColorTransform:ColorTransform = new ColorTransform(0,0,0,0,255,255,255,255);
+		//private var lipsWorkColorTransform:ColorTransform = new ColorTransform(0, 0, 0, 0, 255, 153, 204, 255);
 		
 		//color values for elements with gradient colors
 		private var faceGradientValues:Array = new Array(0,0);
@@ -190,42 +190,42 @@ package ppppu
 			
 			var b_File:PushButton = new PushButton(p_Menu, 230, 10, "Load File", loadFile);
 			
-			var peachBaseSkin:ColorTransform = new ColorTransform(0, 0, 0, 0, 255, 220, 198, 255);
-			var peachNippleColor:ColorTransform = new ColorTransform(0, 0, 0, 0, 255, 175, 255, 255);
+			//var peachBaseSkin:ColorTransform = new ColorTransform(0, 0, 0, 0, 255, 220, 198, 255);
+			//var peachNippleColor:ColorTransform = new ColorTransform(0, 0, 0, 0, 255, 175, 255, 255);
 			hairColorMenu.addEventListener(Event.CHANGE, HairSlidersChange);
 			skinColorMenu.addEventListener(Event.CHANGE, SkinSlidersChange);
-			skinColorMenu.setValue(peachBaseSkin);
-			scleraColorMenu.addEventListener(Event.CHANGE, ScleraSliderChanged);
-			scleraColorMenu.setValue(scleraWorkColorTransform);
-			lipsColorMenu.addEventListener(Event.CHANGE, LipsSliderChanged);
-			lipsColorMenu.setValue(lipsWorkColorTransform);
-			irisLColorMenu.addEventListener(Event.CHANGE, IrisLSliderChanged);
-			irisLColorMenu.setValue(irisWorkColorTransform);
-			irisRColorMenu.addEventListener(Event.CHANGE, IrisRSliderChanged);
-			irisRColorMenu.setValue(irisWorkColorTransform);
-			nippleColorMenu.addEventListener(Event.CHANGE, NipplesSlidersChanged);
-			nippleColorMenu.setValue(peachNippleColor);
 			
-			var peachStandardGradientEndPoint:ColorTransform = new ColorTransform(0,0,0,0, 243,182,154, 255);
-			var peachAnusPoint1Skin:ColorTransform = new ColorTransform(0,0,0,0, 255,166,159, 255);
+			scleraColorMenu.addEventListener(Event.CHANGE, ScleraSliderChanged);
+			
+			lipsColorMenu.addEventListener(Event.CHANGE, LipsSliderChanged);
+			
+			irisLColorMenu.addEventListener(Event.CHANGE, IrisLSliderChanged);
+			
+			irisRColorMenu.addEventListener(Event.CHANGE, IrisRSliderChanged);
+			
+			nippleColorMenu.addEventListener(Event.CHANGE, NipplesSlidersChanged);
+			
+			
+			//var peachStandardGradientEndPoint:ColorTransform = new ColorTransform(0,0,0,0, 243,182,154, 255);
+			//var peachAnusPoint1Skin:ColorTransform = new ColorTransform(0,0,0,0, 255,166,159, 255);
 			facePoint1ColorMenu.addEventListener(Event.CHANGE, FaceGradientSlidersChange);
-			facePoint1ColorMenu.setValue(peachBaseSkin);
+			
 			facePoint2ColorMenu.addEventListener(Event.CHANGE, FaceGradientSlidersChange);
-			facePoint2ColorMenu.setValue(peachStandardGradientEndPoint);
+			
 			breastPoint1ColorMenu.addEventListener(Event.CHANGE, BreastGradientSlidersChange);
-			breastPoint1ColorMenu.setValue(peachBaseSkin);
+			
 			breastPoint2ColorMenu.addEventListener(Event.CHANGE, BreastGradientSlidersChange);
-			breastPoint2ColorMenu.setValue(peachBaseSkin);
+			
 			breastPoint3ColorMenu.addEventListener(Event.CHANGE, BreastGradientSlidersChange);
-			breastPoint3ColorMenu.setValue(peachStandardGradientEndPoint);
+			
 			vulvaPoint1ColorMenu.addEventListener(Event.CHANGE, VulvaGradientSlidersChange);
-			vulvaPoint1ColorMenu.setValue(peachStandardGradientEndPoint);
+			
 			vulvaPoint2ColorMenu.addEventListener(Event.CHANGE, VulvaGradientSlidersChange);
-			vulvaPoint2ColorMenu.setValue(peachBaseSkin);
+			
 			anusPoint1ColorMenu.addEventListener(Event.CHANGE, AnusGradientSlidersChange);
-			anusPoint1ColorMenu.setValue(peachAnusPoint1Skin);
+			
 			anusPoint2ColorMenu.addEventListener(Event.CHANGE, AnusGradientSlidersChange);
-			anusPoint2ColorMenu.setValue(peachBaseSkin);
+			
 		}
 		
 		private function loadFile(e:MouseEvent):void 
@@ -318,6 +318,15 @@ package ppppu
 			templateInUse.HandR.Element.Skin.transform.colorTransform = ct;
 			templateInUse.Hand2L.Element.Skin.transform.colorTransform = ct;
 			templateInUse.Hand2R.Element.Skin.transform.colorTransform = ct;
+			
+			//Placeholder for custom elements with changable skin
+			/*
+			 * for(var i:int = 0, l:int = customElementsArray/Vector.length; i < l; ++i)
+			 * {
+			 * 		//Note for the future: Custom elements with changable skin might need to be something added from external swfs.
+			 * 		customElementsArray/Vector[i].Element.Skin.transform.colorTransform = ct;
+			 * }
+			 * */
 			
 			if (autoAdjustGradientsToBaseSkin)
 			{
@@ -467,6 +476,30 @@ package ppppu
 		{
 			var cbox:CheckBox = e.target as CheckBox;
 			autoAdjustGradientsToBaseSkin = cbox.selected;
+		}
+		
+		public function ChangeSlidersToCharacterValues(character:ppppuCharacter)
+		{
+			skinColorMenu.setValueFromUint(character.GetSkinColor());
+			
+			scleraColorMenu.setValueFromUint(character.GetScleraColor());
+			lipsColorMenu.setValueFromUint(character.GetLipColor());
+			irisLColorMenu.setValueFromUint(character.GetIrisLColor());
+			irisRColorMenu.setValueFromUint(character.GetIrisRColor());
+			nippleColorMenu.setValueFromUint(character.GetNippleColor());
+			var charFaceColors:Array = character.GetFaceGradients();
+			facePoint1ColorMenu.setValueFromUint(charFaceColors[0]);
+			facePoint2ColorMenu.setValueFromUint(charFaceColors[1]);
+			var charBreastColors:Array = character.GetBreastGradients();
+			breastPoint1ColorMenu.setValueFromUint(charBreastColors[0]);
+			breastPoint2ColorMenu.setValueFromUint(charBreastColors[1]);
+			breastPoint3ColorMenu.setValueFromUint(charBreastColors[2]);
+			var charVulvaColors:Array = character.GetVulvaGradients();
+			vulvaPoint1ColorMenu.setValueFromUint(charVulvaColors[0]);
+			vulvaPoint2ColorMenu.setValueFromUint(charVulvaColors[1]);
+			var charAnusColors:Array = character.GetAnusGradients();
+			anusPoint1ColorMenu.setValueFromUint(charAnusColors[0]);
+			anusPoint2ColorMenu.setValueFromUint(charAnusColors[1]);
 		}
 		
 		public function GradientChange(type:int, skinGradientGraphics:Array/*, colorUIntValues:Array*/):void

@@ -104,5 +104,15 @@ package ui
 			cc.value = ct.color;
 			dispatchEvent(new Event(Event.CHANGE));
 		}
+		
+		public function setValueFromUint(color:uint) : void
+		{
+			sliders[0].value = ( color >> 16 ) & 0xFF;
+			sliders[1].value = ( color >> 8 ) & 0xFF;
+			sliders[2].value = color & 0xFF;
+			sliders[3].value = 255;
+			cc.value = color;
+			dispatchEvent(new Event(Event.CHANGE));
+		}
 	}
 }
