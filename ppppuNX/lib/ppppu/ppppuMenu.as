@@ -5,6 +5,7 @@ package ppppu
 	import com.bit101.components.Panel;
 	import com.bit101.components.PushButton;
 	import flash.display.Bitmap;
+	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.display.Shape;
 	import flash.events.Event;
@@ -64,6 +65,13 @@ package ppppu
 		private var vulvaPoint2ColorMenu:ui.RGBAMenu = new ui.RGBAMenu("Vulva 2");
 		private var anusPoint1ColorMenu:ui.RGBAMenu = new ui.RGBAMenu("Anus 1");
 		private var anusPoint2ColorMenu:ui.RGBAMenu = new ui.RGBAMenu("Anus 2");
+		
+		//Background Modification
+		private var outerDiamondColorMenu:ui.RGBAMenu = new ui.RGBAMenu("O.Diamond");
+		private var innerDiamondColor1Menu:ui.RGBAMenu = new ui.RGBAMenu("TopLeft");
+		private var innerDiamondColor2Menu:ui.RGBAMenu = new ui.RGBAMenu("Middle");
+		private var innerDiamondColor3Menu:ui.RGBAMenu = new ui.RGBAMenu("BottomRight");
+		private var backlightColorMenu:ui.RGBAMenu = new ui.RGBAMenu("Backlight");
 		
 		private var autoAdjustGradientsToBaseSkin:Boolean = true;
 		
@@ -190,42 +198,28 @@ package ppppu
 			
 			var b_File:PushButton = new PushButton(p_Menu, 230, 10, "Load File", loadFile);
 			
-			//var peachBaseSkin:ColorTransform = new ColorTransform(0, 0, 0, 0, 255, 220, 198, 255);
-			//var peachNippleColor:ColorTransform = new ColorTransform(0, 0, 0, 0, 255, 175, 255, 255);
 			hairColorMenu.addEventListener(Event.CHANGE, HairSlidersChange);
 			skinColorMenu.addEventListener(Event.CHANGE, SkinSlidersChange);
-			
 			scleraColorMenu.addEventListener(Event.CHANGE, ScleraSliderChanged);
-			
 			lipsColorMenu.addEventListener(Event.CHANGE, LipsSliderChanged);
-			
 			irisLColorMenu.addEventListener(Event.CHANGE, IrisLSliderChanged);
-			
 			irisRColorMenu.addEventListener(Event.CHANGE, IrisRSliderChanged);
-			
 			nippleColorMenu.addEventListener(Event.CHANGE, NipplesSlidersChanged);
 			
 			
 			//var peachStandardGradientEndPoint:ColorTransform = new ColorTransform(0,0,0,0, 243,182,154, 255);
 			//var peachAnusPoint1Skin:ColorTransform = new ColorTransform(0,0,0,0, 255,166,159, 255);
 			facePoint1ColorMenu.addEventListener(Event.CHANGE, FaceGradientSlidersChange);
-			
 			facePoint2ColorMenu.addEventListener(Event.CHANGE, FaceGradientSlidersChange);
-			
-			breastPoint1ColorMenu.addEventListener(Event.CHANGE, BreastGradientSlidersChange);
-			
-			breastPoint2ColorMenu.addEventListener(Event.CHANGE, BreastGradientSlidersChange);
-			
-			breastPoint3ColorMenu.addEventListener(Event.CHANGE, BreastGradientSlidersChange);
-			
+			breastPoint1ColorMenu.addEventListener(Event.CHANGE, BreastGradientSlidersChange);	
+			breastPoint2ColorMenu.addEventListener(Event.CHANGE, BreastGradientSlidersChange);	
+			breastPoint3ColorMenu.addEventListener(Event.CHANGE, BreastGradientSlidersChange);	
 			vulvaPoint1ColorMenu.addEventListener(Event.CHANGE, VulvaGradientSlidersChange);
-			
 			vulvaPoint2ColorMenu.addEventListener(Event.CHANGE, VulvaGradientSlidersChange);
-			
 			anusPoint1ColorMenu.addEventListener(Event.CHANGE, AnusGradientSlidersChange);
-			
 			anusPoint2ColorMenu.addEventListener(Event.CHANGE, AnusGradientSlidersChange);
 			
+			InitializeBackgroundSubMenu(p_Menu);
 		}
 		
 		private function loadFile(e:MouseEvent):void 
@@ -478,7 +472,7 @@ package ppppu
 			autoAdjustGradientsToBaseSkin = cbox.selected;
 		}
 		
-		public function ChangeSlidersToCharacterValues(character:ppppuCharacter)
+		public function ChangeSlidersToCharacterValues(character:ppppuCharacter):void
 		{
 			skinColorMenu.setValueFromUint(character.GetSkinColor());
 			
@@ -487,6 +481,8 @@ package ppppu
 			irisLColorMenu.setValueFromUint(character.GetIrisLColor());
 			irisRColorMenu.setValueFromUint(character.GetIrisRColor());
 			nippleColorMenu.setValueFromUint(character.GetNippleColor());
+			
+			//Gradients
 			var charFaceColors:Array = character.GetFaceGradients();
 			facePoint1ColorMenu.setValueFromUint(charFaceColors[0]);
 			facePoint2ColorMenu.setValueFromUint(charFaceColors[1]);
@@ -500,6 +496,13 @@ package ppppu
 			var charAnusColors:Array = character.GetAnusGradients();
 			anusPoint1ColorMenu.setValueFromUint(charAnusColors[0]);
 			anusPoint2ColorMenu.setValueFromUint(charAnusColors[1]);
+			
+			//BG
+			innerDiamondColor1Menu.setValueFromUint(character.GetDiamondColor1());
+			innerDiamondColor2Menu.setValueFromUint(character.GetDiamondColor2());
+			innerDiamondColor3Menu.setValueFromUint(character.GetDiamondColor3());
+			outerDiamondColorMenu.setValueFromUint(character.GetOuterDiamondColor());
+			backlightColorMenu.setValueFromUint(character.GetBacklightColor());
 		}
 		
 		public function GradientChange(type:int, skinGradientGraphics:Array/*, colorUIntValues:Array*/):void
@@ -579,6 +582,97 @@ package ppppu
 			var colorValue:uint = 0;
 			colorValue += (alpha << 24) + (red << 16) + (green << 8) + blue;
 			return colorValue;
+		}
+		
+		private function InitializeBackgroundSubMenu(parentPanel:Panel):void
+		{
+			var p_BackgroundSubMenu:Sprite = new Sprite();
+			
+			//Add labels for skin gradients sub menu
+			var l_IDiamond:Label = new Label(p_BackgroundSubMenu, 0, 0, "Inner Diamond");
+			//var l_IDiamond2:Label = new Label(p_BackgroundSubMenu, 0, 20, "Inner Diamond 2");
+			//var l_IDiamond3:Label = new Label(p_BackgroundSubMenu, 0, 40, "Inner Diamond 3");
+			var l_ODiamond:Label = new Label(p_BackgroundSubMenu, 0, 20, "Outer Diamond");
+			var l_Backlight:Label = new Label(p_BackgroundSubMenu, 0, 40, "Back Light");
+			
+			var pb_IDiamond1:PopupButton = new PopupButton(p_BackgroundSubMenu, 75, 1, "I. Diamond 1");
+			pb_IDiamond1.setSize(16, 16);
+			pb_IDiamond1.addChild(new ColorButtonGraphic);
+			//Disables the colorButtonGraphic instance from dealing with mouse events.
+			pb_IDiamond1.mouseChildren = false;
+			pb_IDiamond1.bindPopup(innerDiamondColor1Menu, "rightOuter", "bottomInner");
+			
+			var pb_IDiamond2:PopupButton = new PopupButton(p_BackgroundSubMenu, 95, 1, "I. Diamond 2");
+			pb_IDiamond2.setSize(16, 16);
+			pb_IDiamond2.addChild(new ColorButtonGraphic);
+			pb_IDiamond2.mouseChildren = false;
+			pb_IDiamond2.bindPopup(innerDiamondColor2Menu, "leftOuter", "bottomInner");
+			
+			var pb_IDiamond3:PopupButton = new PopupButton(p_BackgroundSubMenu, 115, 1, "I. Diamond 3");
+			pb_IDiamond3.setSize(16, 16);
+			pb_IDiamond3.addChild(new ColorButtonGraphic);
+			pb_IDiamond3.mouseChildren = false;
+			pb_IDiamond3.bindPopup(innerDiamondColor3Menu, "leftOuter", "bottomInner");
+			
+			var pb_ODiamond:PopupButton = new PopupButton(p_BackgroundSubMenu, 75, 21, "O. Diamond");
+			pb_ODiamond.setSize(16, 16);
+			pb_ODiamond.addChild(new ColorButtonGraphic);
+			pb_ODiamond.mouseChildren = false;
+			pb_ODiamond.bindPopup(outerDiamondColorMenu, "rightOuter", "bottomInner");
+			
+			var pb_backlight:PopupButton = new PopupButton(p_BackgroundSubMenu, 75, 41, "Backlight");
+			pb_backlight.setSize(16, 16);
+			pb_backlight.addChild(new ColorButtonGraphic);
+			pb_backlight.mouseChildren = false;
+			pb_backlight.bindPopup(backlightColorMenu, "rightOuter", "bottomInner");
+			
+			var pb_background:PopupButton = new PopupButton(parentPanel, 120, 30, "Background");
+			pb_background.bindPopup(p_BackgroundSubMenu, "rightOuter", "bottomInner");
+			
+			outerDiamondColorMenu.addEventListener(Event.CHANGE, OuterDiamondSliderChange);
+			innerDiamondColor1Menu.addEventListener(Event.CHANGE, InnerDiamondSlidersChange);
+			innerDiamondColor2Menu.addEventListener(Event.CHANGE, InnerDiamondSlidersChange);
+			innerDiamondColor3Menu.addEventListener(Event.CHANGE, InnerDiamondSlidersChange);
+			backlightColorMenu.addEventListener(Event.CHANGE, BacklightSliderChange);
+		}
+		
+		private function OuterDiamondSliderChange(e:Event):void
+		{
+			var m:RGBAMenu = e.target as RGBAMenu;
+			var mainStage:MainStage = templateInUse.parent as MainStage;
+			var ct:ColorTransform = new ColorTransform(0, 0, 0, 0, m.R, m.G, m.B, m.A);
+			mainStage.OuterDiamondBG.OuterDiamond.Color.transform.colorTransform = ct;
+			mainStage.TransitionDiamondBG.TransitionDiamond.Color4.transform.colorTransform = ct;
+		}
+		
+		private function InnerDiamondSlidersChange(e:Event):void
+		{
+			var m:RGBAMenu = e.target as RGBAMenu;
+			var mainStage:MainStage = templateInUse.parent as MainStage;
+			var ct:ColorTransform = new ColorTransform(0, 0, 0, 0, m.R, m.G, m.B, m.A);
+			switch(m.name)
+			{
+				case "TopLeft":
+					mainStage.InnerDiamondBG.InnerDiamond.Color1.transform.colorTransform = ct;
+					mainStage.TransitionDiamondBG.TransitionDiamond.Color1.transform.colorTransform = ct;
+					break;
+				case "Middle":
+					mainStage.InnerDiamondBG.InnerDiamond.Color2.transform.colorTransform = ct;
+					mainStage.TransitionDiamondBG.TransitionDiamond.Color2.transform.colorTransform = ct;
+					break;
+				case "BottomRight":
+					mainStage.InnerDiamondBG.InnerDiamond.Color3.transform.colorTransform = ct;
+					mainStage.TransitionDiamondBG.TransitionDiamond.Color3.transform.colorTransform = ct;
+					break;
+			}
+		}
+		
+		private function BacklightSliderChange(e:Event):void
+		{
+			var m:RGBAMenu = e.target as RGBAMenu;
+			var ct:ColorTransform = new ColorTransform(0, 0, 0, 1, m.R, m.G, m.B, 0);
+			var mainStage:MainStage = templateInUse.parent as MainStage;
+			mainStage.BacklightBG.Backlight.BacklightGfx.transform.colorTransform = ct;
 		}
 	}
 	

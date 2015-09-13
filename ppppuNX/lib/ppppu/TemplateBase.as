@@ -99,6 +99,7 @@ package ppppu
 				latestFrameDepthLayout = currentAnimationElementDepthLayout[elementDepthLayoutChangeFrames[depthChangeIndex]];
 				ChangeElementDepths(latestFrameDepthLayout);
 			}
+			UpdateAnchoredElements();
 		}
 		
 		/*Modifies the elements depth layout to match the latest layout that should be used. For example, if an animation has 3 layout changes
@@ -118,6 +119,7 @@ package ppppu
 					ChangeElementDepths(latestFrameDepthLayout);
 				}
 			}
+			UpdateAnchoredElements();
 		}
 		
 		public function ChangeElementDepths(depthLayout:Object):void
@@ -328,7 +330,7 @@ package ppppu
 		//Starts playing the currently set animation at a specified frame.
 		public function PlayAnimation(startAtFrame:uint):void
 		{
-			--startAtFrame;
+			//--startAtFrame;
 			masterTimeline.play(startAtFrame);
 			//Get all timelines currently used
 			var childTimelines:Array = masterTimeline.getChildren(!true, false);
@@ -337,6 +339,7 @@ package ppppu
 				//Tell the child timeline to play at the specified time
 				(childTimelines[i] as TimelineMax).play(startAtFrame);
 			}
+			ImmediantLayoutUpdate(startAtFrame);
 		}
 		
 		public function ResumePlayingAnimation():void

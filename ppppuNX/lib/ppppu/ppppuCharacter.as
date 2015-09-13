@@ -2,6 +2,7 @@
 	import flash.filters.ColorMatrixFilter;
 	import flash.geom.ColorTransform;
 	import flash.display.MovieClip;
+	import flash.media.Sound;
 	
 	public class ppppuCharacter 
 	{
@@ -20,10 +21,11 @@
 		protected var m_randomizePlayAnim:Boolean = true;
 		protected var m_lockedAnimation:Vector.<Boolean>; //Keeps track if an animation can be switched to.
 		//protected var m_useBacklight:Boolean = true;
-		protected var m_diamondColor1:uint;
-		protected var m_diamondColor2:uint;
-		protected var m_diamondColor3:uint;
+		protected var m_innerDiamondColor1:uint;
+		protected var m_innerDiamondColor2:uint;
+		protected var m_innerDiamondColor3:uint;
 		protected var m_outerDiamondColor:uint;
+		protected var m_backlightColor:uint = UtilityFunctions.GetColorUintFromRGB(255,210,0);
 		protected var m_defaultSkinColor:uint;
 		protected var m_defaultSkinGradient_Face:Array;//2
 		protected var m_defaultSkinGradient_Breasts:Array;//3
@@ -35,10 +37,11 @@
 		protected var m_defaultNippleColor:uint;
 		protected var m_defaultLipColor:uint;
 		//protected var m_hairColor:ColorMatrixFilter;
-		protected var m_voiceBank:Array; //Holds voices specific to a character.
-		protected var m_voicePlayRate:int;
-		protected var m_voicePlayChance:int;
-		protected var m_voiceVolume:int;
+		protected var m_voiceSet:Vector.<Sound>; //Holds voices specific to a character.
+		protected var m_voicePlayRate:int = 15;
+		protected var m_voicePlayChance:int = 50;
+		protected var m_voiceVolume:int = 100;
+		protected var m_voiceCooldown:int = 15;//Time in frames that must pass before a character can play a voice clip
 		
 		//private var m_scleraLColor:uint;
 		//private var m_scleraRColor:uint;
@@ -61,10 +64,11 @@
 			m_useBacklight = useLight;
 		}*/
 		public function GetName():String { return m_name; }
-		public function GetDiamondColor1():uint { return m_diamondColor1;}
-		public function GetDiamondColor2():uint{ return m_diamondColor2;}
-		public function GetDiamondColor3():uint { return m_diamondColor3;}
-		public function GetOuterDiamondColor():uint { return m_outerDiamondColor;}
+		public function GetDiamondColor1():uint { return m_innerDiamondColor1;}
+		public function GetDiamondColor2():uint{ return m_innerDiamondColor2;}
+		public function GetDiamondColor3():uint { return m_innerDiamondColor3;}
+		public function GetOuterDiamondColor():uint { return m_outerDiamondColor; }
+		public function GetBacklightColor():uint { return m_backlightColor;}	
 		public function GetSkinColor():uint { return m_defaultSkinColor;}
 		public function GetFaceGradients():Array{ return m_defaultSkinGradient_Face;}//2
 		public function GetBreastGradients():Array{ return m_defaultSkinGradient_Breasts;}//3
@@ -75,7 +79,10 @@
 		public function GetScleraColor():uint { return m_defaultScleraColor;}
 		public function GetNippleColor():uint { return m_defaultNippleColor;}
 		public function GetLipColor():uint { return m_defaultLipColor; }
-		public function GetVoiceBank():Array { return m_voiceBank;}
+		public function GetVoiceSet():Vector.<Sound> { return m_voiceSet; }
+		public function GetVoiceCooldown():int { return m_voiceCooldown; }	
+		public function GetVoicePlayChance():int { return m_voicePlayChance;}
+		public function GetVoicePlayRate(): int { return m_voicePlayRate;}
 		
 		public function RandomizePlayAnim():void
 		{

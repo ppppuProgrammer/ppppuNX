@@ -3,6 +3,7 @@ package ppppu
 	import avmplus.DescribeTypeJSON;
 	import CharacterHair.*;
 	import Characters.PeachCharacter;
+	import Characters.RosalinaCharacter;
 	import com.greensock.easing.Linear;
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
@@ -41,7 +42,7 @@ package ppppu
 		private var keyDownStatus:Array = [];
 		//Contains the names of the various animations that the master template can switch between. The names are indexed by their position in the vector.
 		private var animationNameIndexes:Vector.<String> = new <String>["Cowgirl", "LeanBack", "LeanForward", "Grind", "ReverseCowgirl", "Paizuri", "Blowjob", "SideRide", "Swivel", "Anal"];
-		private var characterList:Vector.<ppppuCharacter> = new <ppppuCharacter>[new PeachCharacter];
+		private var characterList:Vector.<ppppuCharacter> = new <ppppuCharacter>[new PeachCharacter/*, new RosalinaCharacter*/];
 		private const defaultCharacter:ppppuCharacter = characterList[0];
 		private const defaultCharacterName:String = defaultCharacter.GetName();
 		private var currentCharacter:ppppuCharacter = defaultCharacter;
@@ -54,6 +55,12 @@ package ppppu
 		//Main menu for the program.
 		private var menu:ppppuMenu;
 		private var charVoiceSystem:SoundEffectSystem;
+		
+		//For stopping animation
+		private var lastPlayedFrame:int = -1;
+		
+		//Background movieclips - testing
+		//var
 		
 		//Constructor
 		public function ppppuCore() 
@@ -71,6 +78,7 @@ package ppppu
 			test.x = test.y = 200; 
 			addChild(test);*/
 			masterTemplate.visible = false;
+			
 		}
 		
 		//Sets up the various aspects of the flash to get it ready for performing.
@@ -86,6 +94,7 @@ package ppppu
 			TweenLite.defaultOverwrite = "none";
 			//Disable mouse interaction for various objects
 			mainStage.mouseEnabled = false;
+			
 			//Master template mouse event disabling
 			masterTemplate.mouseChildren = false;
 			masterTemplate.mouseEnabled = false;
@@ -186,6 +195,8 @@ package ppppu
 			
 			charVoiceSystem = new SoundEffectSystem();
 			
+			SwitchCharacter(0);
+			
 			mainStage.play();
 		}
 		
@@ -194,21 +205,33 @@ package ppppu
 		{
 			var mainStageMC:MovieClip = (e.target as MovieClip);
 			var animationFrame:int = ((mainStageMC.currentFrame -2) % 120) + 1;
-			masterTemplate.Update(animationFrame);
-			masterTemplate.UpdateAnchoredElements();
-			charVoiceSystem.Tick(animationFrame);
-			//2nd frame is the start point of the animations and playing of Beep block skyway.
-			/*if (mainStageMC.currentFrame == 1)
+			if (animationFrame && animationFrame != lastPlayedFrame)
 			{
+				if (mainStageMC.currentFrame == 2)
+				{
+					mainStage.OuterDiamondBG.gotoAndPlay(animationFrame);
+					mainStage.InnerDiamondBG.gotoAndPlay(animationFrame);
+					mainStage.TransitionDiamondBG.gotoAndPlay(animationFrame);
+					mainStage.BacklightBG.gotoAndPlay(animationFrame);
+					masterTemplate.visible = true;
+					//Go to the 
+					SwitchTemplateAnimation(currentAnimationIndex);
+					masterTemplate.PlayAnimation(animationFrame);
+					
+					mainStage.setChildIndex(masterTemplate, mainStage.numChildren - 1);
+				}
+				masterTemplate.Update(animationFrame);
+				masterTemplate.UpdateAnchoredElements();
+				charVoiceSystem.Tick(animationFrame);
+
+				//2nd frame is the start point of the animations and playing of Beep block skyway.
+				/*if (mainStageMC.currentFrame == 1)
+				{
+					
+				}*/
 				
-			}*/
-			if (mainStageMC.currentFrame == 2)
-			{
-				masterTemplate.visible = true;
-				//Go to the 
-				SwitchTemplateAnimation(currentAnimationIndex);
-				masterTemplate.PlayAnimation(mainStageMC.currentFrame);
 			}
+			lastPlayedFrame = animationFrame;
 		}
 		
 		/*Responsible for processing all the motion xmls detailed in an animationMotions file, creating tweenLite tweens from them,
@@ -344,7 +367,7 @@ package ppppu
 
 			if(keyDownStatus[keyPressed] == undefined || keyDownStatus[keyPressed] == false || (keyPressed == 48 || keyPressed == 96))
 			{
-				if((keyPressed == 48 || keyPressed == 96))
+				/*if((keyPressed == 48 || keyPressed == 96))
 				{
 					var randomAnimIndex:int = Math.floor(Math.random() * animationNameIndexes.length);
 					SwitchTemplateAnimation(randomAnimIndex);
@@ -357,7 +380,7 @@ package ppppu
 						keyPressed = keyPressed - 48;
 					}
 					SwitchTemplateAnimation(keyPressed - 49);
-				}
+				}*/
 				
 				if (keyPressed == Keyboard.Z)
 				{
@@ -377,22 +400,6 @@ package ppppu
 				{
 					masterTemplate["HairFront"].ChangeDisplayedSprite(1);
 				}
-				if (keyPressed == Keyboard.X)
-				{
-					masterTemplate.Face.Element.scaleX *= .75;
-				}
-				if (keyPressed == Keyboard.C)
-				{
-					masterTemplate.Face.Element.scaleX *= 1.25;
-				}
-				if (keyPressed == Keyboard.V)
-				{
-					masterTemplate.Face.Element.scaleY *= .75;
-				}
-				if (keyPressed == Keyboard.B)
-				{
-					masterTemplate.Face.Element.scaleY *= 1.25;
-				}
 				/*if (keyPressed == Keyboard.X)
 				{
 					currentCharacter = "Rosalina";
@@ -407,14 +414,46 @@ package ppppu
 				if (keyPressed == Keyboard.S)
 				{
 					mainStage.stop();
+					mainStage.OuterDiamondBG.stop();
+					mainStage.InnerDiamondBG.stop();
+					mainStage.TransitionDiamondBG.stop();
+					mainStage.BacklightBG.stop();
 					masterTemplate.StopAnimation();
 				}
 				else if (keyPressed == Keyboard.R)
 				{
 					mainStage.play();
+					mainStage.OuterDiamondBG.play();
+					mainStage.InnerDiamondBG.play();
+					mainStage.TransitionDiamondBG.play();
+					mainStage.BacklightBG.play();
 					masterTemplate.ResumePlayingAnimation();
 				}
 				
+			}
+			if (keyPressed == Keyboard.LEFT)
+			{
+				mainStage.prevFrame();
+				var frame:int = (mainStage.currentFrame -2) % 120 + 1;
+				
+				mainStage.OuterDiamondBG.gotoAndStop(frame);
+				mainStage.InnerDiamondBG.gotoAndStop(frame);
+				mainStage.TransitionDiamondBG.gotoAndStop(frame);
+				mainStage.BacklightBG.gotoAndStop(frame);
+				masterTemplate.PlayAnimation(frame);
+				masterTemplate.StopAnimation();
+			}
+			else if (keyPressed == Keyboard.RIGHT)
+			{
+				mainStage.nextFrame();
+				var frame:int = (mainStage.currentFrame -2) % 120 + 1;
+				
+				mainStage.OuterDiamondBG.gotoAndStop(frame);
+				mainStage.InnerDiamondBG.gotoAndStop(frame);
+				mainStage.TransitionDiamondBG.gotoAndStop(frame);
+				mainStage.BacklightBG.gotoAndStop(frame);
+				masterTemplate.PlayAnimation(frame);
+				masterTemplate.StopAnimation();
 			}
 			keyDownStatus[keyEvent.keyCode] = true;
 		}
@@ -518,6 +557,19 @@ package ppppu
 			if (timelinesDict[characterName] === undefined)
 			{
 				timelinesDict[characterName] = new Dictionary();
+			}
+		}
+		
+		public function SwitchCharacter(charId:int):void
+		{
+			if (charId >= 0 && charId < characterList.length)
+			{
+				currentCharacter = characterList[charId];
+				charVoiceSystem.ChangeCharacterVoiceSet(currentCharacter.GetVoiceSet());
+				charVoiceSystem.ChangeCharacterVoiceChance(currentCharacter.GetVoicePlayChance());
+				charVoiceSystem.ChangeCharacterVoiceCooldown(currentCharacter.GetVoiceCooldown());
+				charVoiceSystem.ChangeCharacterVoiceRate(currentCharacter.GetVoicePlayRate());
+				menu.ChangeSlidersToCharacterValues(currentCharacter);
 			}
 		}
 	}
