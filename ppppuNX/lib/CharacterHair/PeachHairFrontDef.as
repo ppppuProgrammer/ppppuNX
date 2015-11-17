@@ -21,9 +21,10 @@ package CharacterHair
 			mySprite = new PeachHairFront();
 			pairedCharacter = "Peach";
 			
-			depthOffsets["Cowgirl"] = 5.4;
-			SetDepthOffsets(3.4, "LeanBack", "Swivel", "LeanForward");
-			depthOffsets["Paizuri"] = 2.4;
+			layerPlacements["Cowgirl"] = HairDefinition.LAYER_FRONT;
+			depthPriorities["Cowgirl"] = 5;
+			SetDepthPriorities(3.4, "LeanBack", "Swivel", "LeanForward");
+			depthPriorities["Paizuri"] = 2.4;
 			//depthOffsets["Anal"] = ;
 			//depthOffsets["Paizuri"] = ;
 			//depthOffsets["ReverseCowgirl"] = ;

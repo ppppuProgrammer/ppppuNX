@@ -639,7 +639,7 @@ package ppppu
 		private function OuterDiamondSliderChange(e:Event):void
 		{
 			var m:RGBAMenu = e.target as RGBAMenu;
-			var mainStage:MainStage = templateInUse.parent as MainStage;
+			var mainStage:PPPPU_Stage = templateInUse.GetPPPPU_Stage() as PPPPU_Stage;
 			var ct:ColorTransform = new ColorTransform(0, 0, 0, 0, m.R, m.G, m.B, m.A);
 			mainStage.OuterDiamondBG.OuterDiamond.Color.transform.colorTransform = ct;
 			mainStage.TransitionDiamondBG.TransitionDiamond.Color4.transform.colorTransform = ct;
@@ -648,7 +648,7 @@ package ppppu
 		private function InnerDiamondSlidersChange(e:Event):void
 		{
 			var m:RGBAMenu = e.target as RGBAMenu;
-			var mainStage:MainStage = templateInUse.parent as MainStage;
+			var mainStage:PPPPU_Stage = templateInUse.GetPPPPU_Stage() as PPPPU_Stage;
 			var ct:ColorTransform = new ColorTransform(0, 0, 0, 0, m.R, m.G, m.B, m.A);
 			switch(m.name)
 			{
@@ -671,7 +671,7 @@ package ppppu
 		{
 			var m:RGBAMenu = e.target as RGBAMenu;
 			var ct:ColorTransform = new ColorTransform(0, 0, 0, 1, m.R, m.G, m.B, 0);
-			var mainStage:MainStage = templateInUse.parent as MainStage;
+			var mainStage:PPPPU_Stage = templateInUse.GetPPPPU_Stage() as PPPPU_Stage;
 			mainStage.BacklightBG.Backlight.BacklightGfx.transform.colorTransform = ct;
 		}
 	}

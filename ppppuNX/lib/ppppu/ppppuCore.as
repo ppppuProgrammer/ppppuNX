@@ -8,6 +8,7 @@ package ppppu
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 	import flash.display.MovieClip;
+	import flash.display.FrameLabel;
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
 	import flash.geom.Point;
@@ -37,7 +38,7 @@ package ppppu
 		//Responsible for holding the various timelines that will be added to a template. This dictionary is 3 levels deep, which is expressed by: timelineDict[Character][Animation][Part]
 		private var timelinesDict:Dictionary = new Dictionary();
 		private var layerInfoDict:Dictionary = new Dictionary();
-		public var mainStage:MainStage;
+		public var mainStage:PPPPU_Stage;
 		//Keeps track of what keys were pressed and/or held down
 		private var keyDownStatus:Array = [];
 		//Contains the names of the various animations that the master template can switch between. The names are indexed by their position in the vector.
@@ -56,28 +57,47 @@ package ppppu
 		private var menu:ppppuMenu;
 		private var charVoiceSystem:SoundEffectSystem;
 		
+		private var playSounds:Boolean = false;
+		
 		//For stopping animation
 		private var lastPlayedFrame:int = -1;
 		
-		//Background movieclips - testing
-		//var
+		//private var displayWidthLimit:int;
+		private var flashStartFrame:int;
+		private var mainStageLoopStartFrame:int;
+		
+		//Settings related
+		//public var settingsSaveFile:SharedObject = SharedObject.getLocal("ppppuNX");
+		//public var userSettings:ppppuUserSettings = new ppppuUserSettings();
 		
 		//Constructor
 		public function ppppuCore() 
 		{
 			//Create the "main stage" that holds the character template and various other movieclips such as the transition and backlight 
-			mainStage = new MainStage();
+			mainStage = new PPPPU_Stage();
 			mainStage.stop();
 			addChild(mainStage);
+			
+			var frameLabels:Array = mainStage.currentLabels;
+			for (var i:int = 0, l:int = frameLabels.length; i < l;++i)
+			{
+				var label:FrameLabel = frameLabels[i] as FrameLabel;
+				if (label.name == "re")
+				{mainStageLoopStartFrame = label.frame; }
+				else if (label.name == "Start")
+				{flashStartFrame = label.frame;}
+			}
 			//Add an event listener that'll allow for frame checking.
 			mainStage.addEventListener(Event.ENTER_FRAME, RunLoop);
 			this.cacheAsBitmap = true;
-			this.scrollRect = new Rectangle(0, 0, 480, 720);
+			//this.scrollRect = new Rectangle(0, 0, 480, 720);
 			/*var test:CustomElementContainer = new CustomElementContainer();
 			test.AddSprites(null, new DaisyHairBack(), null, new RosalinaHairBack());
 			test.x = test.y = 200; 
 			addChild(test);*/
+			
 			masterTemplate.visible = false;
+			//masterTemplate.
 			
 		}
 		
@@ -87,24 +107,40 @@ package ppppu
 			//Add the key listeners
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, KeyPressCheck);
 			stage.addEventListener(KeyboardEvent.KEY_UP, KeyReleaseCheck);
+			
 			//Initializing plugins for the GSAP library
 			TweenPlugin.activate([FramePlugin, FrameLabelPlugin, TransformMatrixPlugin, VisiblePlugin]);
 			//Set the default Ease for the tweens
 			TweenLite.defaultEase = Linear.ease;
 			TweenLite.defaultOverwrite = "none";
 			//Disable mouse interaction for various objects
+			mainStage.MenuLayer.mouseEnabled = true;
+			//Disable mouse interaction for various objects
 			mainStage.mouseEnabled = false;
+			mainStage.CharacterLayer.mouseEnabled = false;
+			mainStage.CharacterLayer.mouseChildren = false;
+			mainStage.HelpLayer.mouseEnabled = false;
+			mainStage.HelpLayer.mouseChildren = false;
+			mainStage.BacklightBG.mouseEnabled = false;
+			mainStage.BacklightBG.mouseChildren = false;
+			mainStage.InnerDiamondBG.mouseEnabled = false;
+			mainStage.InnerDiamondBG.mouseChildren = false;
+			mainStage.OuterDiamondBG.mouseChildren = false;
+			mainStage.OuterDiamondBG.mouseEnabled = false;
+			mainStage.TransitionDiamondBG.mouseChildren = false;
+			mainStage.TransitionDiamondBG.mouseEnabled = false;
 			
 			//Master template mouse event disabling
 			masterTemplate.mouseChildren = false;
 			masterTemplate.mouseEnabled = false;
+			
 			masterTemplate.currentCharacter = defaultCharacter;
 			for (var childIndex:uint = 0, templateChildrenCount:uint = masterTemplate.numChildren; childIndex < templateChildrenCount; ++childIndex)
 			{
 				masterTemplate.getChildAt(childIndex).visible = false;
 			}
-			mainStage.addChild(masterTemplate);
-			
+			mainStage.x = (stage.stageWidth - mainStage.CharacterLayer.width) / 2;
+			mainStage.CharacterLayer.addChild(masterTemplate);	
 			//Switch the first animation.
 			SwitchTemplateAnimation(0);
 			//SwitchTemplateAnimation(8);
@@ -204,11 +240,33 @@ package ppppu
 		private function RunLoop(e:Event):void
 		{
 			var mainStageMC:MovieClip = (e.target as MovieClip);
-			var animationFrame:int = ((mainStageMC.currentFrame -2) % 120) + 1;
+			var frameNum:int = mainStageMC.currentFrame; //The current frame that the main stage is at.
+			var animationFrame:int = ((frameNum -2) % 120) + 1; //The frame that an animation should be on. Animations are typically 120 frames / 4 seconds long
 			if (animationFrame && animationFrame != lastPlayedFrame)
 			{
-				if (mainStageMC.currentFrame == 2)
+				if (frameNum == flashStartFrame)
 				{
+					/*if (userSettings.firstTimeRun == true)
+					{
+						UpdateKeyBindsForHelpScreen();
+						ToggleHelpScreen(); //Show the help screen
+						characterManager.ToggleMenu();
+						userSettings.firstTimeRun = false;
+						settingsSaveFile.data.ppppuSettings = userSettings;
+						settingsSaveFile.flush();
+					}
+					else
+					{
+						if (userSettings.showMenu)
+						{
+							characterManager.ToggleMenu();
+						}
+					}*/
+					mainStage.CharacterLayer.visible = true;
+					/*if (userSettings.showBackground == true)
+					{
+						mainStage.TransitionDiamondBG.visible = mainStage.OuterDiamondBG.visible = mainStage.InnerDiamondBG.visible = true;
+					}*/
 					mainStage.OuterDiamondBG.gotoAndPlay(animationFrame);
 					mainStage.InnerDiamondBG.gotoAndPlay(animationFrame);
 					mainStage.TransitionDiamondBG.gotoAndPlay(animationFrame);
@@ -218,18 +276,22 @@ package ppppu
 					SwitchTemplateAnimation(currentAnimationIndex);
 					masterTemplate.PlayAnimation(animationFrame);
 					
-					mainStage.setChildIndex(masterTemplate, mainStage.numChildren - 1);
+					//mainStage.setChildIndex(masterTemplate, mainStage.numChildren - 1);
 				}
 				masterTemplate.Update(animationFrame);
-				masterTemplate.UpdateAnchoredElements();
-				charVoiceSystem.Tick(animationFrame);
-
-				//2nd frame is the start point of the animations and playing of Beep block skyway.
-				/*if (mainStageMC.currentFrame == 1)
+				//masterTemplate.UpdateAnchoredElements(); //Called by master template's update functions
+				if (playSounds)
 				{
-					
-				}*/
-				
+					charVoiceSystem.Tick(animationFrame);
+				}
+				//Make sure the background movie clips stay synced after reaching the loop end point on the main stage
+				if (frameNum == mainStageLoopStartFrame)
+				{
+					mainStage.OuterDiamondBG.gotoAndPlay(animationFrame);
+					mainStage.InnerDiamondBG.gotoAndPlay(animationFrame);
+					mainStage.TransitionDiamondBG.gotoAndPlay(animationFrame);
+					mainStage.BacklightBG.gotoAndPlay(animationFrame);
+				}
 			}
 			lastPlayedFrame = animationFrame;
 		}
@@ -367,7 +429,7 @@ package ppppu
 
 			if(keyDownStatus[keyPressed] == undefined || keyDownStatus[keyPressed] == false || (keyPressed == 48 || keyPressed == 96))
 			{
-				/*if((keyPressed == 48 || keyPressed == 96))
+				if((keyPressed == 48 || keyPressed == 96))
 				{
 					var randomAnimIndex:int = Math.floor(Math.random() * animationNameIndexes.length);
 					SwitchTemplateAnimation(randomAnimIndex);
@@ -380,7 +442,7 @@ package ppppu
 						keyPressed = keyPressed - 48;
 					}
 					SwitchTemplateAnimation(keyPressed - 49);
-				}*/
+				}
 				
 				if (keyPressed == Keyboard.Z)
 				{
@@ -428,6 +490,10 @@ package ppppu
 					mainStage.TransitionDiamondBG.play();
 					mainStage.BacklightBG.play();
 					masterTemplate.ResumePlayingAnimation();
+				}
+				else if (keyPressed == Keyboard.D)
+				{
+					masterTemplate.ToggleDebugModeText();
 				}
 				
 			}

@@ -18,8 +18,8 @@ package CharacterHair
 			mySprite = new RosalinaHairFront();
 			pairedCharacter = "Rosalina";
 			
-			depthOffsets["Cowgirl"] = 9;
-			SetDepthOffsets(7, "LeanBack", "Swivel");
+			depthPriorities["Cowgirl"] = 9;
+			SetDepthPriorities(7, "LeanBack", "Swivel");
 			//depthOffsets["Cowgirl"] = ;
 			//depthOffsets["Swivel"] = ;
 			//depthOffsets["LeanBack"] = ;

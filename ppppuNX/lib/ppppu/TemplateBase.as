@@ -3,9 +3,13 @@ package ppppu
 	import com.greensock.TimelineLite;
 	import com.greensock.TimelineMax;
 	import flash.display.DisplayObject;
+	import flash.display.DisplayObjectContainer;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import flash.geom.Matrix;
+	import flash.geom.Point;
+	import flash.text.TextField;
 	//import EyeContainer;
 	//import MouthContainer;
 	/**
@@ -29,6 +33,9 @@ package ppppu
 		private var latestFrameDepthLayout:Object;
 		private var elementDepthLayoutChangeFrames:Array;
 		
+		//The primary movie clip for the flash in terms as asset displaying.
+		private var m_ppppuStage:PPPPU_Stage;
+		
 		/*public var EyeL:EyeContainer;
 		public var EyeR:EyeContainer;*/
 		public var EarringL:EarringContainer;
@@ -41,13 +48,24 @@ package ppppu
 		public var EarR:MovieClip;
 		public var EyeL:EyeContainer;
 		public var EyeR:EyeContainer;
+		public var HairFrontLayer:Sprite;
+		public var HairBehindHeadwearLayer:Sprite;
+		public var HairBehindFaceLayer:Sprite;
+		public var HairBackLayer:Sprite;
 		
 		public var customSkinElements:Vector.<AnchoredElementBase> = new Vector.<AnchoredElementBase>();
 		public var customHairElements:Vector.<AnchoredElementBase> = new Vector.<AnchoredElementBase>();
 		
+		public var currentlyUsedHeadSprite:Sprite;
+		public var faceVerticalAngle:Number = 0; //0 is straight forward, angle > 0 is looking up, angle < 0 is looking down.  
+		
+		//private var debugWindow:Sprite = new Sprite();
+		//private var debugBorder:Sprite = new Sprite();
+		private var debugTextDisplay:TextField = new TextField();
+		
 		public function TemplateBase()
 		{
-			//addEventListener(Event.ADDED_TO_STAGE, StageSetup);
+			addEventListener(Event.ADDED_TO_STAGE, TemplateAddedToStage);
 			SetupEyeContainer(EyeL);
 			SetupEyeContainer(EyeR);
 			if (EarL) { EarL.Element.gotoAndStop(1); EarL.Element.SkinGradient.gotoAndStop(1); EarL.Element.Lines.gotoAndStop(1); }
@@ -62,23 +80,28 @@ package ppppu
 			Headwear.Element.gotoAndStop(1);
 			//SetupHair();
 			if(LowerLegL) LowerLegL.Element.Color.gotoAndStop(1);
-			if(LowerLegR) LowerLegR.Element.Color.gotoAndStop(1);
+			if (LowerLegR) LowerLegR.Element.Color.gotoAndStop(1);
+			
+			HairFrontLayer/*.getChildAt(0)*/.visible = false;
+			HairBehindHeadwearLayer/*.getChildAt(0)*/.visible = false;
+			HairBehindFaceLayer/*.getChildAt(0)*/.visible = false;
+			HairBackLayer/*.getChildAt(0)*/.visible = false;
+			
+			//debug text display setup
+			//debugWindow.addChild(debugBorder);
+			//debugWindow.addChild(debugTextDisplay);
+			debugTextDisplay.x = 0;
+			debugTextDisplay.y = 0;
+			debugTextDisplay.background = true;
+			debugTextDisplay.border = true;
+			//debugTextDisplay.autoSize = TextFieldAutoSize.
+			debugTextDisplay.selectable = false;
 		}
 		
-		//Used to obtain the time spent per frame for the flash.
-		/*private function StageSetup(e:Event):void
-		{
-			millisecPerFrame = 1000.0 / stage.frameRate;
-			removeEventListener(Event.ADDED_TO_STAGE, StageSetup);
-		}*/
 		public function AddNewElementToTemplate(element:AnchoredElementBase):void
 		{
 			if (element)
 			{
-				//Add the object to the display object list
-				addChild(element);
-				//Add a property for the element.
-				this[element.name] = element;
 				//Add the element to the custom elements list. This is for updating purposes.
 				customElementsList[customElementsList.length] = element;
 				if (element.type == AnchoredElementBase.HAIRELEMENT)
@@ -92,13 +115,48 @@ package ppppu
 		 * that layout. Should be called every frame.*/
 		public function Update(animFrame:int):void
 		{
-			var depthChangeIndex:int = elementDepthLayoutChangeFrames.indexOf("F"+animFrame);
-			if (depthChangeIndex != -1)
+			/*if (animFrame == 1)
 			{
-				//var currentFrameDepthLayout:Object = currentElementDepthLayout.("F" + animFrame);
-				latestFrameDepthLayout = currentAnimationElementDepthLayout[elementDepthLayoutChangeFrames[depthChangeIndex]];
-				ChangeElementDepths(latestFrameDepthLayout);
+				PutDebugDisplayOnTop();
+			}*/
+			
+			ImmediantLayoutUpdate(animFrame);
+			
+			//Calculate the face angles. This requires an animation to have a head and a mouth.
+			var animationMouth:Sprite = this.Mouth;
+			var animationHead:Sprite = currentlyUsedHeadSprite;
+			if (animationMouth && animationHead)
+			{
+				var headHeight:Number = animationHead.height;
+				var hMat:Matrix = animationHead.transform.matrix;
+				var headSkewX:Number = Math.atan2( -hMat.c, hMat.d);
+				var headSkewY:Number = Math.atan2( hMat.b, hMat.a);
+				var headX:Number = animationHead.x;
+				var headY:Number = animationHead.y;
+				//var headWidth:Number = animationMouth.width;
+				
+				var mouthHeight:Number = animationMouth.height;
+				var mMat:Matrix = animationMouth.transform.matrix;
+				var mouthX:Number = animationMouth.x;
+				var mouthY:Number = animationMouth.y;
+				var mouthSkewX:Number = Math.atan2( -mMat.c, mMat.d);
+				var mouthSkewY:Number = Math.atan2( mMat.b, mMat.a);
+				
+				debugTextDisplay.text = "Head: \nHeight - " + headHeight + "\nX - " + headX + "\nY - " + headY + "\nSkewX - " + headSkewX + "\nSkewY - " + headSkewY;
+				var txt2:String = "\nMouth: \nHeight - " + mouthHeight + "\nX - " + mouthX + "\nY - " + mouthY + "\nSkewX - " + mouthSkewX + "\nSkewY - " + mouthSkewY;
+				debugTextDisplay.appendText(txt2);
+				
+				
+				if (debugTextDisplay.textHeight > debugTextDisplay.height)
+				{
+					debugTextDisplay.height = debugTextDisplay.textHeight+5;
+				}
 			}
+			else
+			{
+				faceVerticalAngle = 0; //Assume that the face is straight forward
+			}
+			
 			UpdateAnchoredElements();
 		}
 		
@@ -111,15 +169,16 @@ package ppppu
 			for (var i:int = elementDepthLayoutChangeFrames.length - 1; i >= 0; --i)
 			{
 				var frame:String = elementDepthLayoutChangeFrames[i];
-				frame = frame.substring(1);
+				//frame = frame.substring(1);
 				var depthChangeFrame:int = parseInt(frame, 10);
 				if (animFrame >= depthChangeFrame)
 				{
 					latestFrameDepthLayout = currentAnimationElementDepthLayout[elementDepthLayoutChangeFrames[i]];
 					ChangeElementDepths(latestFrameDepthLayout);
+					break; //Break out the for loop
 				}
 			}
-			UpdateAnchoredElements();
+			//UpdateAnchoredElements();
 		}
 		
 		public function ChangeElementDepths(depthLayout:Object):void
@@ -162,6 +221,12 @@ package ppppu
 					{
 						Head = element;
 					}
+					
+					//Head (face) checking
+					if (elementName.indexOf("Face") != -1)
+					{
+						currentlyUsedHeadSprite = element as Sprite;
+					}
 				}
 			}
 			
@@ -170,50 +235,48 @@ package ppppu
 			RefreshAnchorForAnchoredElements();
 			
 			//With the base list sorted, now custom elements can be added.
-			var sortedCustomHairElements:Vector.<AnchoredElementBase> = customHairElements.sort(Helper_SortCustomElementDepthsFunc);
-			//For loop for negative depth offsets
-			var hairDepthOffset:int = 0;
+			//var sortedCustomHairElements:Vector.<AnchoredElementBase> = customHairElements.sort(Helper_SortCustomElementDepthsFunc);
+			
+			//Revised version
 			for (var customHairIndex:int = 0, customHairLength:int = customHairElements.length; customHairIndex < customHairLength; ++customHairIndex)
 			{
-				var customElement:AnchoredElementBase = sortedCustomHairElements[customHairIndex];
-				if (currentAnimationName in customElement.anchoredDisplayObjectDict)
+				var customElement:AnchoredElementBase = customHairElements[customHairIndex];
+				var hairLayerToPutElementOn:int = customElement.GetHairLayerForAnimation(currentAnimationName);
+				var hairLayer:Sprite = null;
+				//Check if the hair isn't already on the layer it needs to be on.
+				if (customElement.GetCurrentLayerId() != hairLayerToPutElementOn)
 				{
-					hairDepthOffset = customElement.GetCurrentDepthOffset();
-					if (hairDepthOffset > 0)
-					{
-						break;
+					if (customElement.parent) { customElement.parent.removeChild(customElement); }
+					
+					if (hairLayerToPutElementOn == HairDefinition.LAYER_FRONT)	{hairLayer = HairFrontLayer; }
+					else if (hairLayerToPutElementOn == HairDefinition.LAYER_BEHIND_FACE)	{ hairLayer = HairBehindFaceLayer; }
+					else if (hairLayerToPutElementOn == HairDefinition.LAYER_BEHIND_HEADWEAR)	{ hairLayer = HairBehindHeadwearLayer; }
+					else if (hairLayerToPutElementOn == HairDefinition.LAYER_BACK)	{ hairLayer = HairBackLayer; }	
+					
+					if (hairLayer)
+					{ 
+						var depthPriority:int = customElement.GetCurrentDepthPriority();
+						var depth:int = -1;
+						for (var hairChildIndex:int = 1, l:int = hairLayer.numChildren; hairChildIndex < l && depth != -1; ++hairChildIndex )
+						{
+							var comparedElement:AnchoredElementBase = hairLayer.getChildAt(hairChildIndex) as AnchoredElementBase;
+							//Compared element has higher priority than the one about to be set, so end of the line
+							if (comparedElement && comparedElement.GetCurrentDepthPriority() < depthPriority)
+							{
+								depth = hairChildIndex;
+							}
+						}
+						//For loop finished without finding something with higher priority. The added object has the current highest priority then and is displayed on top. 
+						if (depth == -1)
+						{
+							depth = hairLayer.numChildren;
+						}
+						
+						hairLayer.addChildAt(customElement, depth ); 
+						customElement.SetLayerId(hairLayerToPutElementOn);
 					}
-					var anchoredObjectIndex:int = sortedDepthElements.indexOf(this[customElement.GetAnchoredObjectName()]);
-					var anchoredObjectBaseDepth:int = depthLayout[customElement.GetAnchoredObjectName()];
-					var anchorDepthDiff:int = anchoredObjectIndex - anchoredObjectBaseDepth;
-					var combinedDepth:int = hairDepthOffset + anchoredObjectIndex;
-					if (hairDepthOffset < 0) 
-					{
-						combinedDepth -= anchorDepthDiff;
-					}
-					sortedDepthElements.splice(combinedDepth, 0, customElement);
 				}
 			}
-			//For loop for positive depth offsets. Works in "reverse" to avoid various depth issues.
-			hairDepthOffset = 1;
-			for (var posCustomHairIndex:int = customHairElements.length -1; posCustomHairIndex >= 0; --posCustomHairIndex)
-			{
-				var customElement2:AnchoredElementBase = sortedCustomHairElements[posCustomHairIndex];
-				if (currentAnimationName in customElement.anchoredDisplayObjectDict)
-				{
-					hairDepthOffset = customElement2.GetCurrentDepthOffset();
-					if (hairDepthOffset <= 0)
-					{
-						break;
-					}
-					var anchoredObjectIndex2:int = sortedDepthElements.indexOf(this[customElement2.GetAnchoredObjectName()]);
-					var anchoredObjectBaseDepth2:int = depthLayout[customElement2.GetAnchoredObjectName()];
-					var anchorDepthDiff2:int = anchoredObjectIndex - anchoredObjectBaseDepth2;
-					var combinedDepth2:int = hairDepthOffset + anchoredObjectIndex2;
-					sortedDepthElements.splice(combinedDepth2, 0, customElement2);
-				}
-			}
-			
 			
 			var topDepth:int = templateChildrenCount - 1;
 			for (var arrayPosition:int = 0, length:int = sortedDepthElements.length; arrayPosition < length; ++arrayPosition )
@@ -244,6 +307,7 @@ package ppppu
 			{
 				Head.mask = null;
 			}
+			
 		}
 		
 		public function UpdateAnchoredElements():void
@@ -339,7 +403,7 @@ package ppppu
 				//Tell the child timeline to play at the specified time
 				(childTimelines[i] as TimelineMax).play(startAtFrame);
 			}
-			ImmediantLayoutUpdate(startAtFrame);
+			//ImmediantLayoutUpdate(startAtFrame);
 		}
 		
 		public function ResumePlayingAnimation():void
@@ -497,6 +561,7 @@ package ppppu
 			{
 				elementDepthLayoutChangeFrames[elementDepthLayoutChangeFrames.length] = index;
 			}
+			elementDepthLayoutChangeFrames.sort(Array.NUMERIC);
 			currentAnimationElementDepthLayout = layout;
 			
 		}
@@ -517,14 +582,52 @@ package ppppu
 		
 		private function Helper_SortCustomElementDepthsFunc(elementOne:AnchoredElementBase, elementTwo:AnchoredElementBase):int
 		{
-			var eOneDepth:Number = elementOne.GetCurrentDepthOffset(); 
-			var eTwoDepth:Number = elementTwo.GetCurrentDepthOffset();
+			var eOneDepth:Number = elementOne.GetCurrentDepthPriority(); 
+			var eTwoDepth:Number = elementTwo.GetCurrentDepthPriority();
 			
 			if (eOneDepth < eTwoDepth){return -1;}
 			else if (eOneDepth > eTwoDepth){return 1;}
 			else { return 0;}
 		}
 		
+		
+		public function ToggleDebugModeText():void
+		{
+			var debugTextDisplayer:Sprite = this.parent.parent as Sprite;
+			if (debugTextDisplayer.contains(debugTextDisplay))
+			{
+				debugTextDisplayer.removeChild(debugTextDisplay);
+			}
+			else
+			{
+				debugTextDisplayer.addChild(debugTextDisplay);
+			}
+		}
+		
+		public function TemplateAddedToStage(e:Event):void
+		{
+			var displayObjBeingChecked:DisplayObjectContainer = this;
+			while (displayObjBeingChecked != stage && !(displayObjBeingChecked is PPPPU_Stage))
+			{
+				displayObjBeingChecked = displayObjBeingChecked.parent;
+				if (displayObjBeingChecked is PPPPU_Stage)
+				{
+					m_ppppuStage = displayObjBeingChecked as PPPPU_Stage;
+				}
+			}
+			removeEventListener(Event.ADDED_TO_STAGE, TemplateAddedToStage);
+		}
+		public function GetPPPPU_Stage():PPPPU_Stage
+		{
+			return m_ppppuStage;
+		}
+		/*public function PutDebugDisplayOnTop():void
+		{
+			if (this.contains(debugTextDisplay))
+			{
+				this.setChildIndex(debugTextDisplay, this.numChildren - 1);
+			}
+		}*/
 	}
 
 }

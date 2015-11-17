@@ -32,12 +32,8 @@ package Characters
 			m_defaultScleraColor = 0xFFFFFF; //255,255,255
 			m_defaultNippleColor = UtilityFunctions.GetColorUintFromRGB(255, 175, 255);
 			m_defaultLipColor = UtilityFunctions.GetColorUintFromRGB(255, 153, 204);
-			m_voiceCooldown = 30;
-			m_voicePlayChance = 60;
-			//TEST: Using Rosalina sounds
-			m_voiceSet = new <Sound>[new sfxRosalina_1, /*new sfxRosalina_2,*/ new sfxRosalina_3, new sfxRosalina_4, new sfxRosalina_5, 
-			new sfxRosalina_6, new sfxRosalina_7, new sfxRosalina_8, new sfxRosalina_9, new sfxRosalina_10, new sfxRosalina_11, 
-			new sfxRosalina_12, new sfxRosalina_13];
+			
+			
 		}
 		
 	}

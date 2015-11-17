@@ -24,13 +24,19 @@ package ppppu
 		/*Dictionary that tells how far away from the anchored object the element containing this definition
 		 * should be. The base depth layout (found in the "[animation name] layer info.json" files) should be used as a reference
 		 * for what the depth offset should be.*/
-		public var depthOffsets:Dictionary; 
+		public var layerPlacements:Dictionary;
+		public var depthPriorities:Dictionary; 
 		private const DegToRad:Number = (Math.PI / 180.0);
+		public static const LAYER_FRONT:int = 1;
+		public static const LAYER_BEHIND_FACE:int = 2;
+		public static const LAYER_BEHIND_HEADWEAR:int = 3;
+		public static const LAYER_BACK:int = 4;
 		public function HairDefinition() 
 		{
 			scaleFactors = new Dictionary();
 			attachPoints = new Dictionary();
-			depthOffsets = new Dictionary();
+			depthPriorities = new Dictionary();
+			layerPlacements = new Dictionary();
 			//scaleFactors["Fallback"] = 1.0;
 			//attachPoints["Fallback"] = Point(0,0);
 		}
@@ -83,14 +89,26 @@ package ppppu
 		
 		//Helper function to set the same depth offset for multiple animations
 		 
-		public function SetDepthOffsets(offset:Number, ... args):void
+		public function SetDepthPriorities(offset:int, ... args):void
 		{
 			for (var argIndex:int = 0, argsLength:int = args.length; argIndex < argsLength; ++argIndex)
 			{
 				var animationName:String = args[argIndex] as String;
 				if (animationName)
 				{
-					depthOffsets[animationName] = offset;
+					depthPriorities[animationName] = offset;
+				}
+			}
+		}
+		
+		public function SetLayerPlacements(layerId:int, ... args):void
+		{
+			for (var argIndex:int = 0, argsLength:int = args.length; argIndex < argsLength; ++argIndex)
+			{
+				var animationName:String = args[argIndex] as String;
+				if (animationName)
+				{
+					layerPlacements[animationName] = layerId;
 				}
 			}
 		}

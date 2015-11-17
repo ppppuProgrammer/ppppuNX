@@ -34,11 +34,12 @@ package CharacterHair
 			scaleFactors["Blowjob"] = [0.5873, 0.5152];
 			attachPoints["Blowjob"] = new Point(22.700000000000003, 5.9);
 			
-			depthOffsets["Cowgirl"] = -3;
-			SetDepthOffsets( -4, "LeanBack", "Swivel", "LeanForward", "Paizuri");
-			SetDepthOffsets(8, "Anal", "ReverseCowgirl");
-			SetDepthOffsets(-0.2, "SideRide", "Grind");
-			depthOffsets["Blowjob"] = 7.2;
+			layerPlacements["Cowgirl"] = HairDefinition.LAYER_BEHIND_FACE;
+			depthPriorities["Cowgirl"] = 1;
+			SetDepthPriorities( -4, "LeanBack", "Swivel", "LeanForward", "Paizuri");
+			SetDepthPriorities(8, "Anal", "ReverseCowgirl");
+			SetDepthPriorities(-0.2, "SideRide", "Grind");
+			depthPriorities["Blowjob"] = 7.2;
 		}
 		
 	}

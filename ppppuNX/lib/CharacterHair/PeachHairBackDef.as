@@ -14,6 +14,12 @@ package CharacterHair
 			mySprite = new PeachHairBack();
 			pairedCharacter = "Peach";
 			
+			SetLayerPlacements(HairDefinition.LAYER_BACK, "Cowgirl", "Swivel", "LeanBack", "LeanForward", "Paizuri", "Anal", 
+				"ReverseCowgirl", "SideRide", "Grind", "Blowjob");
+			
+			SetDepthPriorities(0, "Cowgirl", "Swivel", "LeanBack", "LeanForward", "Paizuri", "Anal", 
+				"ReverseCowgirl", "SideRide", "Grind", "Blowjob");	
+				
 			SetScaleFactors([2.49, 2.5404], "Cowgirl", "Swivel", "LeanBack", "LeanForward", "Paizuri");
 			SetAttachPoints(new Point(31.15, 63.3), "Cowgirl", "Swivel", "LeanBack", "LeanForward");
 			
@@ -29,19 +35,19 @@ package CharacterHair
 			scaleFactors["Blowjob"] = [1.9171, 1.9601];
 			attachPoints["Blowjob"] = new Point(134.4, 122.95);
 			
-			depthOffsets["Cowgirl"] = -36;
-			SetDepthOffsets(-38, "Swivel", "LeanBack");
+			//depthOffsets["Cowgirl"] = -36;
+			//SetDepthOffsets(-38, "Swivel", "LeanBack");
 			//depthOffsets["Swivel"] = -38;
 			//depthOffsets["LeanBack"] = -38;
-			depthOffsets["LeanForward"] = -37;
-			SetDepthOffsets(-12, "ReverseCowgirl", "Anal");
+			//depthOffsets["LeanForward"] = -37;
+			//SetDepthOffsets(-12, "ReverseCowgirl", "Anal");
 			//depthOffsets["Anal"] = -12;
-			depthOffsets["Paizuri"] = -14;
+			//depthOffsets["Paizuri"] = -14;
 			//depthOffsets["ReverseCowgirl"] = ;
-			SetDepthOffsets(-13, "SideRide", "Grind");
+			//SetDepthOffsets(-13, "SideRide", "Grind");
 			//depthOffsets["SideRide"] = -13;
 			//depthOffsets["Grind"] = -13;
-			depthOffsets["Blowjob"] = -19;
+			//depthOffsets["Blowjob"] = -19;
 		}
 		
 	}

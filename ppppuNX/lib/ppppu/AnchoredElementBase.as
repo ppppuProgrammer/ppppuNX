@@ -1,6 +1,7 @@
 package ppppu 
 {
 	import flash.display.DisplayObject;
+	import flash.display.DisplayObjectContainer;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -19,6 +20,7 @@ package ppppu
 		private var currentDefinitionUsed:HairDefinition;
 		private var currentlyDisplayedSprite:Sprite = null;
 		private var currentlyAnchoredObject:Sprite = null;
+		private var currentHairLayerUsed:int = 0;
 		public var anchoredDisplayObjectDict:Dictionary = new Dictionary();
 		public var type:int;
 		public static const SKINELEMENT:int = 1;
@@ -38,10 +40,15 @@ package ppppu
 		
 		private function Initialize(e:Event):void
 		{
-			if (this.parent is MasterTemplate)
+			var displayObjBeingChecked:DisplayObjectContainer = this;
+			while (displayObjBeingChecked != stage && !(displayObjBeingChecked is MasterTemplate))
 			{
-				masterTemplate = this.parent as MasterTemplate;
-				removeEventListener(Event.ADDED_TO_STAGE, Initialize);
+				displayObjBeingChecked = displayObjBeingChecked.parent;
+				if (displayObjBeingChecked is MasterTemplate)
+				{
+					masterTemplate = displayObjBeingChecked as MasterTemplate;
+					removeEventListener(Event.ADDED_TO_STAGE, Initialize);
+				}
 			}
 		}
 		
@@ -92,9 +99,10 @@ package ppppu
 		
 		public function Update():void
 		{
-			if (masterTemplate)
+			if (masterTemplate && this.parent != null)
 			{
 				var currentAnimationName:String = masterTemplate.currentAnimationName;
+				var parentDisplayObj:DisplayObjectContainer = this.parent;
 				//Check if the object this is anchored to is invisible. If so, time to find the object this should be anchored to now.
 				if (currentlyAnchoredObject == null || currentlyAnchoredObject.visible == false)
 				{
@@ -112,12 +120,12 @@ package ppppu
 					//Insert movement code involving anchor points, the anchored object, localtoglobal, skew, and scale here.
 					if ("Element" in currentlyAnchoredObject)
 					{
-						basePlacementPoint = currentlyAnchoredObject["Element"].localToGlobal(currentDefinitionUsed.attachPoints[currentAnimationName]);
+						basePlacementPoint = parentDisplayObj.globalToLocal(currentlyAnchoredObject["Element"].localToGlobal(currentDefinitionUsed.attachPoints[currentAnimationName]));
 						
 					}
 					else
 					{
-						basePlacementPoint = currentlyAnchoredObject.localToGlobal(currentDefinitionUsed.attachPoints[currentAnimationName]);
+						basePlacementPoint = parentDisplayObj.globalToLocal(currentlyAnchoredObject.localToGlobal(currentDefinitionUsed.attachPoints[currentAnimationName]));
 					}
 					//var basePlacementPoint:Point = currentlyAnchoredObject.localToGlobal(new Point(0, 0));
 					this.x = basePlacementPoint.x; this.y = basePlacementPoint.y;
@@ -173,14 +181,24 @@ package ppppu
 			}
 		}
 		
-		public function GetCurrentDepthOffset():Number
+		public function GetCurrentDepthPriority():Number
 		{
 			var depthOffsetValue:Number = 0.0;
-			if (masterTemplate && masterTemplate.currentAnimationName in currentDefinitionUsed.depthOffsets)
+			if (masterTemplate && masterTemplate.currentAnimationName in currentDefinitionUsed.depthPriorities)
 			{
-				depthOffsetValue = currentDefinitionUsed.depthOffsets[masterTemplate.currentAnimationName];
+				depthOffsetValue = currentDefinitionUsed.depthPriorities[masterTemplate.currentAnimationName];
 			}
 			return depthOffsetValue;
+		}
+		
+		public function GetHairLayerForAnimation(animationName:String):int
+		{
+			var layerId:int = -1;
+			if (animationName in currentDefinitionUsed.layerPlacements)
+			{
+				layerId = currentDefinitionUsed.layerPlacements[animationName];
+			}
+			return layerId;
 		}
 		
 		public function ChangeLayerDepth(layoutInfo:Object):void
@@ -190,9 +208,9 @@ package ppppu
 				var anchoredObjIndex:int = layoutInfo[currentlyAnchoredObject.name];
 				var anchoredObjIndex2:int = masterTemplate.getChildIndex(currentlyAnchoredObject);
 				var depthOffset:int = 0;
-				if (masterTemplate.currentAnimationName in currentDefinitionUsed.depthOffsets)
+				if (masterTemplate.currentAnimationName in currentDefinitionUsed.depthPriorities)
 				{
-					depthOffset = currentDefinitionUsed.depthOffsets[masterTemplate.currentAnimationName];
+					depthOffset = currentDefinitionUsed.depthPriorities[masterTemplate.currentAnimationName];
 				}
 				masterTemplate.setChildIndex(this, anchoredObjIndex + depthOffset);
 			}
@@ -218,6 +236,16 @@ package ppppu
 			}
 			
 			return null;
+		}
+		
+		public function SetLayerId(layerNumber:int):void
+		{
+			currentHairLayerUsed = layerNumber;
+		}
+		
+		public function GetCurrentLayerId():int
+		{
+			return currentHairLayerUsed;
 		}
 	}
 

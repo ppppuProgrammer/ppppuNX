@@ -20,7 +20,7 @@ package CharacterHair
 			
 			//depthOffsets["Anal"] = ;
 			//depthOffsets["ReverseCowgirl"] = ;
-			SetDepthOffsets(8.2, "Anal", "ReverseCowgirl");
+			SetDepthPriorities(8.2, "Anal", "ReverseCowgirl");
 		}
 		
 	}

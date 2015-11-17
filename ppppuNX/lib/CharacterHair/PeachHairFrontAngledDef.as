@@ -23,8 +23,8 @@ package CharacterHair
 			
 			//depthOffsets["SideRide"] = ;
 			//depthOffsets["Grind"] = ;
-			SetDepthOffsets(8.2, "SideRide", "Grind", "Blowjob");
-			depthOffsets["Blowjob"] = 8.2;
+			SetDepthPriorities(8.2, "SideRide", "Grind", "Blowjob");
+			depthPriorities["Blowjob"] = 8.2;
 		}
 		
 	}
