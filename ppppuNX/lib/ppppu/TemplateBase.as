@@ -9,6 +9,7 @@ package ppppu
 	import flash.events.Event;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
+	import flash.geom.Rectangle;
 	import flash.text.TextField;
 	//import EyeContainer;
 	//import MouthContainer;
@@ -24,6 +25,9 @@ package ppppu
 		//Master template version this array contains arrays of timelines. To access the index of the appropriate animation, refer to the animationNameIndexes array in ppppuCore.
 		private var defaultTimelines:Vector.<Vector.<TimelineMax>> = new Vector.<Vector.<TimelineMax>>();
 		
+		//Used for changes in the expression given by the mouth.
+		private var expressionTimeline:TimelineLite;
+		
 		private var customElementsList:Vector.<AnchoredElementBase> = new Vector.<AnchoredElementBase>();
 		public var currentAnimationName:String = "None";
 		
@@ -32,6 +36,8 @@ package ppppu
 		//The element depth layout for the latest frame based depth change of the animation.
 		private var latestFrameDepthLayout:Object;
 		private var elementDepthLayoutChangeFrames:Array;
+		
+		
 		
 		//The primary movie clip for the flash in terms as asset displaying.
 		private var m_ppppuStage:PPPPU_Stage;
@@ -57,12 +63,17 @@ package ppppu
 		public var customHairElements:Vector.<AnchoredElementBase> = new Vector.<AnchoredElementBase>();
 		
 		public var currentlyUsedHeadSprite:Sprite;
-		public var faceVerticalAngle:Number = 0; //0 is straight forward, angle > 0 is looking up, angle < 0 is looking down.  
+		
+		public var currentAnimationInfo:AnimationInfo = null;
+		//public var faceVerticalAngle:Number = 0; //0 is straight forward, angle > 0 is looking up, angle < 0 is looking down.  
 		
 		//private var debugWindow:Sprite = new Sprite();
 		//private var debugBorder:Sprite = new Sprite();
 		private var debugTextDisplay:TextField = new TextField();
-		
+		private var debugLineDrawer:Sprite = new Sprite();
+		private var debug_HairVisible:Boolean = true;
+		private var debug_HairBackTest:Boolean = false;
+		private var headLastPosition:Point = new Point();
 		public function TemplateBase()
 		{
 			addEventListener(Event.ADDED_TO_STAGE, TemplateAddedToStage);
@@ -72,9 +83,7 @@ package ppppu
 			if(EarR) {EarR.Element.gotoAndStop(1); EarR.Element.SkinGradient.gotoAndStop(1); EarR.Element.Lines.gotoAndStop(1);}
 			EarringL.Element.gotoAndStop(1);
 			EarringR.Element.gotoAndStop(1);
-			Mouth.MouthBase.gotoAndStop(1);
-			Mouth.LipsColor.gotoAndStop(1);
-			Mouth.LipsHighlight.gotoAndStop(1);
+			//Mouth.MouthBase.gotoAndStop(1);
 			Mouth.Tongue.Element.gotoAndStop(1);
 			Mouth.Tongue.visible = false;
 			Headwear.Element.gotoAndStop(1);
@@ -122,40 +131,8 @@ package ppppu
 			
 			ImmediantLayoutUpdate(animFrame);
 			
-			//Calculate the face angles. This requires an animation to have a head and a mouth.
-			var animationMouth:Sprite = this.Mouth;
-			var animationHead:Sprite = currentlyUsedHeadSprite;
-			if (animationMouth && animationHead)
-			{
-				var headHeight:Number = animationHead.height;
-				var hMat:Matrix = animationHead.transform.matrix;
-				var headSkewX:Number = Math.atan2( -hMat.c, hMat.d);
-				var headSkewY:Number = Math.atan2( hMat.b, hMat.a);
-				var headX:Number = animationHead.x;
-				var headY:Number = animationHead.y;
-				//var headWidth:Number = animationMouth.width;
-				
-				var mouthHeight:Number = animationMouth.height;
-				var mMat:Matrix = animationMouth.transform.matrix;
-				var mouthX:Number = animationMouth.x;
-				var mouthY:Number = animationMouth.y;
-				var mouthSkewX:Number = Math.atan2( -mMat.c, mMat.d);
-				var mouthSkewY:Number = Math.atan2( mMat.b, mMat.a);
-				
-				debugTextDisplay.text = "Head: \nHeight - " + headHeight + "\nX - " + headX + "\nY - " + headY + "\nSkewX - " + headSkewX + "\nSkewY - " + headSkewY;
-				var txt2:String = "\nMouth: \nHeight - " + mouthHeight + "\nX - " + mouthX + "\nY - " + mouthY + "\nSkewX - " + mouthSkewX + "\nSkewY - " + mouthSkewY;
-				debugTextDisplay.appendText(txt2);
-				
-				
-				if (debugTextDisplay.textHeight > debugTextDisplay.height)
-				{
-					debugTextDisplay.height = debugTextDisplay.textHeight+5;
-				}
-			}
-			else
-			{
-				faceVerticalAngle = 0; //Assume that the face is straight forward
-			}
+			
+			UpdateDebugDisplay();
 			
 			UpdateAnchoredElements();
 		}
@@ -248,7 +225,8 @@ package ppppu
 				{
 					if (customElement.parent) { customElement.parent.removeChild(customElement); }
 					
-					if (hairLayerToPutElementOn == HairDefinition.LAYER_FRONT)	{hairLayer = HairFrontLayer; }
+					if (hairLayerToPutElementOn == -1) { customElement.SetLayerId( -1); } //Hair isn't on any of the layers
+					else if (hairLayerToPutElementOn == HairDefinition.LAYER_FRONT)	{hairLayer = HairFrontLayer; }
 					else if (hairLayerToPutElementOn == HairDefinition.LAYER_BEHIND_FACE)	{ hairLayer = HairBehindFaceLayer; }
 					else if (hairLayerToPutElementOn == HairDefinition.LAYER_BEHIND_HEADWEAR)	{ hairLayer = HairBehindHeadwearLayer; }
 					else if (hairLayerToPutElementOn == HairDefinition.LAYER_BACK)	{ hairLayer = HairBackLayer; }	
@@ -314,7 +292,15 @@ package ppppu
 		{
 			for (var i:int = 0, l:int = customElementsList.length; i < l; ++i )
 			{
-				customElementsList[i].Update();
+				if (customElementsList[i].name == "HairBack" && debug_HairBackTest)
+				{
+					customElementsList[i].Update();	
+				}
+				else if (customElementsList[i].type == AnchoredElementBase.HAIRELEMENT && (!debug_HairVisible || debug_HairBackTest))
+				{
+					
+				}
+				else{customElementsList[i].Update();}
 			}
 		}
 		public function RefreshAnchorForAnchoredElements():void
@@ -553,6 +539,16 @@ package ppppu
 			}
 		}
 		
+		public function SetExpression(exprTimeline:TimelineLite):void
+		{
+			if (expressionTimeline)
+			{
+				masterTimeline.remove(expressionTimeline);
+			}
+			exprTimeline.time(currentFrame);
+			masterTimeline.add(exprTimeline);
+		}
+		
 		public function SetElementDepthLayout(layout:Object):void
 		{
 			
@@ -565,6 +561,12 @@ package ppppu
 			currentAnimationElementDepthLayout = layout;
 			
 		}
+		
+		public function ChangeMouthExpression(expressionName:String):void
+		{
+			Mouth.ChangeExpression(expressionName);
+		}
+		
 		//public function GetName():String{return this.name}
 		
 		/*public function TemplateBase() 
@@ -597,10 +599,17 @@ package ppppu
 			if (debugTextDisplayer.contains(debugTextDisplay))
 			{
 				debugTextDisplayer.removeChild(debugTextDisplay);
+				debugTextDisplayer.removeChild(debugLineDrawer);
 			}
 			else
 			{
+				var debugTextPoint:Point = new Point(0, 0);
+				debugTextPoint = globalToLocal(stage.localToGlobal(debugTextPoint));
+				//debugTextDisplay;
+				debugTextDisplay.x = debugTextPoint.x;
+				debugTextDisplay.y = debugTextPoint.y;
 				debugTextDisplayer.addChild(debugTextDisplay);
+				debugTextDisplayer.addChild(debugLineDrawer);
 			}
 		}
 		
@@ -621,6 +630,109 @@ package ppppu
 		{
 			return m_ppppuStage;
 		}
+		
+		private function UpdateDebugDisplay():void
+		{
+			//Calculate the face angles. This requires an animation to have a head and a mouth.
+			var animationMouth:Sprite = this.Mouth;
+			var animationHead:Sprite = currentlyUsedHeadSprite;
+			
+			if (animationMouth && animationHead && debugTextDisplay.parent != null)
+			{
+				var headBounds:Rectangle = animationHead.getBounds(this);
+				var headHeight:Number = animationHead.height;
+				var hMat:Matrix = animationHead.transform.matrix;
+				var headSkewX:Number = Math.atan2( -hMat.c, hMat.d);
+				var headSkewY:Number = Math.atan2( hMat.b, hMat.a);
+				var headX:Number = animationHead.x;
+				var headY:Number = animationHead.y;
+				//var headWidth:Number = animationMouth.width;
+				
+				var mouthHeight:Number = animationMouth.height;
+				var mMat:Matrix = animationMouth.transform.matrix;
+				var mouthX:Number = animationMouth.x;
+				var mouthY:Number = animationMouth.y;
+				var mouthSkewX:Number = Math.atan2( -mMat.c, mMat.d);
+				var mouthSkewY:Number = Math.atan2( mMat.b, mMat.a);
+				
+				//debugTextDisplay.text = "Frame #" + ((parent.parent.currentFrame -2) % 120 + 1) + "\n";
+				//debugTextDisplay.appendText("Head: \nHeight - " + headHeight + "\nX - " + headX + "\nY - " + headY + "\nSkewX - " + headSkewX + "\nSkewY - " + headSkewY);
+				//var txt2:String = "\nMouth: \nHeight - " + mouthHeight + "\nX - " + mouthX + "\nY - " + mouthY + "\nSkewX - " + mouthSkewX + "\nSkewY - " + mouthSkewY;
+				//debugTextDisplay.appendText(txt2);
+				//var mouthDistanceFromFace:Number = Math.abs(mouthY - headBounds.bottom);
+				//var txt3:String = "\nMouth Distance from face:\nValue: " + mouthDistanceFromFace + "\n%: " + 100.0/headHeight * mouthDistanceFromFace;
+				//debugTextDisplay.appendText(txt3);
+				//Hair back tracking
+				/*var hairBack:Sprite = this.HairBackLayer.getChildAt(1);
+				if (hairBack)
+				{
+					var hairPointOnStage:Point = new Point(hairBack.x, hairBack.y);
+					hairPointOnStage = globalToLocal(stage.localToGlobal(hairPointOnStage));
+					var hairBackText:String = "\nHair back:\nPos: " + hairPointOnStage.x + ", " + hairPointOnStage.y + "\nWidth: " + hairBack.width + "\nHeight: " + hairBack.height;
+					debugTextDisplay.appendText(hairBackText);
+				}*/
+				//Head position and velocity stuff
+				var headPosText:String = "\nLast pos: " + headLastPosition.x +", " + headLastPosition.y;
+				headPosText += "\nDiff from last: " + RoundToNearest(.001, headX - headLastPosition.x) + ", " + RoundToNearest(.001, headY - headLastPosition.y);
+				//debugTextDisplay.appendText(headPosText);
+				//var approxFaceAngleTxt:String = "\n\nAngle: ";
+				//debugTextDisplay.appendText(approxFaceAngleTxt);
+				
+				//draw debug lines for mouth and head Y positions
+				debugLineDrawer.graphics.clear();
+				//Head Y position
+				debugLineDrawer.graphics.lineStyle(1, 0xFF0000);
+				debugLineDrawer.graphics.moveTo(headX - 75, headY);
+				debugLineDrawer.graphics.lineTo(headX + 75, headY);
+				//Mouth Y position
+				debugLineDrawer.graphics.lineStyle(1, 0x00FF00);
+				debugLineDrawer.graphics.moveTo(mouthX - 75, mouthY);
+				debugLineDrawer.graphics.lineTo(mouthX + 75, mouthY);
+				//Head Bounds
+				debugLineDrawer.graphics.lineStyle(1, 0x000000);
+				debugLineDrawer.graphics.moveTo(headBounds.left, headBounds.top);
+				debugLineDrawer.graphics.lineTo(headBounds.right, headBounds.top);
+				debugLineDrawer.graphics.lineTo(headBounds.right, headBounds.bottom);
+				debugLineDrawer.graphics.lineTo(headBounds.left, headBounds.bottom);
+				debugLineDrawer.graphics.lineTo(headBounds.left, headBounds.top);
+				
+				if (debugTextDisplay.textHeight > debugTextDisplay.height)
+				{
+					debugTextDisplay.height = debugTextDisplay.textHeight+5;
+				}
+				if (debugTextDisplay.textWidth > debugTextDisplay.width)
+				{
+					debugTextDisplay.width = debugTextDisplay.textWidth+5;
+				}
+			}
+			else
+			{
+				//faceVerticalAngle = 0; //Assume that the face is straight forward
+			}
+			headLastPosition.x = animationHead.x;
+			headLastPosition.y = animationHead.y;
+		}
+		public function ToggleHairVisibility():void
+		{
+			debug_HairVisible = !debug_HairVisible;
+			for (var i:int = 0, l:int = customHairElements.length; i < l; ++i)
+			{
+				customHairElements[i].visible = debug_HairVisible;
+			}
+		}
+		
+		public function DEBUG_HairBackTesting():void
+		{
+			debug_HairBackTest = !debug_HairBackTest;
+			for (var i:int = 0, l:int = customHairElements.length; i < l; ++i)
+			{
+				if (customHairElements[i].name != "HairBack")
+				{customHairElements[i].visible = !debug_HairBackTest; }
+				else { customHairElements[i].visible = debug_HairBackTest; }	
+			}
+			//this.Headwear.visible = !debug_HairBackTest;
+			this.removeChild(this.Headwear);
+		}
 		/*public function PutDebugDisplayOnTop():void
 		{
 			if (this.contains(debugTextDisplay))
@@ -628,6 +740,9 @@ package ppppu
 				this.setChildIndex(debugTextDisplay, this.numChildren - 1);
 			}
 		}*/
+		function RoundToNearest(roundTo:Number, value:Number):Number{
+		return Math.round(value/roundTo)*roundTo;
+		}
 	}
 
 }

@@ -237,7 +237,7 @@ package ppppu
 		{
 			var m:ui.RGBAMenu = e.target as ui.RGBAMenu;
 			var ct:ColorTransform = new ColorTransform(0, 0, 0, 0, m.R, m.G, m.B, m.A);
-			templateInUse.Mouth.LipsColor.transform.colorTransform = ct;
+			//templateInUse.Mouth.LipsColor.transform.colorTransform = ct;
 		}
 		private function ScleraSliderChanged(e:Event):void
 		{

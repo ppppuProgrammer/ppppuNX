@@ -67,6 +67,7 @@
   <!-- Intrinsic Libraries -->
   <intrinsics>
     <element path="Library\AS3\frameworks\FlashIDE" />
+    <element path="Library\AS3\frameworks\Flex4" />
   </intrinsics>
   <!-- Assets to embed into the output SWF -->
   <library>

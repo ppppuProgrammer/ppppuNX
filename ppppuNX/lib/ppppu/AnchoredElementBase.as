@@ -23,14 +23,22 @@ package ppppu
 		private var currentHairLayerUsed:int = 0;
 		public var anchoredDisplayObjectDict:Dictionary = new Dictionary();
 		public var type:int;
+		public var physicsType:uint;
 		public static const SKINELEMENT:int = 1;
 		public static const HAIRELEMENT:int = 2;
-		public function AnchoredElementBase(elementName:String, elementType:int = 0) 
+		private var latestAnimInfo:AnimationInfo = null;
+		private var dirtyHairMovement:Boolean = false;
+		
+		private var xSpeed:Number = 0.0;
+		private var ySpeed:Number = 0.0;
+		//private static const MouthPercentOfFaceAtNeutral:Number = 20.8;
+		public function AnchoredElementBase(elementName:String, elementType:int = 0, physics:uint = AnchorPhysicsEnum.FULLPHYSICS) 
 		{
 			gotoAndStop(1);
 			addEventListener(Event.ADDED_TO_STAGE, Initialize);
 			name = elementName;
 			type = elementType;
+			physicsType = physics;
 			/*To avoid having the element shown for a small amount of time is an visual off place (usually top left of the screen) until
 			its position is correct.*/
 			this.visible = false;
@@ -101,6 +109,11 @@ package ppppu
 		{
 			if (masterTemplate && this.parent != null)
 			{
+				if (latestAnimInfo != masterTemplate.currentAnimationInfo)
+				{
+					dirtyHairMovement = true;
+					latestAnimInfo = masterTemplate.currentAnimationInfo
+				}
 				var currentAnimationName:String = masterTemplate.currentAnimationName;
 				var parentDisplayObj:DisplayObjectContainer = this.parent;
 				//Check if the object this is anchored to is invisible. If so, time to find the object this should be anchored to now.
@@ -121,7 +134,6 @@ package ppppu
 					if ("Element" in currentlyAnchoredObject)
 					{
 						basePlacementPoint = parentDisplayObj.globalToLocal(currentlyAnchoredObject["Element"].localToGlobal(currentDefinitionUsed.attachPoints[currentAnimationName]));
-						
 					}
 					else
 					{
@@ -129,15 +141,7 @@ package ppppu
 					}
 					//var basePlacementPoint:Point = currentlyAnchoredObject.localToGlobal(new Point(0, 0));
 					this.x = basePlacementPoint.x; this.y = basePlacementPoint.y;
-					/*if (currentAnimationName == "Paizuri" && this.name == "HairBack")
-					{
-						trace("Current Frame: " + ((masterTemplate.parent.currentFrame - 2) % 120 + 1));
-						trace(currentlyAnchoredObject.name + "'s position: { x:" + currentlyAnchoredObject.x + ", y:" + currentlyAnchoredObject.y + " }");
-						trace(this.name + "'s position: { x:" + this.x + ", y:" + this.y + " }");
-						//trace(currentlyAnchoredObject.name + "'s dimensions: " + currentlyAnchoredObject.width + ", " + currentlyAnchoredObject.height);
-						trace("Distance: { x:" + (this.x - currentlyAnchoredObject.x) + ", y:" + (this.y - currentlyAnchoredObject.y) + " }")
-						trace("Test: x: " + (currentlyAnchoredObject.x + currentDefinitionUsed.attachPoints[currentAnimationName].x) + " y: " + (currentlyAnchoredObject.y + currentDefinitionUsed.attachPoints[currentAnimationName].y));
-					}*/
+
 					//currentlyDisplayedSprite.x = basePlacementPoint.x; currentlyDisplayedSprite.y = basePlacementPoint.y;
 					/*this.width = currentlyAnchoredObject.width * currentDefinitionUsed.scaleFactors[currentAnimationName][0];
 					this.height = currentlyAnchoredObject.height * currentDefinitionUsed.scaleFactors[currentAnimationName][1];*/
@@ -147,7 +151,42 @@ package ppppu
 					this.height = (anchoredObjBaseShapeHeight * currentlyAnchoredObject.scaleY) * currentDefinitionUsed.scaleFactors[currentAnimationName][1];
 					
 					//need way to track rotation of face. try observing the difference in nose positioning for up/down head tilts.
+					var animationMouth:Sprite = masterTemplate.Mouth;
+					var animationHead:Sprite = masterTemplate.currentlyUsedHeadSprite;
+					var headBounds:Rectangle = animationHead.getBounds(masterTemplate);
+					var headHeight:Number = animationHead.height;
+					var hMat:Matrix = animationHead.transform.matrix;
+					var headSkewX:Number = Math.atan2( -hMat.c, hMat.d);
+					var headSkewY:Number = Math.atan2( hMat.b, hMat.a);
+					var headX:Number = animationHead.x;
+					var headY:Number = animationHead.y;
+					//var headWidth:Number = animationMouth.width;
 					
+					var mouthHeight:Number = animationMouth.height;
+					var mMat:Matrix = animationMouth.transform.matrix;
+					var mouthX:Number = animationMouth.x;
+					var mouthY:Number = animationMouth.y;
+					var mouthSkewX:Number = Math.atan2( -mMat.c, mMat.d);
+					var mouthSkewY:Number = Math.atan2( mMat.b, mMat.a);
+					var mouthDistanceFromFace:Number = Math.abs(mouthY - headBounds.bottom);
+					var mouthPercentFromFace:Number = 100.0 / headHeight * mouthDistanceFromFace;
+					
+					
+					//var mouthPercentDifferenceFromNeutral:Number = mouthPercentFromFace - MouthPercentOfFaceAtNeutral;
+					//For Back
+					//Face is upward: face Y:160.45 Hair Y:249.55 diff: 89.1
+					//Face is neutral: face Y:193.3 Hair Y:263.35 diff: 70.05
+					//Percent diff from upward and neutral: ~5%, meaning each % moves is about 4 pixels.
+					//For Front
+					//Face is upward: face Y:160.45 Hair Y:96.65 diff: 63.8
+					//Face is neutral: face Y:193.3 Hair Y:129.95 diff: 63.35
+					//Percent diff from upward and neutral: ~5%, meaning each % moves is about .11 pixels.
+					var distanceToMoveHair:Number = 0.0;// mouthPercentDifferenceFromNeutral * 3.77;
+					if (currentHairLayerUsed == HairDefinition.LAYER_BACK)
+					{this.y += distanceToMoveHair; }
+					//else if(currentHairLayerUsed == HairDefinition.LAYER_FRONT){distanceToMoveHair = mouthPercentDifferenceFromNeutral * .11; this.y -= distanceToMoveHair; }
+					
+				
 					/*The switch template animation function in ppppuCore sets all elements in the master template to be invisible. While
 					 * most elements needed will be set to be visible later, this is done in the add timeline function of template base.
 					 * Getting to the point, anchored elements miss being set to visible because they aren't tied to a timeline. So make 
@@ -161,6 +200,7 @@ package ppppu
 					this.visible = false;
 				}
 			}
+			dirtyHairMovement = false;
 		}
 		
 		//Ensures that the anchored element is using the anchor display object for the current animation.

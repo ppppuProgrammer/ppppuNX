@@ -1,33 +1,100 @@
 ﻿package ppppu {
 	
 	import flash.display.MovieClip;
+	import flash.display.Sprite;
 	import flash.events.Event;
+	import flash.utils.Dictionary;
 	
 	
 	public class MouthContainerBase extends MovieClip {
 		
-		public var LipsColor : MovieClip;
-		public var LipsHighlight : MovieClip;
-		public var MouthBase : MovieClip;
+		//public var LipsColor : MovieClip;
+		//public var LipsHighlight : MovieClip;
+		//public var MouthBase : MovieClip;
+		public var ExpressionContainer:MovieClip;
+		
+		private var currentExpression:Sprite=null;
+		
+		public var ExpressionDict:Dictionary;
 		
 		/*TODO Move animationOrders Vector to ppppuAnimation. Its current position will create problems when multiple characters use the same template.
 		 * From there, the ppppuAnimation will send the animation order to the mouthContainer*/
 		//private var animationOrders:Vector.<MouthAnimationOrder> = new Vector.<MouthAnimationOrder>(120, true);
 		public function MouthContainerBase() {
-			ChangeMouth("Closed");
+			InitializeMouths();
+			//ChangeMouth("Closed");
 			//AddAnimationOrder(1, "Closed");
 			// constructor code
 			//this.addEventListener(Event.ENTER_FRAME, this.FrameCheck);
 		}
 		
-		public function ChangeMouth(mouthType:String):void
+		/*public function ChangeMouth(mouthType:String):void
 		{
 			MouthBase.gotoAndStop(mouthType);
-			LipsColor.gotoAndStop(MouthBase.currentFrame);
-			LipsHighlight.gotoAndStop(MouthBase.currentFrame);
+			//LipsColor.gotoAndStop(MouthBase.currentFrame);
+			//LipsHighlight.gotoAndStop(MouthBase.currentFrame);
 			
+		}*/
+		
+		public function InitializeMouths():void
+		{
+			//Create dictionary for expressions
+			ExpressionDict = new Dictionary();
+			
+			//Create initial expressions
+			AddNewExpression("Smile", new Exp_Smile);
+			AddNewExpression("OpenSmile", new Exp_OpenSmile);
+			AddNewExpression("FrownAngled", new Exp_FrownAngled);
+			AddNewExpression("Grin", new Exp_Grin);
+			AddNewExpression("Oh", new Exp_Oh);
+			AddNewExpression("TearShape", new Exp_TearShape);
+			AddNewExpression("WideTearShape", new Exp_WideTearShape);
+			AddNewExpression("WideNoTeeth", new Exp_WideNoTeeth);
+			AddNewExpression("Frown", new Exp_Frown);
+			AddNewExpression("Grit", new Exp_Grit);
+			AddNewExpression("Smirk", new Exp_Smirk);
+			AddNewExpression("SmirkAngled", new Exp_SmirkAngled);
+			AddNewExpression("OpenSmileAngled", new Exp_OpenSmileAngled);
+			AddNewExpression("Wide2", new Exp_Wide2);
+			AddNewExpression("GrinAngled", new Exp_GrinAngled);
+			AddNewExpression("OpenSmileAngledNoTeeth", new Exp_OpenSmileAngledNoTeeth);
+			AddNewExpression("OpenSmileFang", new Exp_OpenSmileFang);
+			AddNewExpression("OpenSmileAngledFang", new Exp_OpenSmileAngledFang);
+			AddNewExpression("GritAngled", new Exp_GritAngled);
+			//AddNewExpression("", new Exp_);
+			//AddNewExpression("", new Exp_);
 		}
 		
+		public function AddNewExpression(expressionName:String, expressionAsset:Sprite):void
+		{
+			if (ExpressionDict[expressionName] == null)
+			{
+				ExpressionDict[expressionName] = expressionAsset;
+			}
+		}
+		
+		
+		public function ChangeExpression(expressionName:String):void
+		{
+			//Get the expression by name
+			var expression:Sprite = ExpressionDict[expressionName];
+			//check if it actually exists
+			if (expression != null)
+			{
+				//Check if an expression is already is use
+				if (currentExpression)
+				{
+					//If one is already in use, remove it
+					ExpressionContainer.removeChild(currentExpression);
+				}
+				//set the new current expression
+				currentExpression = expression;
+				//reset position of current expression
+				currentExpression.x = currentExpression.y = 0;
+				//add current expression to the display list.
+				ExpressionContainer.addChild(currentExpression);
+			}
+		}
 		/*public function FrameCheck(currentFrameNumber:int)
 		{
 			var currentOrder:MouthAnimationOrder = animationOrders[currentFrameNumber - 1];

@@ -1,5 +1,6 @@
 package ppppu 
 {
+	import AnimationSettings.CowgirlInfo;
 	import avmplus.DescribeTypeJSON;
 	import CharacterHair.*;
 	import Characters.PeachCharacter;
@@ -13,6 +14,8 @@ package ppppu
 	import flash.events.KeyboardEvent;
 	import flash.geom.Point;
 	import flash.net.registerClassAlias;
+	import flash.net.URLLoader;
+	import flash.net.URLRequest;
 	import flash.system.Capabilities;
 	import flash.utils.ByteArray;
 	import flash.utils.describeType;
@@ -38,6 +41,7 @@ package ppppu
 		//Responsible for holding the various timelines that will be added to a template. This dictionary is 3 levels deep, which is expressed by: timelineDict[Character][Animation][Part]
 		private var timelinesDict:Dictionary = new Dictionary();
 		private var layerInfoDict:Dictionary = new Dictionary();
+		private var animInfoDict:Dictionary = new Dictionary();
 		public var mainStage:PPPPU_Stage;
 		//Keeps track of what keys were pressed and/or held down
 		private var keyDownStatus:Array = [];
@@ -77,7 +81,7 @@ package ppppu
 			mainStage = new PPPPU_Stage();
 			mainStage.stop();
 			addChild(mainStage);
-			
+			//masterTemplate = mainStage.CharacterLayer.MasterTemplateInstance;
 			var frameLabels:Array = mainStage.currentLabels;
 			for (var i:int = 0, l:int = frameLabels.length; i < l;++i)
 			{
@@ -141,6 +145,9 @@ package ppppu
 			}
 			mainStage.x = (stage.stageWidth - mainStage.CharacterLayer.width) / 2;
 			mainStage.CharacterLayer.addChild(masterTemplate);	
+			
+			animInfoDict["Cowgirl"] = new CowgirlInfo();
+			
 			//Switch the first animation.
 			SwitchTemplateAnimation(0);
 			//SwitchTemplateAnimation(8);
@@ -211,19 +218,16 @@ package ppppu
 			hairBack.SetAnchorObjectForAnimation(masterTemplate["TurnedFace"], "Anal", "ReverseCowgirl");
 			
 			masterTemplate.AddNewElementToTemplate(hairBack);
-			masterTemplate.AddNewElementToTemplate(hairSideL);
+			/*masterTemplate.AddNewElementToTemplate(hairSideL);
 			masterTemplate.AddNewElementToTemplate(hairSideR);
 			masterTemplate.AddNewElementToTemplate(hairSide3L);
 			masterTemplate.AddNewElementToTemplate(hairSide3R);
 			masterTemplate.AddNewElementToTemplate(hairSide2L);
 			masterTemplate.AddNewElementToTemplate(hairSide2R);
-			masterTemplate.AddNewElementToTemplate(hairFront);
-			
-			
-			
+			masterTemplate.AddNewElementToTemplate(hairFront);	
 			
 			masterTemplate.AddNewElementToTemplate(hairFrontAngled);
-			masterTemplate.AddNewElementToTemplate(hairFrontAngled2);
+			masterTemplate.AddNewElementToTemplate(hairFrontAngled2);*/
 			
 			menu = new ppppuMenu(masterTemplate);
 			menu.ChangeSlidersToCharacterValues(currentCharacter);
@@ -232,7 +236,6 @@ package ppppu
 			charVoiceSystem = new SoundEffectSystem();
 			
 			SwitchCharacter(0);
-			
 			mainStage.play();
 		}
 		
@@ -495,6 +498,32 @@ package ppppu
 				{
 					masterTemplate.ToggleDebugModeText();
 				}
+				else if (keyPressed == Keyboard.F)
+				{
+					masterTemplate.ToggleHairVisibility();
+				}
+				else if (keyPressed == Keyboard.G)
+				{
+					masterTemplate.DEBUG_HairBackTesting();
+				}
+				else if (keyPressed == Keyboard.M)
+				{
+					masterTemplate.Mouth.ChangeExpression("Smile");
+				}
+				else if (keyPressed == Keyboard.N)
+				{
+					masterTemplate.Mouth.ChangeExpression("TearShape");
+				}
+				else if (keyPressed == Keyboard.O)
+				{
+					masterTemplate.Mouth.ChangeExpression("Oh");
+				}
+				else if (keyPressed == Keyboard.L)
+				{
+					var myTextLoader:URLLoader = new URLLoader();
+					myTextLoader.addEventListener(Event.COMPLETE, mouthLoadTest);
+					myTextLoader.load(new URLRequest("MouthTest.txt"));
+				}
 				
 			}
 			if (keyPressed == Keyboard.LEFT)
@@ -521,6 +550,15 @@ package ppppu
 				masterTemplate.PlayAnimation(frame);
 				masterTemplate.StopAnimation();
 			}
+			if (keyPressed == Keyboard.UP)
+			{
+				ScaleFromCenter(mainStage.CharacterLayer, mainStage.CharacterLayer.scaleX + .05, mainStage.CharacterLayer.scaleY + .05);
+			}
+			else if (keyPressed == Keyboard.DOWN)
+			{
+				ScaleFromCenter(mainStage.CharacterLayer, mainStage.CharacterLayer.scaleX - .05, mainStage.CharacterLayer.scaleY - .05);
+			}
+			
 			keyDownStatus[keyEvent.keyCode] = true;
 		}
 		
@@ -572,6 +610,10 @@ package ppppu
 					masterTemplate.AddTimeline(currCharTimeline);
 				}
 			}
+			
+			//Change the animation info
+			masterTemplate.currentAnimationInfo = animInfoDict["Cowgirl"];
+			
 			//Sync the animation to the main stage's timeline (main stage's current frame - animation start frame % 120 + 1 to avoid setting it to frame 0)
 			masterTemplate.PlayAnimation((mainStage.currentFrame -2) % 120 + 1);
 			currentAnimationIndex = animationIndex;
@@ -637,6 +679,30 @@ package ppppu
 				charVoiceSystem.ChangeCharacterVoiceRate(currentCharacter.GetVoicePlayRate());
 				menu.ChangeSlidersToCharacterValues(currentCharacter);
 			}
+		}
+		
+		private function ScaleFromCenter(dis:DisplayObjectContainer,sX:Number,sY:Number):void
+		{
+			var posX:Number = dis.x;
+			var posY:Number = dis.y;
+			var oldDisBounds:Rectangle = dis.getBounds(dis.parent);
+			//dis.x =dis.y = 0;
+			dis.scaleX = sX;
+			dis.scaleY = sY;
+			
+			var newDisBounds:Rectangle = dis.getBounds(dis.parent);
+			var xDisplacement:Number = newDisBounds.left - oldDisBounds.left;
+			var yDisplacement:Number = newDisBounds.top - oldDisBounds.top;
+			dis.x += xDisplacement;
+			dis.y += yDisplacement;
+		}
+		
+		private function mouthLoadTest(e:Event):void
+		{
+			var parser:ExpressionParser = new ExpressionParser();
+			var expr:TimelineMax = parser.ParseExpression(masterTemplate, masterTemplate.Mouth.ExpressionContainer, e.target.data);
+			//var expr:TimelineMax = ExpressionParser.ParseExpression(masterTemplate, masterTemplate.Mouth.ExpressionContainer, e.target.data);
+			masterTemplate.SetExpression(expr);
 		}
 	}
 
