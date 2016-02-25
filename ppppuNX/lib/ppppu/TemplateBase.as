@@ -26,7 +26,7 @@ package ppppu
 		private var defaultTimelines:Vector.<Vector.<TimelineMax>> = new Vector.<Vector.<TimelineMax>>();
 		
 		//Used for changes in the expression given by the mouth.
-		private var expressionTimeline:TimelineLite;
+		private var expressionTimeline:TimelineMax;
 		
 		private var customElementsList:Vector.<AnchoredElementBase> = new Vector.<AnchoredElementBase>();
 		public var currentAnimationName:String = "None";
@@ -578,7 +578,8 @@ package ppppu
 				masterTimeline.remove(expressionTimeline);
 			}
 			masterTimeline.add(exprTimeline, 0);
-			exprTimeline.play(frameCounter,false);
+			exprTimeline.play(frameCounter, false);
+			expressionTimeline = exprTimeline;
 		}
 		
 		public function SetElementDepthLayout(layout:Object):void

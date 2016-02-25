@@ -41,41 +41,43 @@ package ppppu
 				//Rest
 				for (var i:int = 1, l:int = definitionLines.length; i < l; ++i)
 				{
-					
-					//Split the current line
-					var currLinesParts:Array = definitionLines[i].split(',');
-					//currLinesParts: index(idx) 0 is start frame, idx 1 is duration, idx 2 is expression name, idx 3 or higher is custom settings using gsap acceptable properties.
-					
-					var tweenVariables:Object = {useFrames:true, onRepeat: masterDisplay.ChangeMouthExpression, onRepeatParams:[currLinesParts[2]], onStart: masterDisplay.ChangeMouthExpression, onStartParams:[currLinesParts[2]]};
-					if (currLinesParts.length >= 3)
+					if (definitionLines[i].indexOf("//") == -1 && definitionLines[i].indexOf("#") == -1)//Skip line conditions
 					{
-						var tween:TweenLite;
-						for (var x:int = 3, y:int = currLinesParts.length; x < y; ++x)
-						{
-							var propertyData:Array = currLinesParts[x].split(':');
-							if (propertyData.length == 2)
-							{
-								var propertyName:String = propertyData[0];
-								var propertyRawValue:String = propertyData[1];
-								//Check if number
-								var propertyValue:Number = parseFloat(propertyRawValue);
-								if (isNaN(propertyValue))//Not a number
-								{
-									tweenVariables[propertyName] = propertyRawValue;
-								}
-								else
-								{
-									tweenVariables[propertyName] = propertyValue;
-								}
-							}
-						}
-						tween = TweenLite.to(displayObj, 0.0, tweenVariables);
-						tween.startTime(parseInt(currLinesParts[0]));
-						tween.duration(parseInt(currLinesParts[1]));
+						//Split the current line
+						var currLinesParts:Array = definitionLines[i].split(',');
+						//currLinesParts: index(idx) 0 is start frame, idx 1 is duration, idx 2 is expression name, idx 3 or higher is custom settings using gsap acceptable properties.
 						
-						//tween.duration();
-						tween.data = currLinesParts[2];
-						tweens.push(tween);
+						var tweenVariables:Object = {useFrames:true, onRepeat: masterDisplay.ChangeMouthExpression, onRepeatParams:[currLinesParts[2]], onStart: masterDisplay.ChangeMouthExpression, onStartParams:[currLinesParts[2]]};
+						if (currLinesParts.length >= 3)
+						{
+							var tween:TweenLite;
+							for (var x:int = 3, y:int = currLinesParts.length; x < y; ++x)
+							{
+								
+									var propertyData:Array = currLinesParts[x].split(':');
+									if (propertyData.length == 2)
+									{
+										var propertyName:String = propertyData[0];
+										var propertyRawValue:String = propertyData[1];
+										//Check if number
+										var propertyValue:Number = parseFloat(propertyRawValue);
+										if (isNaN(propertyValue))//Not a number
+										{
+											tweenVariables[propertyName] = propertyRawValue;
+										}
+										else
+										{
+											tweenVariables[propertyName] = propertyValue;
+										}
+									}
+							}
+							tween = TweenLite.to(displayObj, 0.0, tweenVariables);
+							tween.startTime(parseInt(currLinesParts[0]));
+							tween.duration(parseInt(currLinesParts[1]));
+							//tween.duration();
+							tween.data = currLinesParts[2];
+							tweens.push(tween);
+						}
 					}
 				}
 			}

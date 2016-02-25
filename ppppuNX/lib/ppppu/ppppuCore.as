@@ -10,7 +10,9 @@ package ppppu
 	import flash.display.DisplayObjectContainer;
 	import flash.display.MovieClip;
 	import flash.display.FrameLabel;
+	import flash.errors.IOError;
 	import flash.events.Event;
+	import flash.events.IOErrorEvent;
 	import flash.events.KeyboardEvent;
 	import flash.geom.Point;
 	import flash.net.registerClassAlias;
@@ -522,6 +524,7 @@ package ppppu
 				{
 					var myTextLoader:URLLoader = new URLLoader();
 					myTextLoader.addEventListener(Event.COMPLETE, mouthLoadTest);
+					myTextLoader.addEventListener(IOErrorEvent.IO_ERROR, loadFail);
 					myTextLoader.load(new URLRequest("MouthTest.txt"));
 				}
 				
@@ -703,6 +706,11 @@ package ppppu
 			var expr:TimelineMax = parser.Parse(masterTemplate, masterTemplate.Mouth.ExpressionContainer, e.target.data as String);
 			//var expr:TimelineMax = ExpressionParser.ParseExpression(masterTemplate, masterTemplate.Mouth.ExpressionContainer, e.target.data);
 			masterTemplate.SetExpression(expr);
+		}
+		
+		private function loadFail(e:IOErrorEvent):void
+		{
+			trace("Was unable to load file \"MouthTest.txt\"");
 		}
 	}
 
