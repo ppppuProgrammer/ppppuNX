@@ -217,7 +217,7 @@ package ppppu
 			hairBack.SetAnchorObjectForAnimation(masterTemplate["TurnedFace3"], "Blowjob");
 			hairBack.SetAnchorObjectForAnimation(masterTemplate["TurnedFace"], "Anal", "ReverseCowgirl");
 			
-			masterTemplate.AddNewElementToTemplate(hairBack);
+			//masterTemplate.AddNewElementToTemplate(hairBack);
 			/*masterTemplate.AddNewElementToTemplate(hairSideL);
 			masterTemplate.AddNewElementToTemplate(hairSideR);
 			masterTemplate.AddNewElementToTemplate(hairSide3L);
@@ -281,7 +281,7 @@ package ppppu
 					
 					//mainStage.setChildIndex(masterTemplate, mainStage.numChildren - 1);
 				}
-				masterTemplate.Update(animationFrame);
+				masterTemplate.Update(/*animationFrame*/);
 				//masterTemplate.UpdateAnchoredElements(); //Called by master template's update functions
 				if (playSounds)
 				{
@@ -700,7 +700,7 @@ package ppppu
 		private function mouthLoadTest(e:Event):void
 		{
 			var parser:ExpressionParser = new ExpressionParser();
-			var expr:TimelineMax = parser.ParseExpression(masterTemplate, masterTemplate.Mouth.ExpressionContainer, e.target.data);
+			var expr:TimelineMax = parser.Parse(masterTemplate, masterTemplate.Mouth.ExpressionContainer, e.target.data as String);
 			//var expr:TimelineMax = ExpressionParser.ParseExpression(masterTemplate, masterTemplate.Mouth.ExpressionContainer, e.target.data);
 			masterTemplate.SetExpression(expr);
 		}

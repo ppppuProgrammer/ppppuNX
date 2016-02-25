@@ -78,7 +78,9 @@
 		{
 			//Get the expression by name
 			var expression:Sprite = ExpressionDict[expressionName];
-			//check if it actually exists
+			//Check if expression is already being used. If so, just exit out the function.
+			if (expression == currentExpression) { return;}
+			//check if the expression actually exists
 			if (expression != null)
 			{
 				//Check if an expression is already is use

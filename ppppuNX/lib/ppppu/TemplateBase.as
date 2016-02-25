@@ -37,10 +37,16 @@ package ppppu
 		private var latestFrameDepthLayout:Object;
 		private var elementDepthLayoutChangeFrames:Array;
 		
-		
+		//How far into the current animation we're in
+		private var frameCounter:int = 0;
+		//The total number of frames in the current animation.
+		//TODO: allow this to be set, which is needed for animations with non-standard frames(not 120)
+		private var currentAnimationTotalFrames:int = 120;
 		
 		//The primary movie clip for the flash in terms as asset displaying.
 		private var m_ppppuStage:PPPPU_Stage;
+		
+		private var animationPaused:Boolean = false;
 		
 		/*public var EyeL:EyeContainer;
 		public var EyeR:EyeContainer;*/
@@ -120,14 +126,29 @@ package ppppu
 			}
 		}
 		
+		
+		public function Update():void
+		{
+			if (animationPaused == false) //If animation isn't paused, update
+			{
+				++frameCounter;
+				if (frameCounter >= currentAnimationTotalFrames)
+				{
+					frameCounter = 0;
+				}
+				ImmediantLayoutUpdate(frameCounter);
+				
+				
+				UpdateDebugDisplay();
+				
+				UpdateAnchoredElements();
+			}
+		}
+		
 		/*Function that tests if there is a element depth layout change that it to occur on the specified frame and if so, start using
 		 * that layout. Should be called every frame.*/
-		public function Update(animFrame:int):void
+		/*public function Update(animFrame:int):void
 		{
-			/*if (animFrame == 1)
-			{
-				PutDebugDisplayOnTop();
-			}*/
 			
 			ImmediantLayoutUpdate(animFrame);
 			
@@ -135,7 +156,7 @@ package ppppu
 			UpdateDebugDisplay();
 			
 			UpdateAnchoredElements();
-		}
+		}*/
 		
 		/*Modifies the elements depth layout to match the latest layout that should be used. For example, if an animation has 3 layout changes
 		 * at frame 1, 34 and 90 and there is a switch to this animation on the 89th frame, the layout for the 34th frame will be used. 
@@ -381,6 +402,7 @@ package ppppu
 		public function PlayAnimation(startAtFrame:uint):void
 		{
 			//--startAtFrame;
+			if (animationPaused) { animationPaused = false;}
 			masterTimeline.play(startAtFrame);
 			//Get all timelines currently used
 			var childTimelines:Array = masterTimeline.getChildren(!true, false);
@@ -394,17 +416,18 @@ package ppppu
 		
 		public function ResumePlayingAnimation():void
 		{
+			animationPaused = false;
 			masterTimeline.play();
 			//Get all timelines currently used
 			var childTimelines:Array = masterTimeline.getChildren(!true, false);
 			for (var i:int = 0, l:int = childTimelines.length; i < l; ++i)
 			{
 				//Tell the child timeline to play at the specified time
-				(childTimelines[i] as TimelineMax).play();
+				(childTimelines[i] as TimelineMax).play(frameCounter);
 			}
 		}
 		
-		public function JumpToFrameAnimation(startAtFrame:uint):void
+		/*public function JumpToFrameAnimation(startAtFrame:uint):void
 		{
 			--startAtFrame;
 			var time:int = startAtFrame; //useFrames version
@@ -421,12 +444,13 @@ package ppppu
 					(childTimelines[i] as TimelineMax).seek(time);
 				}
 			}
-		}
+		}*/
 		
 		/*Pauses the animation. Currently used, it's just here in case there is a time where the animation needs to be paused. 
 		Might be useful when character editing facilities are better and they need a still to look at.*/
 		public function StopAnimation():void
 		{
+			animationPaused = true;
 			masterTimeline.stop();
 			/*var childTimelines:Array = masterTimeline.getChildren(true, false);
 			for (var i:int = 0, l:int = childTimelines.length; i < l; ++i)
@@ -477,6 +501,14 @@ package ppppu
 			for (var i:uint = 0, l:uint = timelinesToAdd.length; i < l; ++i)
 			{
 				AddTimeline(timelinesToAdd[i] as TimelineMax);
+				/*if (i == 0)
+				{
+					var tl:TimelineMax = timelinesToAdd[i] as TimelineMax;
+					tl.vars["onStart"] = start;
+					tl.vars["onComplete"] = complete;
+					tl.vars["onRepeat"] = repeat;
+					tl.vars["onUpdate"] = update;
+				}*/
 				//trace(i + ": " + timelinesToAdd[i].data.targetElement.name )
 			}
 		}
@@ -545,8 +577,8 @@ package ppppu
 			{
 				masterTimeline.remove(expressionTimeline);
 			}
-			exprTimeline.time(currentFrame);
-			masterTimeline.add(exprTimeline);
+			masterTimeline.add(exprTimeline, 0);
+			exprTimeline.play(frameCounter,false);
 		}
 		
 		public function SetElementDepthLayout(layout:Object):void
