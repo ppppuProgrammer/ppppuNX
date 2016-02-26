@@ -427,24 +427,25 @@ package ppppu
 			}
 		}
 		
-		/*public function JumpToFrameAnimation(startAtFrame:uint):void
+		public function JumpToFrameAnimation(frame:uint):void
 		{
-			--startAtFrame;
-			var time:int = startAtFrame; //useFrames version
-			if (masterTimeline.paused() == false)
-			{
-				masterTimeline.seek(time);
-			}
-			else
-			{
+			//--startAtFrame;
+			//var time:int = startAtFrame; //useFrames version
+			//if (masterTimeline.paused() == false)
+			//{
+				
+			//}
+			//else
+			//{
+				masterTimeline.seek(frame);
 				var childTimelines:Array = masterTimeline.getChildren(true, false);
 				
 				for (var i:int = 0, l:int = childTimelines.length; i < l; ++i)
 				{
-					(childTimelines[i] as TimelineMax).seek(time);
+					(childTimelines[i] as TimelineMax).seek(frame);
 				}
-			}
-		}*/
+			//}
+		}
 		
 		/*Pauses the animation. Currently used, it's just here in case there is a time where the animation needs to be paused. 
 		Might be useful when character editing facilities are better and they need a still to look at.*/

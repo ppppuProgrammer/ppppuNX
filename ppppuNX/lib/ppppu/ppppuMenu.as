@@ -12,6 +12,7 @@ package ppppu
 	import flash.events.MouseEvent;
 	import io.FileReferenceHelper;
 	import io.ByteArrayLoadedEvent;
+	import Menu.ExpressionAnimationPanel;
 	//import flash.events.MouseEvent;
 	import flash.filters.ColorMatrixFilter;
 	import flash.geom.ColorTransform;
@@ -99,6 +100,8 @@ package ppppu
 			//var p_GradientSubMenu:Panel = new Panel(null);
 			var p_GradientSubMenu:Sprite = new Sprite();
 			//p_GradientSubMenu.setSize(100, 80);
+			
+			var p_expressionPanel:ExpressionAnimationPanel = new ExpressionAnimationPanel(templateInUse);
 			
 			//Add labels for skin gradients sub menu
 			var l_faceGradient:Label = new Label(p_GradientSubMenu, 0, 0, "Face");
@@ -198,6 +201,10 @@ package ppppu
 			
 			var b_File:PushButton = new PushButton(p_Menu, 230, 10, "Load File", loadFile);
 			
+			var pb_ExpressionMenu:PopupButton = new PopupButton(p_Menu, 230, 30, "Expression Edit");
+			pb_ExpressionMenu.addEventListener(MouseEvent.CLICK, ExpressionButtonHandler);
+			pb_ExpressionMenu.bindPopup(p_expressionPanel, "middle", "bottomInner"); 
+			
 			hairColorMenu.addEventListener(Event.CHANGE, HairSlidersChange);
 			skinColorMenu.addEventListener(Event.CHANGE, SkinSlidersChange);
 			scleraColorMenu.addEventListener(Event.CHANGE, ScleraSliderChanged);
@@ -231,6 +238,12 @@ package ppppu
 		{
 			var bmp:Bitmap = e.getBitmap();
 			//And do nothing with it...
+		}
+		
+		private function ExpressionButtonHandler(e:MouseEvent):void
+		{
+			templateInUse.StopAnimation();
+			templateInUse.JumpToFrameAnimation(1);
 		}
 		
 		private function LipsSliderChanged(e:Event):void

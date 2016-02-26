@@ -11,11 +11,14 @@
 		//public var LipsColor : MovieClip;
 		//public var LipsHighlight : MovieClip;
 		//public var MouthBase : MovieClip;
+		//The movie clip that expression sprites are added to.
 		public var ExpressionContainer:MovieClip;
 		
 		private var currentExpression:Sprite=null;
 		
-		public var ExpressionDict:Dictionary;
+		public var ExpressionIndexLookupDict:Dictionary;
+		public var ExpressionSpriteContainer:Vector.<Sprite> = new Vector.<Sprite>();
+		//private var expressionsInDictCount:int = 0;
 		
 		/*TODO Move animationOrders Vector to ppppuAnimation. Its current position will create problems when multiple characters use the same template.
 		 * From there, the ppppuAnimation will send the animation order to the mouthContainer*/
@@ -35,11 +38,12 @@
 			//LipsHighlight.gotoAndStop(MouthBase.currentFrame);
 			
 		}*/
-		
+		//Returns the amount of expression sprites added for use.
+		public function GetExpressionCount():int { return ExpressionSpriteContainer.length;}
 		public function InitializeMouths():void
 		{
 			//Create dictionary for expressions
-			ExpressionDict = new Dictionary();
+			ExpressionIndexLookupDict = new Dictionary();
 			
 			//Create initial expressions
 			AddNewExpression("Smile", new Exp_Smile);
@@ -67,36 +71,56 @@
 		
 		public function AddNewExpression(expressionName:String, expressionAsset:Sprite):void
 		{
-			if (ExpressionDict[expressionName] == null)
+			if (ExpressionIndexLookupDict[expressionName] == null)
 			{
-				ExpressionDict[expressionName] = expressionAsset;
+				//Give the name of the expression it's unique id number
+				ExpressionIndexLookupDict[expressionName] = ExpressionSpriteContainer.length;
+				ExpressionSpriteContainer[ExpressionSpriteContainer.length] = expressionAsset;
+				
+				//Old way
+				//ExpressionDict[expressionName] = expressionAsset;
+				//++expressionsInDictCount;
 			}
 		}
-		
 		
 		public function ChangeExpression(expressionName:String):void
 		{
-			//Get the expression by name
-			var expression:Sprite = ExpressionDict[expressionName];
-			//Check if expression is already being used. If so, just exit out the function.
-			if (expression == currentExpression) { return;}
-			//check if the expression actually exists
-			if (expression != null)
+			var index:int = ExpressionIndexLookupDict[expressionName];
+			if (index)
 			{
-				//Check if an expression is already is use
-				if (currentExpression)
-				{
-					//If one is already in use, remove it
-					ExpressionContainer.removeChild(currentExpression);
-				}
-				//set the new current expression
-				currentExpression = expression;
-				//reset position of current expression
-				currentExpression.x = currentExpression.y = 0;
-				//add current expression to the display list.
-				ExpressionContainer.addChild(currentExpression);
+				ChangeExpressionByIndex(index);
 			}
 		}
+		
+		public function ChangeExpressionByIndex(index:int):void
+		{
+			if (index >= 0 && index < ExpressionSpriteContainer.length)
+			{
+				//Get the expression by name
+				var expression:Sprite = ExpressionSpriteContainer[index];
+				//Check if expression is already being used. If so, just exit out the function.
+				if (expression == currentExpression) { return;}
+				//check if the expression actually exists
+				if (expression != null)
+				{
+					//Check if an expression is already is use
+					if (currentExpression)
+					{
+						//If one is already in use, remove it
+						ExpressionContainer.removeChild(currentExpression);
+					}
+					//set the new current expression
+					currentExpression = expression;
+					//reset position of current expression
+					currentExpression.x = currentExpression.y = 0;
+					//add current expression to the display list.
+					ExpressionContainer.addChild(currentExpression);
+				}
+			}
+		}
+		
+		
+		
 		/*public function FrameCheck(currentFrameNumber:int)
 		{
 			var currentOrder:MouthAnimationOrder = animationOrders[currentFrameNumber - 1];
