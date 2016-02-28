@@ -30,6 +30,9 @@ package ppppu
 		//private var scleraWorkColorTransform:ColorTransform = new ColorTransform(0,0,0,0,255,255,255,255);
 		//private var lipsWorkColorTransform:ColorTransform = new ColorTransform(0, 0, 0, 0, 255, 153, 204, 255);
 		
+		//For panels/windows that need to be accessed by functions
+		private var p_expressionPanel:ExpressionAnimationPanel;
+		
 		//color values for elements with gradient colors
 		private var faceGradientValues:Array = new Array(0,0);
 		private var breastGradientValues:Array = new Array(0,0,0);
@@ -101,7 +104,7 @@ package ppppu
 			var p_GradientSubMenu:Sprite = new Sprite();
 			//p_GradientSubMenu.setSize(100, 80);
 			
-			var p_expressionPanel:ExpressionAnimationPanel = new ExpressionAnimationPanel(templateInUse);
+			p_expressionPanel = new ExpressionAnimationPanel(templateInUse);
 			
 			//Add labels for skin gradients sub menu
 			var l_faceGradient:Label = new Label(p_GradientSubMenu, 0, 0, "Face");
@@ -244,6 +247,7 @@ package ppppu
 		{
 			templateInUse.StopAnimation();
 			templateInUse.JumpToFrameAnimation(1);
+			p_expressionPanel.SetupPanel();
 		}
 		
 		private function LipsSliderChanged(e:Event):void

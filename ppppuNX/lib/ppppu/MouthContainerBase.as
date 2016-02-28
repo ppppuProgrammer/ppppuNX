@@ -104,7 +104,7 @@
 				if (expression != null)
 				{
 					//Check if an expression is already is use
-					if (currentExpression)
+					if (currentExpression && ExpressionContainer.contains(currentExpression))
 					{
 						//If one is already in use, remove it
 						ExpressionContainer.removeChild(currentExpression);
@@ -115,6 +115,14 @@
 					currentExpression.x = currentExpression.y = 0;
 					//add current expression to the display list.
 					ExpressionContainer.addChild(currentExpression);
+				}
+			}
+			else
+			{
+				if (currentExpression && ExpressionContainer.contains(currentExpression))
+				{
+					ExpressionContainer.removeChild(currentExpression);
+					currentExpression = null;
 				}
 			}
 		}
