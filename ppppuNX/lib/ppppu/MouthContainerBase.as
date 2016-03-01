@@ -73,6 +73,8 @@
 		{
 			if (ExpressionIndexLookupDict[expressionName] == null)
 			{
+				//Set the movie clip's name to the given expression name
+				expressionAsset.name = expressionName;
 				//Give the name of the expression it's unique id number
 				ExpressionIndexLookupDict[expressionName] = ExpressionSpriteContainer.length;
 				ExpressionSpriteContainer[ExpressionSpriteContainer.length] = expressionAsset;

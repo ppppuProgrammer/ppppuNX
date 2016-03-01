@@ -111,8 +111,9 @@ package ppppu
 		public function Initialize():void
 		{
 			//Add the key listeners
-			stage.addEventListener(KeyboardEvent.KEY_DOWN, KeyPressCheck);
-			stage.addEventListener(KeyboardEvent.KEY_UP, KeyReleaseCheck);
+			//TODO: Re-enable when done testing menus
+			//stage.addEventListener(KeyboardEvent.KEY_DOWN, KeyPressCheck);
+			//stage.addEventListener(KeyboardEvent.KEY_UP, KeyReleaseCheck);
 			
 			//Initializing plugins for the GSAP library
 			TweenPlugin.activate([FramePlugin, FrameLabelPlugin, TransformMatrixPlugin, VisiblePlugin]);
