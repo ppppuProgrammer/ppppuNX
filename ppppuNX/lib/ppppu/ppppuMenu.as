@@ -32,6 +32,7 @@ package ppppu
 		
 		//For panels/windows that need to be accessed by functions
 		private var p_expressionPanel:ExpressionAnimationPanel;
+		private var sp_Menu:SlidingPanel;
 		
 		//color values for elements with gradient colors
 		private var faceGradientValues:Array = new Array(0,0);
@@ -97,7 +98,7 @@ package ppppu
 			var p_Menu:Panel = new Panel(null);
 			p_Menu.setSize(480, 120);
 			
-			var sp_Menu:SlidingPanel = new SlidingPanel(p_Menu, new Rectangle(0, 690, 480, 30), new Point(0, 720), new Point(0, 600));
+			sp_Menu = new SlidingPanel(p_Menu, new Rectangle(0, 690, 480, 30), new Point(0, 720), new Point(0, 600));
 			addChild(sp_Menu);
 			
 			//var p_GradientSubMenu:Panel = new Panel(null);
@@ -690,6 +691,13 @@ package ppppu
 			var ct:ColorTransform = new ColorTransform(0, 0, 0, 1, m.R, m.G, m.B, 0);
 			var mainStage:PPPPU_Stage = templateInUse.GetPPPPU_Stage() as PPPPU_Stage;
 			mainStage.BacklightBG.Backlight.BacklightGfx.transform.colorTransform = ct;
+		}
+		
+		//Checks to see if the menu's slider panel is active (visible). If it is, return true
+		public function MenuNeedsInputFocus():Boolean
+		{
+			//If the sliding panel is active, then the menu needs input focus
+			return sp_Menu.IsPanelActive();
 		}
 	}
 	

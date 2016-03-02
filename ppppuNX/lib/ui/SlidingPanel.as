@@ -96,7 +96,10 @@ package ui
 			
 		}
 		
-		
+		public function IsPanelActive():Boolean
+		{
+			return this.panelContainer.visible;
+		}
 	}
 
 }

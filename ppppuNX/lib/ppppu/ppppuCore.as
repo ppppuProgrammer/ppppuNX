@@ -112,8 +112,8 @@ package ppppu
 		{
 			//Add the key listeners
 			//TODO: Re-enable when done testing menus
-			//stage.addEventListener(KeyboardEvent.KEY_DOWN, KeyPressCheck);
-			//stage.addEventListener(KeyboardEvent.KEY_UP, KeyReleaseCheck);
+			stage.addEventListener(KeyboardEvent.KEY_DOWN, KeyPressCheck);
+			stage.addEventListener(KeyboardEvent.KEY_UP, KeyReleaseCheck);
 			
 			//Initializing plugins for the GSAP library
 			TweenPlugin.activate([FramePlugin, FrameLabelPlugin, TransformMatrixPlugin, VisiblePlugin]);
@@ -431,6 +431,9 @@ package ppppu
 		it was an unintentional oversight at first, people were amused by this, so it has been kept as a feature.*/
 		private function KeyPressCheck(keyEvent:KeyboardEvent):void
 		{
+			//Check if the menus need input focus. If they do, then bail so there is no changes due to both this and the menu acting on the same input simultaneously.
+			if (menu.MenuNeedsInputFocus()) { return; }
+			
 			var keyPressed:int = keyEvent.keyCode;
 
 			if(keyDownStatus[keyPressed] == undefined || keyDownStatus[keyPressed] == false || (keyPressed == 48 || keyPressed == 96))
