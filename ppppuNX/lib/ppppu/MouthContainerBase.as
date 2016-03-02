@@ -44,7 +44,7 @@
 		{
 			//Create dictionary for expressions
 			ExpressionIndexLookupDict = new Dictionary();
-			
+			ExpressionIndexLookupDict.None = -1;
 			//Create initial expressions
 			AddNewExpression("Smile", new Exp_Smile);
 			AddNewExpression("OpenSmile", new Exp_OpenSmile);
@@ -88,7 +88,7 @@
 		public function ChangeExpression(expressionName:String):void
 		{
 			var index:int = ExpressionIndexLookupDict[expressionName];
-			if (index)
+			if (index != -1)
 			{
 				ChangeExpressionByIndex(index);
 			}

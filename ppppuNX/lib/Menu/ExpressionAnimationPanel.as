@@ -2,7 +2,7 @@ package Menu
 {
 	import com.bit101.components.*;
 	import com.greensock.TimelineMax;
-	import com.greensock.TweenLite;
+	import com.greensock.TweenMax;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.geom.Matrix;
@@ -14,6 +14,7 @@ package Menu
 		private var editingFrame:Text;
 		private var totalFrames:Text;
 		private var myLabel:Label;
+		private var testAnimationButton:PushButton;
 		private var durationLabel:Label;
 		private var mouthSliderLabel:Label;
 		private var mouthSlider:Slider;
@@ -63,6 +64,8 @@ totalFrames.editable = false;
 
 			myLabel = new Label(this, 110, 0, "/");
 
+			testAnimationButton = new PushButton(this, 280, 0, "Play"/*, TestPlayAnimation*/);
+			
 			durationLabel = new Label(this, 190, 0, "Duration:");
 
 			durationInputText = new InputText(this, 240, 0, "1");
@@ -186,14 +189,17 @@ SaveAnimBtn.width = 140;
 
 		protected function AddTweenHandler(event:Event):void
 		{
-			//subtract 1 from frame slider's value so the tween at frame 1 is set to the correct time in a timeline (which is 0)
-			var frameStart:int = frameSlider.value - 1;
+			var frameStart:Number = frameSlider.value;
 			var durationLength:int = parseInt(durationInputText.text);
 			var mouthName:String = mouthSliderValueLabel.text;
-			//var tweenForFrame:TweenLite = 
-			var tweenForFrame:TweenLite = TweenLite.to(templateInUse.Mouth.ExpressionContainer, durationLength, {useFrames:true, onRepeat: templateInUse.ChangeMouthExpression, onRepeatParams:[mouthName], onStart: templateInUse.ChangeMouthExpression, onStartParams:[mouthName]});
+			//var tweenForFrame:TweenMax = 
+			var tweenForFrame:TweenMax = TweenMax.to(templateInUse.Mouth.ExpressionContainer, durationLength, { useFrames:true/*,  
+			startAt:{onComplete: templateInUse.ChangeMouthExpression, onCompleteParams:[mouthName],
+			onUpdate: templateInUse.ChangeMouthExpression, onUpdateParams:[mouthName],
+			onStart: templateInUse.ChangeMouthExpression, onStartParams:[mouthName]}*/
+			});
 			
-			tweenForFrame.vars = CreateTweenVariableObject(tweenForFrame.vars);
+			tweenForFrame.vars = SetupTweenVariableObject(tweenForFrame.vars);
 			timelineWorkingOn.add(tweenForFrame, frameStart);
 			tweenList.addItem(CreateTweenListItem(tweenForFrame));
 			
@@ -204,34 +210,42 @@ SaveAnimBtn.width = 140;
 		
 		protected function EditSelectedTweenHandler(event:Event):void
 		{
-			//subtract 1 from frame slider's value so the tween at frame 1 is set to the correct time in a timeline (which is 0)
-			var frameStart:int = frameSlider.value - 1;
+			if (tweenList.selectedItem == null) { return;}
+
+			var frameStart:int = frameSlider.value;
 			var durationLength:int = parseInt(durationInputText.text);
 			
-			var selectedItem:Object = List(event.target).selectedItem;
-			var tween:TweenLite = (selectedItem.tween as TweenLite);
+			var selectedItem:Object = tweenList.selectedItem;
+			var tween:TweenMax = (selectedItem.tween as TweenMax);
 			tween.startTime(frameStart);
 			tween.duration(durationLength);
-			selectedItem.tween.vars = CreateTweenVariableObject(selectedItem.tween.vars);
-			selectedItem = CreateTweenListItem(selectedItem.tween);
+			selectedItem.tween.vars = SetupTweenVariableObject(selectedItem.tween.vars);
+			var selectedIndex:int = tweenList.selectedIndex;
+			tweenList.removeItemAt(selectedIndex);
+			tweenList.addItemAt(CreateTweenListItem(selectedItem.tween), selectedIndex);
+			
 		}
 		
-		private function CreateTweenVariableObject(vars:Object):Object
+		private function SetupTweenVariableObject(vars:Object):Object
 		{
 			var mouthName:String = mouthSliderValueLabel.text;
 			var tweenVariables:Object = vars;
-			tweenVariables.onRepeatParams = [mouthName];
+			//tweenVariables.onUpdateParams = [mouthName];
+			tweenVariables.onStart =  templateInUse.ChangeMouthExpression;
 			tweenVariables.onStartParams = [mouthName];
+			/*tweenVariables.startAt = {onComplete: templateInUse.ChangeMouthExpression, onCompleteParams:[mouthName],
+			onUpdate: templateInUse.ChangeMouthExpression, onUpdateParams:[mouthName],
+			onStart: templateInUse.ChangeMouthExpression, onStartParams:[mouthName]};*/
 			//Test the condition of text containing an equal character. If an equal is found, then the user
 			//wants to do relative positioning, so use the original string typed variable. Otherwise, convert it to a Number.
-			tweenVariables.x = (XInput.text.indexOf("=") == -1) ? parseFloat(XInput.text) : XInput.text;
-			tweenVariables.y = (YInput.text.indexOf("=") == -1) ? parseFloat(YInput.text) : YInput.text;
+			//tweenVariables.x = (XInput.text.indexOf("=") == -1) ? parseFloat(XInput.text) : XInput.text;
+			//tweenVariables.y = (YInput.text.indexOf("=") == -1) ? parseFloat(YInput.text) : YInput.text;
 			//tweenForFrame.vars.scaleX = parseFloat(scaleXInput.text)/100.0;
 			//tweenForFrame.vars.scaleY = parseFloat(scaleYInput.text)/100.0;
-			CalculateMatrix(null);
-			var mouthMatrix:Matrix = templateInUse.Mouth.ExpressionContainer.transform.matrix;
+			//CalculateMatrix(null);
+			//var mouthMatrix:Matrix = templateInUse.Mouth.ExpressionContainer.transform.matrix;
 			
-			/*tweenVariables.transformMatrix = 
+			tweenVariables.transformMatrix = 
 			{x: (XInput.text.indexOf("=") == -1) ? parseFloat(XInput.text) : XInput.text,
 			y: (YInput.text.indexOf("=") == -1) ? parseFloat(YInput.text) : YInput.text,
 			scaleX: parseFloat(scaleXInput.text)/100.0,
@@ -239,8 +253,8 @@ SaveAnimBtn.width = 140;
 			skewX: parseFloat(skewXInput.text),
 			skewY: parseFloat(skewXInput.text)
 				
-			};*/
-			tweenVariables.transformMatrix = { a: mouthMatrix.a, b:mouthMatrix.b, c:mouthMatrix.c, d:mouthMatrix.d/*, tx:mouthMatrix.tx, ty: mouthMatrix.ty*/};
+			};
+			//tweenVariables.transformMatrix = { a: mouthMatrix.a, b:mouthMatrix.b, c:mouthMatrix.c, d:mouthMatrix.d/*, tx:mouthMatrix.tx, ty: mouthMatrix.ty*/};
 			return tweenVariables;
 		}
 		
@@ -248,14 +262,14 @@ SaveAnimBtn.width = 140;
 		{
 			//Removes the selected tween from the timeline
 			var selectedItem:Object = tweenList.selectedItem;
-			timelineWorkingOn.remove((selectedItem.tween as TweenLite));
+			timelineWorkingOn.remove((selectedItem.tween as TweenMax));
 			tweenList.removeItem(selectedItem);
 			//trace("removeTweenHandler");
 		}
 
 		protected function FrameChangeHandler(event:Event):void
 		{
-			var frame:int = event.target.value;
+			var frame:Number = event.target.value;
 			templateInUse.JumpToFrameAnimation(frame);
 			editingFrame.text = frame.toString();
 			timelineWorkingOn.seek(frame, false);
@@ -326,9 +340,9 @@ SaveAnimBtn.width = 140;
 			templateInUse.Mouth.ExpressionContainer.transform.matrix = matrix;
 		}
 		
-		private function CreateTweenListItem(inTween:TweenLite):Object
+		private function CreateTweenListItem(inTween:TweenMax):Object
 		{
-			var frameStart:int = inTween.startTime()+1;
+			var frameStart:int = inTween.startTime();
 			var durationLength:int = inTween.duration();
 			var listObjName:String = "Frames:" + frameStart + (durationLength == 1 ? "" : "-" +  (frameStart + durationLength - 1).toString());
 			//Create a list object to add to the list of tweens.
@@ -352,12 +366,15 @@ SaveAnimBtn.width = 140;
 			var selectedItem:Object = List(e.target).selectedItem;
 			if (selectedItem)
 			{
-				var tween:TweenLite = selectedItem.tween;
-				frameSlider.value = tween.startTime()+1;
+				var tween:TweenMax = selectedItem.tween;
+				frameSlider.value = tween.startTime();
+				frameSlider.dispatchEvent(new Event(Event.CHANGE));
 				durationInputText.text = (tween.duration()).toString();
 				
 				//Variables
 				var tweenVars:Object = tween.vars;
+				mouthSlider.value = templateInUse.Mouth.ExpressionIndexLookupDict[tweenVars.onStartParams[0]]; 
+				mouthSlider.dispatchEvent(new Event(Event.CHANGE));
 				if (tweenVars["x"]) { XInput.text = String(tweenVars.x); }else { XInput.text = "0";}
 				if (tweenVars["y"]) { YInput.text = String(tweenVars.y); }else { YInput.text = "0";}
 				if (tweenVars["scaleX"]) 
@@ -366,8 +383,18 @@ SaveAnimBtn.width = 140;
 				
 				if (tweenVars["scaleY"]) 
 				{ scaleYInput.text = String(tweenVars.scaleY * 100.0); } 
-				else { scaleYInput.text = "100"; scaleYInput.dispatchEvent(new Event(Event.CHANGE));}	
+				else { scaleYInput.text = "100"; scaleYInput.dispatchEvent(new Event(Event.CHANGE)); }	
+				
+				
 			}
+		}
+		
+		protected function TestPlayAnimation(e:Event):void
+		{
+			//templateInUse.seek(0);
+			//timelineWorkingOn.seek(0);
+			templateInUse.PlayAnimation(0);
+			timelineWorkingOn.play(0, false);
 		}
 		
 		/*private function Helper_CreateTweenIndicatorForSlider():Sprite

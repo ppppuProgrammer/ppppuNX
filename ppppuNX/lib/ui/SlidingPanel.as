@@ -66,6 +66,7 @@ package ui
 			
 			if (timeoutTicks == TIMEOUT)
 			{
+				if (slideActive) { timeoutTicks = 0; return; } //TODO: for debug purposes so menu doesn't close. remove this asap
 				slideActive = !slideActive;
 				if (slideActive) panelContainer.visible = true;
 			}

@@ -80,6 +80,7 @@ package ppppu
 		private var debug_HairVisible:Boolean = true;
 		private var debug_HairBackTest:Boolean = false;
 		private var headLastPosition:Point = new Point();
+		
 		public function TemplateBase()
 		{
 			addEventListener(Event.ADDED_TO_STAGE, TemplateAddedToStage);
@@ -572,7 +573,7 @@ package ppppu
 			}
 		}
 		
-		public function SetExpression(exprTimeline:TimelineLite):void
+		public function SetExpression(exprTimeline:TimelineMax):void
 		{
 			if (expressionTimeline)
 			{
