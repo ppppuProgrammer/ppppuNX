@@ -18,7 +18,7 @@ package ppppu
 		
 		public function Parse(masterDisplay:MasterTemplate, displayObj:DisplayObject, expressionDefinition:String):TimelineMax
 		{
-			var timeline:TimelineMax = new TimelineMax({paused:true, useFrames:true, repeat:-1/*, onStart:start, onComplete:complete, onRepeat:repeat, onUpdate:update*/});
+			var timeline:TimelineMax = new TimelineMax({paused:true,  repeat:-1/*, onStart:start, onComplete:complete, onRepeat:repeat, onUpdate:update*/});
 			
 			var spaceRegex:RegExp = /[' ']+/gim;
 			expressionDefinition = expressionDefinition.replace(spaceRegex, '');
@@ -47,7 +47,7 @@ package ppppu
 						var currLinesParts:Array = definitionLines[i].split(',');
 						//currLinesParts: index(idx) 0 is start frame, idx 1 is duration, idx 2 is expression name, idx 3 or higher is custom settings using gsap acceptable properties.
 						
-						var tweenVariables:Object = {useFrames:true, onRepeat: masterDisplay.ChangeMouthExpression, onRepeatParams:[currLinesParts[2]], onStart: masterDisplay.ChangeMouthExpression, onStartParams:[currLinesParts[2]]};
+						var tweenVariables:Object = { onRepeat: masterDisplay.ChangeMouthExpression, onRepeatParams:[currLinesParts[2]], onStart: masterDisplay.ChangeMouthExpression, onStartParams:[currLinesParts[2]]};
 						if (currLinesParts.length >= 3)
 						{
 							var tween:TweenLite;

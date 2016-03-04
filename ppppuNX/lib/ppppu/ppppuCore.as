@@ -72,9 +72,13 @@ package ppppu
 		private var flashStartFrame:int;
 		private var mainStageLoopStartFrame:int;
 		
+		public const ANIMATION_FRAMERATE:int = 30;
+		
 		//Settings related
 		//public var settingsSaveFile:SharedObject = SharedObject.getLocal("ppppuNX");
 		//public var userSettings:ppppuUserSettings = new ppppuUserSettings();
+		
+		//TODO: Modify gsap to a) Modify it's ticker so it finishes in accordance to flash, lag and all. b) be frame based again 
 		
 		//Constructor
 		public function ppppuCore() 
@@ -120,6 +124,7 @@ package ppppu
 			//Set the default Ease for the tweens
 			TweenLite.defaultEase = Linear.ease;
 			TweenLite.defaultOverwrite = "none";
+			
 			//Disable mouse interaction for various objects
 			mainStage.MenuLayer.mouseEnabled = true;
 			//Disable mouse interaction for various objects
@@ -220,8 +225,8 @@ package ppppu
 			hairBack.SetAnchorObjectForAnimation(masterTemplate["TurnedFace3"], "Blowjob");
 			hairBack.SetAnchorObjectForAnimation(masterTemplate["TurnedFace"], "Anal", "ReverseCowgirl");
 			
-			//masterTemplate.AddNewElementToTemplate(hairBack);
-			/*masterTemplate.AddNewElementToTemplate(hairSideL);
+			masterTemplate.AddNewElementToTemplate(hairBack);
+			masterTemplate.AddNewElementToTemplate(hairSideL);
 			masterTemplate.AddNewElementToTemplate(hairSideR);
 			masterTemplate.AddNewElementToTemplate(hairSide3L);
 			masterTemplate.AddNewElementToTemplate(hairSide3R);
@@ -230,7 +235,7 @@ package ppppu
 			masterTemplate.AddNewElementToTemplate(hairFront);	
 			
 			masterTemplate.AddNewElementToTemplate(hairFrontAngled);
-			masterTemplate.AddNewElementToTemplate(hairFrontAngled2);*/
+			masterTemplate.AddNewElementToTemplate(hairFrontAngled2);
 			
 			menu = new ppppuMenu(masterTemplate);
 			menu.ChangeSlidersToCharacterValues(currentCharacter);
@@ -280,10 +285,11 @@ package ppppu
 					masterTemplate.visible = true;
 					//Go to the 
 					SwitchTemplateAnimation(currentAnimationIndex);
-					masterTemplate.PlayAnimation(animationFrame);
+					//masterTemplate.PlayAnimation(animationFrame-1);
 					
 					//mainStage.setChildIndex(masterTemplate, mainStage.numChildren - 1);
 				}
+				//masterTemplate.PlayAnimation(animationFrame-1);
 				masterTemplate.Update(/*animationFrame*/);
 				//masterTemplate.UpdateAnchoredElements(); //Called by master template's update functions
 				if (playSounds)
@@ -368,25 +374,26 @@ package ppppu
 						var templateElement:DisplayObject = templateAnimation[currentVarName];
 						
 						//Create the array of tweens, using the vector of tween data.
-						var tweens:Array = embedTweenDataConverter.IntegrateTweenData(templateElement, vectorOfTweenData);
+						//var tweens:Array = embedTweenDataConverter.IntegrateTweenData(templateElement, vectorOfTweenData, ANIMATION_FRAMERATE);
 						//Declare the timeline for the tweens
-						var timelineForMotion:TimelineMax = null; 
+						var timelineForMotion:TimelineMax = embedTweenDataConverter.CreateTimelineFromData(templateElement, vectorOfTweenData, ANIMATION_FRAMERATE); 
 						
 						//If the target element from the template exists
-						if (templateElement != null)
-						{
-							//Create the timeline that will use the tweens
-							timelineForMotion = new TimelineMax( { useFrames:true, repeat: -1, paused:true } );
-							//Set the data of the timeline to have a property for the template's element 
-							timelineForMotion.data = { targetElement: templateElement };
-							//Add the tweens
-							timelineForMotion.add(tweens,"+=0", "sequence");
-						}
-						else
-						{
-							//Without the template element, tweening isn't possible.
-							trace("Critical Warning! Animation " + animName + " is unable to target Element \"" + currentVarName + "\"");
-						}
+						//if (templateElement != null)
+						//{
+							////Create the timeline that will use the tweens
+							//timelineForMotion = new TimelineMax( {  /*repeat: -1,*/ paused:true} );
+							////Set the data of the timeline to have a property for the template's element 
+							//timelineForMotion.data = { targetElement: templateElement };
+							////Add the tweens
+							//timelineForMotion.add(tweens,0, "sequence");
+						//}
+						//else
+						//{
+							////Without the template element, tweening isn't possible.
+							//trace("Critical Warning! Animation " + animName + " is unable to target Element \"" + currentVarName + "\"");
+						//}
+						
 						
 						//Dictionary existance checking. Create a dictionary if the specified one doesn't exist.
 						if (timelinesDict[charName] == null)
@@ -512,25 +519,40 @@ package ppppu
 				{
 					masterTemplate.DEBUG_HairBackTesting();
 				}
-				else if (keyPressed == Keyboard.M)
+				else if (keyPressed == Keyboard.H)
 				{
-					masterTemplate.Mouth.ChangeExpression("Smile");
+					masterTemplate.JumpToFrameAnimation(0);
 				}
-				else if (keyPressed == Keyboard.N)
+				else if (keyPressed == Keyboard.J)
 				{
-					masterTemplate.Mouth.ChangeExpression("TearShape");
+					masterTemplate.JumpToFrameAnimation(1);
 				}
-				else if (keyPressed == Keyboard.O)
+				else if (keyPressed == Keyboard.K)
 				{
-					masterTemplate.Mouth.ChangeExpression("Oh");
+					masterTemplate.JumpToFrameAnimation(119);
 				}
 				else if (keyPressed == Keyboard.L)
 				{
-					var myTextLoader:URLLoader = new URLLoader();
-					myTextLoader.addEventListener(Event.COMPLETE, mouthLoadTest);
-					myTextLoader.addEventListener(IOErrorEvent.IO_ERROR, loadFail);
-					myTextLoader.load(new URLRequest("MouthTest.txt"));
+					masterTemplate.JumpToFrameAnimation(120);
 				}
+				else if (keyPressed == Keyboard.V)
+				{
+					masterTemplate.ChangePlaySpeed(1);
+				}
+				else if (keyPressed == Keyboard.B)
+				{
+					masterTemplate.ChangePlaySpeed(.5);
+				}
+				else if (keyPressed == Keyboard.N)
+				{
+					masterTemplate.FRAME_RATE = stage.frameRate = 30;
+				}
+				else if (keyPressed == Keyboard.M)
+				{
+					masterTemplate.FRAME_RATE = stage.frameRate = 60;
+					
+				}
+				
 				
 			}
 			if (keyPressed == Keyboard.LEFT)
@@ -542,7 +564,7 @@ package ppppu
 				mainStage.InnerDiamondBG.gotoAndStop(frame);
 				mainStage.TransitionDiamondBG.gotoAndStop(frame);
 				mainStage.BacklightBG.gotoAndStop(frame);
-				masterTemplate.PlayAnimation(frame);
+				masterTemplate.PlayAnimation(frame-1);
 				masterTemplate.StopAnimation();
 			}
 			else if (keyPressed == Keyboard.RIGHT)
@@ -554,7 +576,7 @@ package ppppu
 				mainStage.InnerDiamondBG.gotoAndStop(frame);
 				mainStage.TransitionDiamondBG.gotoAndStop(frame);
 				mainStage.BacklightBG.gotoAndStop(frame);
-				masterTemplate.PlayAnimation(frame);
+				masterTemplate.PlayAnimation(frame-1);
 				masterTemplate.StopAnimation();
 			}
 			if (keyPressed == Keyboard.UP)
@@ -616,15 +638,16 @@ package ppppu
 				{
 					masterTemplate.AddTimeline(currCharTimeline);
 				}
+				
 			}
 			
 			//Change the animation info
 			masterTemplate.currentAnimationInfo = animInfoDict["Cowgirl"];
 			
 			//Sync the animation to the main stage's timeline (main stage's current frame - animation start frame % 120 + 1 to avoid setting it to frame 0)
-			masterTemplate.PlayAnimation((mainStage.currentFrame -2) % 120 + 1);
+			//masterTemplate.PlayAnimation((mainStage.currentFrame -2) % 120 + 1);
 			currentAnimationIndex = animationIndex;
-			
+			masterTemplate.PlayAnimation((mainStage.currentFrame -2) % 120);
 		}
 		
 		/*Attempts to create timelines of a specified animation for the specified character.*/
@@ -716,6 +739,6 @@ package ppppu
 		{
 			trace("Was unable to load file \"MouthTest.txt\"");
 		}
+	
 	}
-
 }

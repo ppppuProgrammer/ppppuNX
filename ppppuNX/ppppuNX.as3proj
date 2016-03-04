@@ -4,8 +4,8 @@
   <output>
     <movie outputType="Application" />
     <movie input="" />
-    <movie path="bin\ppppuNX.swf" />
-    <movie fps="30" />
+    <movie path="bin\ppppuNX_60fpstest.swf" />
+    <movie fps="60" />
     <movie width="580" />
     <movie height="720" />
     <movie version="17" />

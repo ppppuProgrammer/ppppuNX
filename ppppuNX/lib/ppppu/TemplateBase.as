@@ -21,7 +21,7 @@ package ppppu
 	{
 		/*Master timeline for the template animation. Contains all the timelines for parts of the animation that are 
 		 * controlled  by series of tweens defined by a motion xml.*/
-		private var masterTimeline:TimelineLite = new TimelineLite( { useFrames:true, smoothChildTiming:true, paused:true } );
+		private var masterTimeline:TimelineLite = new TimelineLite( {  smoothChildTiming:true, paused:true } );
 		//Master template version this array contains arrays of timelines. To access the index of the appropriate animation, refer to the animationNameIndexes array in ppppuCore.
 		private var defaultTimelines:Vector.<Vector.<TimelineMax>> = new Vector.<Vector.<TimelineMax>>();
 		
@@ -38,10 +38,10 @@ package ppppu
 		private var elementDepthLayoutChangeFrames:Array;
 		
 		//How far into the current animation we're in
-		private var frameCounter:int = 0;
+		//private var frameCounter:int = 0;
 		//The total number of frames in the current animation.
 		//TODO: allow this to be set, which is needed for animations with non-standard frames(not 120)
-		private var currentAnimationTotalFrames:int = 120;
+		//private var currentAnimationTotalFrames:int = 120;
 		
 		//The primary movie clip for the flash in terms as asset displaying.
 		private var m_ppppuStage:PPPPU_Stage;
@@ -81,8 +81,12 @@ package ppppu
 		private var debug_HairBackTest:Boolean = false;
 		private var headLastPosition:Point = new Point();
 		
+		public var FRAME_RATE:Number = 60.0;
+		
 		public function TemplateBase()
 		{
+			//masterTimeline.duration(4);
+				
 			addEventListener(Event.ADDED_TO_STAGE, TemplateAddedToStage);
 			SetupEyeContainer(EyeL);
 			SetupEyeContainer(EyeR);
@@ -132,12 +136,12 @@ package ppppu
 		{
 			if (animationPaused == false) //If animation isn't paused, update
 			{
-				++frameCounter;
+				/*++frameCounter;
 				if (frameCounter >= currentAnimationTotalFrames)
 				{
 					frameCounter = 0;
-				}
-				ImmediantLayoutUpdate(frameCounter);
+				}*/
+				ImmediantLayoutUpdate(masterTimeline.time()/(1/FRAME_RATE));
 				
 				
 				UpdateDebugDisplay();
@@ -400,19 +404,31 @@ package ppppu
 		}
 		
 		//Starts playing the currently set animation at a specified frame.
-		public function PlayAnimation(startAtFrame:uint):void
+		public function PlayAnimation(startAtFrame:Number):void
 		{
 			//--startAtFrame;
-			if (animationPaused) { animationPaused = false;}
-			masterTimeline.play(startAtFrame);
+			if (animationPaused) { animationPaused = false; }
+			masterTimeline.play(startAtFrame * (1.0 / FRAME_RATE));
 			//Get all timelines currently used
 			var childTimelines:Array = masterTimeline.getChildren(!true, false);
 			for (var i:int = 0, l:int = childTimelines.length; i < l; ++i)
 			{
 				//Tell the child timeline to play at the specified time
-				(childTimelines[i] as TimelineMax).play(startAtFrame);
+				(childTimelines[i] as TimelineMax).play(startAtFrame* (1.0/FRAME_RATE));
 			}
 			//ImmediantLayoutUpdate(startAtFrame);
+		}
+		
+		public function ChangePlaySpeed(speed:Number):void
+		{
+			masterTimeline.timeScale(speed);
+			//Get all timelines currently used
+			var childTimelines:Array = masterTimeline.getChildren(!true, false);
+			for (var i:int = 0, l:int = childTimelines.length; i < l; ++i)
+			{
+				//Tell the child timeline to play at the specified time
+				(childTimelines[i] as TimelineMax).timeScale(speed);
+			}
 		}
 		
 		public function ResumePlayingAnimation():void
@@ -424,11 +440,11 @@ package ppppu
 			for (var i:int = 0, l:int = childTimelines.length; i < l; ++i)
 			{
 				//Tell the child timeline to play at the specified time
-				(childTimelines[i] as TimelineMax).play(frameCounter);
+				(childTimelines[i] as TimelineMax).play(masterTimeline.time());
 			}
 		}
 		
-		public function JumpToFrameAnimation(frame:uint):void
+		public function JumpToFrameAnimation(frame:Number):void
 		{
 			//--startAtFrame;
 			//var time:int = startAtFrame; //useFrames version
@@ -438,12 +454,12 @@ package ppppu
 			//}
 			//else
 			//{
-				masterTimeline.seek(frame);
+				masterTimeline.seek(frame* (1.0/FRAME_RATE));
 				var childTimelines:Array = masterTimeline.getChildren(true, false);
 				
 				for (var i:int = 0, l:int = childTimelines.length; i < l; ++i)
 				{
-					(childTimelines[i] as TimelineMax).seek(frame);
+					(childTimelines[i] as TimelineMax).seek(frame* (1.0/FRAME_RATE));
 				}
 			//}
 		}
@@ -474,7 +490,7 @@ package ppppu
 		/*public function ResetToDefaultTimelines()
 		{
 			masterTimeline.clear();
-			masterTimeline.add(defaultTimelines);
+			masterTimeline.add(defaultTimelines,0);
 			//UpdateTimelines();
 		}*/
 		
@@ -521,6 +537,10 @@ package ppppu
 			//If the timeline to add is null, return out the function.
 			if (tlToAdd == null) { return; }
 			
+			//Set some parameters so the timeline will restart when it finishes. For testing purposes
+			//tlToAdd.vars.onComplete = TimelineCompleted;
+			//tlToAdd.vars.onCompleteParams = [tlToAdd];
+			
 			//The display object that the timeline controls
 			var timelineDisplayObject:DisplayObject = tlToAdd.data.targetElement as DisplayObject;
 			//Get the name of the element that the timeline controls
@@ -555,7 +575,7 @@ package ppppu
 					}
 				}
 				//Looked through all the timelines nested in the master timeline and there were no matches for tlToAdd to override.
-				masterTimeline.add(tlToAdd);
+				masterTimeline.add(tlToAdd, 0);
 				//tlToAdd.seek(this.currentFrame);
 				//tlToAdd.seek(((((this.parent as MovieClip).currentFrame-2) % 120) * millisecPerFrame) / 1000.0);
 			}
@@ -567,7 +587,7 @@ package ppppu
 			if (tlToRemove != tlToAdd)
 			{
 				masterTimeline.remove(tlToRemove);
-				masterTimeline.add(tlToAdd);
+				masterTimeline.add(tlToAdd,0);
 				//tlToAdd.seek(this.currentFrame);
 				//tlToAdd.seek(((((this.parent as MovieClip).currentFrame-2) % 120) * millisecPerFrame) / 1000.0);
 			}
@@ -580,7 +600,8 @@ package ppppu
 				masterTimeline.remove(expressionTimeline);
 			}
 			masterTimeline.add(exprTimeline, 0);
-			exprTimeline.play(frameCounter, false);
+			//exprTimeline.play(frameCounter* (1.0/FRAME_RATE), false);
+			exprTimeline.play(masterTimeline.time(), false);
 			expressionTimeline = exprTimeline;
 		}
 		
@@ -775,6 +796,12 @@ package ppppu
 				this.setChildIndex(debugTextDisplay, this.numChildren - 1);
 			}
 		}*/
+		function TimelineCheckup(timeline:TimelineLite):void
+		{
+			//trace("startTime" + timeline.time() + "dur:" + timeline.duration());
+			trace(timeline.time());
+		}
+		
 		function RoundToNearest(roundTo:Number, value:Number):Number{
 		return Math.round(value/roundTo)*roundTo;
 		}
