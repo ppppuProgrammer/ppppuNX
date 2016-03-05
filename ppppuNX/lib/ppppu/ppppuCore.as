@@ -367,26 +367,9 @@ package ppppu
 						
 						var templateElement:DisplayObject = templateAnimation[currentVarName];
 						
-						//Create the array of tweens, using the vector of tween data.
-						var tweens:Array = embedTweenDataConverter.IntegrateTweenData(templateElement, vectorOfTweenData);
+
 						//Declare the timeline for the tweens
-						var timelineForMotion:TimelineMax = null; 
-						
-						//If the target element from the template exists
-						if (templateElement != null)
-						{
-							//Create the timeline that will use the tweens
-							timelineForMotion = new TimelineMax( { useFrames:true, repeat: -1, paused:true } );
-							//Set the data of the timeline to have a property for the template's element 
-							timelineForMotion.data = { targetElement: templateElement };
-							//Add the tweens
-							timelineForMotion.add(tweens,"+=0", "sequence");
-						}
-						else
-						{
-							//Without the template element, tweening isn't possible.
-							trace("Critical Warning! Animation " + animName + " is unable to target Element \"" + currentVarName + "\"");
-						}
+						var timelineForMotion:TimelineMax = embedTweenDataConverter.CreateTimelineFromData(templateElement, vectorOfTweenData); 
 						
 						//Dictionary existance checking. Create a dictionary if the specified one doesn't exist.
 						if (timelinesDict[charName] == null)
@@ -408,7 +391,7 @@ package ppppu
 							//Adding the created timeline to timelineVector
 							timelineVector[timelineVector.length] = timelineForMotion;
 							//Tell the timeline to start paused, to help save on processing a little.
-							timelineForMotion.pause();
+							//timelineForMotion.pause();
 						}
 					}
 					else
@@ -686,6 +669,21 @@ package ppppu
 				charVoiceSystem.ChangeCharacterVoiceRate(currentCharacter.GetVoicePlayRate());
 				menu.ChangeSlidersToCharacterValues(currentCharacter);
 			}
+		}
+		
+		public function GetListOfCharacterNames():Vector.<String>
+		{
+			var charNameVector:Vector.<String> = new Vector.<String>();
+			for (var i:int = 0, l:int = characterList.length; i < l; ++i)
+			{
+				charNameVector[i] = characterList[i].GetName();
+			}
+			return charNameVector;
+		}
+		
+		public function GetListOfAnimationNames():Vector.<String>
+		{
+			return animationNameIndexes;
 		}
 		
 		private function ScaleFromCenter(dis:DisplayObjectContainer,sX:Number,sY:Number):void

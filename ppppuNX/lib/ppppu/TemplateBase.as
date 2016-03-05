@@ -25,7 +25,7 @@ package ppppu
 		//Master template version this array contains arrays of timelines. To access the index of the appropriate animation, refer to the animationNameIndexes array in ppppuCore.
 		private var defaultTimelines:Vector.<Vector.<TimelineMax>> = new Vector.<Vector.<TimelineMax>>();
 		
-		//Used for changes in the expression given by the mouth.
+		//Used for changes in the expression given by the mouth. For referencing purposes
 		private var expressionTimeline:TimelineMax;
 		
 		private var customElementsList:Vector.<AnchoredElementBase> = new Vector.<AnchoredElementBase>();

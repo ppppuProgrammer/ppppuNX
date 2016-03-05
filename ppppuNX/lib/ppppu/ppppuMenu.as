@@ -13,6 +13,7 @@ package ppppu
 	import io.FileReferenceHelper;
 	import io.ByteArrayLoadedEvent;
 	import Menu.ExpressionAnimationPanel;
+	import Menu.ExpressionSelectPanel;
 	//import flash.events.MouseEvent;
 	import flash.filters.ColorMatrixFilter;
 	import flash.geom.ColorTransform;
@@ -33,7 +34,7 @@ package ppppu
 		//For panels/windows that need to be accessed by functions
 		private var p_expressionPanel:ExpressionAnimationPanel;
 		private var sp_Menu:SlidingPanel;
-		
+		private var p_ExpressionSelectMenu:ExpressionSelectPanel;
 		//color values for elements with gradient colors
 		private var faceGradientValues:Array = new Array(0,0);
 		private var breastGradientValues:Array = new Array(0,0,0);
@@ -96,15 +97,16 @@ package ppppu
 		private function InitMenu():void
 		{
 			var p_Menu:Panel = new Panel(null);
-			p_Menu.setSize(480, 120);
+			p_Menu.setSize(580, 120);
 			
-			sp_Menu = new SlidingPanel(p_Menu, new Rectangle(0, 690, 480, 30), new Point(0, 720), new Point(0, 600));
+			sp_Menu = new SlidingPanel(p_Menu, new Rectangle(0, 690, 580, 30), new Point(0, 720), new Point(0, 600));
 			addChild(sp_Menu);
 			
 			//var p_GradientSubMenu:Panel = new Panel(null);
 			var p_GradientSubMenu:Sprite = new Sprite();
 			//p_GradientSubMenu.setSize(100, 80);
 			
+			p_ExpressionSelectMenu = new ExpressionSelectPanel();
 			p_expressionPanel = new ExpressionAnimationPanel(templateInUse);
 			
 			//Add labels for skin gradients sub menu
@@ -205,9 +207,11 @@ package ppppu
 			
 			var b_File:PushButton = new PushButton(p_Menu, 230, 10, "Load File", loadFile);
 			
-			var pb_ExpressionMenu:PopupButton = new PopupButton(p_Menu, 230, 30, "Expression Edit");
+			//Set up expression menu button
+			var pb_ExpressionMenu:PopupButton = new PopupButton(p_Menu, 230, 30, "Expression submenu");
 			pb_ExpressionMenu.addEventListener(MouseEvent.CLICK, ExpressionButtonHandler);
-			pb_ExpressionMenu.bindPopup(p_expressionPanel, "middle", "bottomInner"); 
+			pb_ExpressionMenu.bindPopup(p_ExpressionSelectMenu, "middle", "bottomInner"); 
+			
 			
 			hairColorMenu.addEventListener(Event.CHANGE, HairSlidersChange);
 			skinColorMenu.addEventListener(Event.CHANGE, SkinSlidersChange);
@@ -245,6 +249,12 @@ package ppppu
 		}
 		
 		private function ExpressionButtonHandler(e:MouseEvent):void
+		{
+			var core:ppppuCore = this.parent as ppppuCore;
+			p_ExpressionSelectMenu.UpdateLists(core.GetListOfAnimationNames(), core.GetListOfCharacterNames());
+		}
+		
+		private function OpenExpressionEditorHandler(e:MouseEvent):void
 		{
 			templateInUse.StopAnimation();
 			templateInUse.JumpToFrameAnimation(1);

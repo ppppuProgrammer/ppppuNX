@@ -46,6 +46,10 @@ package Menu
 		private var templateInUse:MasterTemplate;
 
 		private var timelineWorkingOn:TimelineMax;
+		
+		//The string used to identify the initial tween, which is a 0 duration tween that starts at time 0 and has specific properties that are not to be modified
+		private const InitialTweenName:String = "Start Frame";
+		
 		public function ExpressionAnimationPanel(template:MasterTemplate)
 		{
 			templateInUse = template;
@@ -166,10 +170,14 @@ SaveAnimBtn.width = 140;
 			if (!timeline)
 			{
 				timelineWorkingOn = new TimelineMax( { useFrames:true, paused:true,repeat: -1  } );
-				timelineWorkingOn.duration(parseFloat(durationInputText.text));
 				tweenList.removeAll();
 				frameSlider.value = 1;
-				mouthSlider.value = -1;
+				mouthSlider.value = 0;
+				mouthSlider.dispatchEvent(new Event(Event.CHANGE));
+				var firstTween:TweenMax = TweenMax.set(templateInUse.Mouth.ExpressionContainer, SetupTweenVariableObject());
+				timelineWorkingOn.add(firstTween);
+				tweenList.addItem(CreateTweenListItem(firstTween));
+				//mouthSlider.value = 0;
 			}
 			else
 			{
@@ -217,19 +225,25 @@ SaveAnimBtn.width = 140;
 			
 			var selectedItem:Object = tweenList.selectedItem;
 			var tween:TweenMax = (selectedItem.tween as TweenMax);
-			tween.startTime(frameStart);
-			tween.duration(durationLength);
-			selectedItem.tween.vars = SetupTweenVariableObject(selectedItem.tween.vars);
-			var selectedIndex:int = tweenList.selectedIndex;
-			tweenList.removeItemAt(selectedIndex);
-			tweenList.addItemAt(CreateTweenListItem(selectedItem.tween), selectedIndex);
 			
+			selectedItem.tween.vars = SetupTweenVariableObject(selectedItem.tween.vars);
+			//The Start Frame's duration and start time are not to be changed, so check that it's not the edit target.
+			if (selectedItem.label != InitialTweenName)
+			{
+				tween.startTime(frameStart);
+				tween.duration(durationLength);
+				selectedItem.tween.vars = SetupTweenVariableObject(selectedItem.tween.vars);
+				var selectedIndex:int = tweenList.selectedIndex;
+				tweenList.removeItemAt(selectedIndex);
+				tweenList.addItemAt(CreateTweenListItem(selectedItem.tween), selectedIndex);
+			}
 		}
 		
-		private function SetupTweenVariableObject(vars:Object):Object
+		private function SetupTweenVariableObject(vars:Object=null):Object
 		{
+			
 			var mouthName:String = mouthSliderValueLabel.text;
-			var tweenVariables:Object = vars;
+			var tweenVariables:Object = vars ? vars : new Object;//test if vars exist, if it doesn't, create a new object and assign it to tween variables
 			//tweenVariables.onUpdateParams = [mouthName];
 			tweenVariables.onStart =  templateInUse.ChangeMouthExpression;
 			tweenVariables.onStartParams = [mouthName];
@@ -270,7 +284,7 @@ SaveAnimBtn.width = 140;
 		protected function FrameChangeHandler(event:Event):void
 		{
 			var frame:Number = event.target.value;
-			templateInUse.JumpToFrameAnimation(frame);
+			templateInUse.JumpToFrameAnimation(frame-1);
 			editingFrame.text = frame.toString();
 			timelineWorkingOn.seek(frame, false);
 			//trace("FrameChangeHandler");
@@ -344,7 +358,15 @@ SaveAnimBtn.width = 140;
 		{
 			var frameStart:int = inTween.startTime();
 			var durationLength:int = inTween.duration();
-			var listObjName:String = "Frames:" + frameStart + (durationLength == 1 ? "" : "-" +  (frameStart + durationLength - 1).toString());
+			var listObjName:String;
+			if (frameStart == 0)
+			{
+				listObjName = InitialTweenName;
+			}
+			else
+			{
+				listObjName = "Frames:" + frameStart + (durationLength == 1 ? "" : "-" +  (frameStart + durationLength - 1).toString());
+			}
 			//Create a list object to add to the list of tweens.
 			var listObj:Object = { label:listObjName, tween:inTween };
 			return listObj;
