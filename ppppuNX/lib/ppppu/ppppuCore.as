@@ -37,11 +37,17 @@ package ppppu
 	 */
 	public class ppppuCore extends MovieClip
 	{
+		//Holds all the timelines to be used in the program.
+		private var timelineLib:TimelineLibrary = new TimelineLibrary();
+		
 		//A movie clip that holds all the body elements used to create an animation. The elements in this class are controlled
 		//TODO: Test the extendability of the master template. Can custom elements be easily added to it without big issues?
-		private var masterTemplate:TemplateBase = new MasterTemplate();
+		private var masterTemplate:MasterTemplate = new MasterTemplate();
 		//Responsible for holding the various timelines that will be added to a template. This dictionary is 3 levels deep, which is expressed by: timelineDict[Character][Animation][Part]
-		private var timelinesDict:Dictionary = new Dictionary();
+		//private var timelinesDict:Dictionary = new Dictionary();
+		
+		
+		
 		private var layerInfoDict:Dictionary = new Dictionary();
 		private var animInfoDict:Dictionary = new Dictionary();
 		public var mainStage:PPPPU_Stage;
@@ -49,7 +55,7 @@ package ppppu
 		private var keyDownStatus:Array = [];
 		//Contains the names of the various animations that the master template can switch between. The names are indexed by their position in the vector.
 		private var animationNameIndexes:Vector.<String> = new <String>["Cowgirl", "LeanBack", "LeanForward", "Grind", "ReverseCowgirl", "Paizuri", "Blowjob", "SideRide", "Swivel", "Anal"];
-		private var characterList:Vector.<ppppuCharacter> = new <ppppuCharacter>[new PeachCharacter/*, new RosalinaCharacter*/];
+		private var characterList:Vector.<ppppuCharacter> = new <ppppuCharacter>[new PeachCharacter];
 		private const defaultCharacter:ppppuCharacter = characterList[0];
 		private const defaultCharacterName:String = defaultCharacter.GetName();
 		private var currentCharacter:ppppuCharacter = defaultCharacter;
@@ -102,7 +108,9 @@ package ppppu
 			test.x = test.y = 200; 
 			addChild(test);*/
 			
+			masterTemplate.Initialize(timelineLib);
 			masterTemplate.visible = false;
+			characterList[0].SetID(0);
 			//masterTemplate.
 			
 		}
@@ -140,6 +148,8 @@ package ppppu
 			//Master template mouse event disabling
 			masterTemplate.mouseChildren = false;
 			masterTemplate.mouseEnabled = false;
+			
+			//AddCharacter(PeachCharacter);
 			
 			masterTemplate.currentCharacter = defaultCharacter;
 			for (var childIndex:uint = 0, templateChildrenCount:uint = masterTemplate.numChildren; childIndex < templateChildrenCount; ++childIndex)
@@ -372,7 +382,7 @@ package ppppu
 						var timelineForMotion:TimelineMax = embedTweenDataConverter.CreateTimelineFromData(templateElement, vectorOfTweenData); 
 						
 						//Dictionary existance checking. Create a dictionary if the specified one doesn't exist.
-						if (timelinesDict[charName] == null)
+						/*if (timelinesDict[charName] == null)
 						{
 							//Code in here is theoretically unreachable but keep it here until that is fully tested.
 							CreateTimelineDictionaryForCharacter(charName);
@@ -382,12 +392,12 @@ package ppppu
 						{
 							//Creates a dictionary in the charName dictionary that's contained in timelinesDict.
 							timelinesDict[charName][animName] = new Dictionary();
-						}
+						}*/
 						
 						if (timelineForMotion)
 						{
 							//Setting the timelines dictionary to contain the created time line.
-							timelinesDict[charName][animName][currentVarName] = timelineForMotion;
+							//timelinesDict[charName][animName][currentVarName] = timelineForMotion;
 							//Adding the created timeline to timelineVector
 							timelineVector[timelineVector.length] = timelineForMotion;
 							//Tell the timeline to start paused, to help save on processing a little.
@@ -558,11 +568,9 @@ package ppppu
 			var animationName:String = animationNameIndexes[animationIndex];
 			var currentCharacterName:String = currentCharacter.GetName();
 			masterTemplate.currentAnimationName = animationName;
-			if (!(defaultCharacterName in timelinesDict))
-			{
-				CreateTimelineDictionaryForCharacter(defaultCharacterName);
-			}
-			if (!(animationName in timelinesDict[defaultCharacterName]))
+
+			
+			if(!timelineLib.DoesBaseTimelinesForAnimationExist(animationIndex))
 			{
 				CreateTimelinesForCharacterAnimation(defaultCharacterName, animationIndex);
 			}
@@ -579,26 +587,18 @@ package ppppu
 			{
 				if (animationName == animationNameIndexes[index])
 				{
-					masterTemplate.ChangeDefaultTimelinesUsed(index);
+					masterTemplate.ChangeBaseTimelinesUsed(index);
 				}
 			}
+			
+			
 			if (currentCharacter != defaultCharacter)
 			{
-				//Checks if the dictionary is null. If so, attempt to create it.
-				if (!(currentCharacterName in timelinesDict))
-				{
-					CreateTimelineDictionaryForCharacter(currentCharacterName);
-				}
-				if (!(animationName in timelinesDict[currentCharacterName]))
+				if (!timelineLib.DoesCharacterSetExists(animationIndex, currentCharacter.GetID(), "Standard"))
 				{
 					CreateTimelinesForCharacterAnimation(currentCharacterName, animationIndex);
 				}
-				var timelinesForCharacter:Dictionary = timelinesDict[currentCharacterName][animationName];
-				var currCharTimeline:TimelineMax;
-				for each(currCharTimeline in timelinesForCharacter)
-				{
-					masterTemplate.AddTimeline(currCharTimeline);
-				}
+				masterTemplate.AddTimelines(timelineLib.GetReplacementTimelinesToLibrary(animationIndex, currentCharacter.GetID(), "Standard"));
 			}
 			
 			//Change the animation info
@@ -641,22 +641,26 @@ package ppppu
 					//Checks if the character name is Default. If so, also set these timelines to be the default timelines for the template
 					if (characterName == defaultCharacterName)
 					{
-						masterTemplate.SetDefaultTimelines(ProcessMotionStaticClass(animationMotion, masterTemplate), animationIndex);
+						//masterTemplate.SetDefaultTimelines(ProcessMotionStaticClass(animationMotion, masterTemplate), animationIndex);
+						timelineLib.AddBaseTimelinesToLibrary(animationIndex, ProcessMotionStaticClass(animationMotion, masterTemplate));
 					}
 					else //Otherwise just add the timelines to the timelines dictionary, where they'll wait to be swapped in at a later time.
 					{
-						ProcessMotionStaticClass(animationMotion, masterTemplate);
+						var charId:int = this.characterList.indexOf(characterName);
+						//TODO: Make animation set name not be hard coded. 
+						var animationSetName:String = "Standard";
+						timelineLib.AddReplacementTimelinesToLibrary(animationIndex, charId, animationSetName,ProcessMotionStaticClass(animationMotion, masterTemplate));
 					}
 				}
 			}
 		}
-		private function CreateTimelineDictionaryForCharacter(characterName:String):void
+		/*private function CreateTimelineDictionaryForCharacter(characterName:String):void
 		{
 			if (timelinesDict[characterName] === undefined)
 			{
 				timelinesDict[characterName] = new Dictionary();
 			}
-		}
+		}*/
 		
 		public function SwitchCharacter(charId:int):void
 		{
@@ -686,6 +690,13 @@ package ppppu
 			return animationNameIndexes;
 		}
 		
+		public function AddCharacter(characterClass:Class):void
+		{
+			var character:ppppuCharacter = new characterClass;
+			character.SetID(characterList.length);
+			characterList[characterList.length] = character;
+		}
+		
 		private function ScaleFromCenter(dis:DisplayObjectContainer,sX:Number,sY:Number):void
 		{
 			var posX:Number = dis.x;
@@ -704,10 +715,10 @@ package ppppu
 		
 		private function mouthLoadTest(e:Event):void
 		{
-			var parser:ExpressionParser = new ExpressionParser();
+			/*var parser:ExpressionParser = new ExpressionParser();
 			var expr:TimelineMax = parser.Parse(masterTemplate, masterTemplate.Mouth.ExpressionContainer, e.target.data as String);
 			//var expr:TimelineMax = ExpressionParser.ParseExpression(masterTemplate, masterTemplate.Mouth.ExpressionContainer, e.target.data);
-			masterTemplate.SetExpression(expr);
+			masterTemplate.SetExpression(expr);*/
 		}
 		
 		private function loadFail(e:IOErrorEvent):void

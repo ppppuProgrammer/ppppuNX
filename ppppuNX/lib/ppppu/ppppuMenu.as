@@ -81,9 +81,9 @@ package ppppu
 		
 		private var autoAdjustGradientsToBaseSkin:Boolean = true;
 		
-		private var templateInUse:TemplateBase;
+		private var templateInUse:MasterTemplate;
 		
-		public function ppppuMenu(target:TemplateBase) 
+		public function ppppuMenu(target:MasterTemplate) 
 		{
 			templateInUse = target;
 			faceGradientChangingElements = [templateInUse.Face.Element.SkinGradient, templateInUse.EarL.Element.SkinGradient, templateInUse.EarR.Element.SkinGradient];
@@ -484,11 +484,9 @@ package ppppu
 			{
 				case "Anus 1":
 					anusGradientValues[0] = GetColorUintValue(m.R, m.G, m.B);
-					elementType = ANUSGRADIENT;
 					break;
 				case "Anus 2":
 					anusGradientValues[1] = GetColorUintValue(m.R, m.G, m.B);
-					elementType = ANUSGRADIENT;
 					break;
 			}
 			GradientChange(ANUSGRADIENT, anusGradientChangingElements);
@@ -562,7 +560,7 @@ package ppppu
 					var shapeToEdit:Shape = skinGradientGraphic as Shape;
 					if (skinGradientGraphic.numChildren >= 1)
 					{
-						shapeToEdit = skinGradientGraphic.getChildAt(0);
+						shapeToEdit = skinGradientGraphic.getChildAt(0) as Shape;
 					}
 					var graphicsData:Vector.<IGraphicsData> = shapeToEdit.graphics.readGraphicsData(false);
 					

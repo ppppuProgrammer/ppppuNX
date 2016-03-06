@@ -324,8 +324,8 @@ SaveAnimBtn.width = 140;
 			var mouthScaleY:Number = parseFloat(scaleYInput.text) / 100.0;
 			var mouthSkewX:Number = parseFloat(skewXInput.text);
 			var mouthSkewY:Number = parseFloat(skewYInput.text);
-			if (isNaN(mouthSkewX)) { mouthSkewX = 0; skewXInput.text = 0; }
-			if (isNaN(mouthSkewY)) { mouthSkewY = 0; skewYInput.text = 0; }
+			if (isNaN(mouthSkewX)) { mouthSkewX = 0; skewXInput.text = "0"; }
+			if (isNaN(mouthSkewY)) { mouthSkewY = 0; skewYInput.text = "0"; }
 			
 			//Calculate scale x
 			var skewYRad:Number = Math.atan2(matrix.b, matrix.a);

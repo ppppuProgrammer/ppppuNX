@@ -8,7 +8,7 @@
     <movie fps="30" />
     <movie width="580" />
     <movie height="720" />
-    <movie version="17" />
+    <movie version="19" />
     <movie minorVersion="0" />
     <movie platform="Flash Player" />
     <movie background="#0C0046" />
@@ -35,7 +35,7 @@
     <option showInvalidCSS="True" />
     <option showDeprecationWarnings="False" />
     <option showUnusedTypeSelectorWarnings="True" />
-    <option strict="False" />
+    <option strict="True" />
     <option useNetwork="False" />
     <option useResourceBundleMetadata="True" />
     <option warnings="True" />

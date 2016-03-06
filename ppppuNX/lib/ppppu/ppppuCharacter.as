@@ -16,6 +16,10 @@
 		//private var m_defInDiaMC:Boolean = true;
 		//private var m_defTransDiaMC:Boolean = true;
 		
+		//Flag that determines if the id number of the character can be set.
+		protected var idSet:Boolean = false;
+		
+		protected var m_Id:int = -1; //The id number of the character. Can change depending on the order that characters
 		protected var m_name:String;
 		protected var m_playAnimationFrame:int = 0;
 		protected var m_randomizePlayAnim:Boolean = true;
@@ -63,6 +67,15 @@
 			m_BacklightColorTransform = BacklightColorTransform;
 			m_useBacklight = useLight;
 		}*/
+		public function SetID(idNumber:int):void
+		{
+			if (!idSet)
+			{
+				m_Id = idNumber;
+				idSet = true;
+			}
+		}
+		public function GetID():int { return m_Id;}
 		public function GetName():String { return m_name; }
 		public function GetDiamondColor1():uint { return m_innerDiamondColor1;}
 		public function GetDiamondColor2():uint{ return m_innerDiamondColor2;}
@@ -83,126 +96,5 @@
 		public function GetVoiceCooldown():int { return m_voiceCooldown; }	
 		public function GetVoicePlayChance():int { return m_voicePlayChance;}
 		public function GetVoicePlayRate(): int { return m_voicePlayRate;}
-		
-		public function RandomizePlayAnim():void
-		{
-			//15 frame movie clip has 14 actual animations
-			//array[0-13]
-			// movieclip frame setting: 2 - 15
-			if(m_randomizePlayAnim)
-			{
-				//generates a number from 0 to (totalFrames - 1)
-				var randomAnimIndex:int = Math.floor(Math.random() * GetNumberOfAnimations() + 1);
-				if((GetNumberOfAnimations() - GetNumberOfLockedAnimations()) > 2)
-				{
-					//To clarify this, indexes start from 0 and frames start from 1. So to convert frames->index, subtract 1 from the frame number.
-					//To convert index->frame, add 1 to the index number.
-					while(randomAnimIndex == m_playAnimationFrame-1 || GetAnimationLockedStatus(randomAnimIndex))
-					{
-						randomAnimIndex = Math.floor(Math.random() * GetNumberOfAnimations() + 1);
-					}
-				}
-				else
-				{
-					while(GetAnimationLockedStatus(randomAnimIndex))
-					{
-						randomAnimIndex = Math.floor(Math.random() * GetNumberOfAnimations() + 1);
-					}
-				}
-				SetPlayAnimation(randomAnimIndex);
-			}
-		}
-
-		//Used when there is no character or related movie clips on the stage. To be used when switching to a different character
-		public function AddCharacterClipsToAnotherMovieClip(parentMC:MovieClip, backlightMC:MovieClip):void
-		{
-			var clipFrameNum:int = ((parentMC.currentFrame - 7) % 120) + 1;
-
-			parentMC.addChild(m_CharMC);
-			RandomizePlayAnim();
-			PlayingLockedAnimCheck();
-			PlayAnimation();
-		}
-		
-		public function SetPlayAnimation(animNumber:int):void
-		{
-			if(animNumber < 1)
-			{
-				animNumber = 1;
-			}
-			else if(animNumber > GetNumberOfAnimations())
-			{
-				animNumber = GetNumberOfAnimations();
-			}
-			m_playAnimationFrame = animNumber + 1;
-		}
-		
-		public function SetRandomizeAnimation(randomStatus:Boolean):void
-		{
-			m_randomizePlayAnim = randomStatus;
-		}
-		public function GetRandomAnimStatus() : Boolean
-		{
-			return m_randomizePlayAnim;
-		}
-		public function ToggleRandomizeAnimation():void
-		{
-			m_randomizePlayAnim = !m_randomizePlayAnim;
-		}
-		public function GetAnimationLockedStatus(animIndex:int):Boolean
-		{
-			//have to convert animindex(starts from 1) into an array index (starts at 0)
-			return m_lockedAnimation[int(animIndex-1)];
-		}
-		public function SetAnimationLockedStatus(animIndex:int, lockStatus:Boolean):void
-		{
-			if(animIndex < 1 || animIndex > GetNumberOfAnimations())
-			{
-				return;
-			}
-			m_lockedAnimation[int(animIndex-1)] = lockStatus;
-		}
-		public function GetNumberOfAnimations():int
-		{
-			return m_CharMC.totalFrames - 1;
-		}
-		/*public function GetAnimationCurrentFrame():int
-		{
-			return (m_CharMC.getChildAt(0) as MovieClip).currentFrame;
-		}*/
-		public function GetNumberOfLockedAnimations():int
-		{
-			var lockedAnimNum:int = 0;
-			for(var i:int = 0, l:int = m_lockedAnimation.length; i < l; ++i)
-			{
-				if(m_lockedAnimation[i])
-				{
-					++lockedAnimNum;
-				}
-			}
-			return lockedAnimNum;
-		}
-		private function PlayingLockedAnimCheck():void
-		{
-			//Only 1 animation is available, so search for it and use it.
-			if(GetAnimationLockedStatus(m_playAnimationFrame-1) && (GetNumberOfAnimations() - GetNumberOfLockedAnimations() == 1))
-			{
-				var unlockedAnimNum:int = 1;
-				for each(var locked:Boolean in m_lockedAnimation)
-				{
-					if(!locked)
-					{
-						break;
-					}
-					++unlockedAnimNum;
-				}
-				SetPlayAnimation(unlockedAnimNum);
-			}
-		}
-		/*public function GetParentMovieClip():MovieClip
-		{
-			var parentMC:MovieClip = m_CharMC.parent as MovieClip;
-			return parentMC;
-		}*/
 	}
 }

@@ -23,7 +23,7 @@ package ppppu
 		 * controlled  by series of tweens defined by a motion xml.*/
 		private var masterTimeline:TimelineLite = new TimelineLite( { useFrames:true, smoothChildTiming:true, paused:true } );
 		//Master template version this array contains arrays of timelines. To access the index of the appropriate animation, refer to the animationNameIndexes array in ppppuCore.
-		private var defaultTimelines:Vector.<Vector.<TimelineMax>> = new Vector.<Vector.<TimelineMax>>();
+		//private var defaultTimelines:Vector.<Vector.<TimelineMax>> = new Vector.<Vector.<TimelineMax>>();
 		
 		//Used for changes in the expression given by the mouth. For referencing purposes
 		private var expressionTimeline:TimelineMax;
@@ -47,6 +47,8 @@ package ppppu
 		private var m_ppppuStage:PPPPU_Stage;
 		
 		private var animationPaused:Boolean = false;
+		
+		private var timelineLib:TimelineLibrary;
 		
 		/*public var EyeL:EyeContainer;
 		public var EyeR:EyeContainer;*/
@@ -112,6 +114,11 @@ package ppppu
 			debugTextDisplay.border = true;
 			//debugTextDisplay.autoSize = TextFieldAutoSize.
 			debugTextDisplay.selectable = false;
+		}
+		
+		public function Initialize(timelineLibrary:TimelineLibrary):void
+		{
+			timelineLib = timelineLibrary;
 		}
 		
 		public function AddNewElementToTemplate(element:AnchoredElementBase):void
@@ -381,24 +388,6 @@ package ppppu
 			EyeC.Element.ScleraSettings.Sclera.gotoAndStop(1);
 		}
 		
-		/*Sets the vector of timelines passed to it as the default timelines used for a specified animation.
-		For reference, ppppuCore's animationNameIndexes variable details which index is linked to a specific animation name*/
-		public function SetDefaultTimelines(defTimelines:Vector.<TimelineMax>, animationIndex:uint):void
-		{
-			//Quick check to make sure that there are timelines in the vector
-			if (defTimelines.length > 0)
-			{
-				for (var i:int = 0, l:int = animationIndex; i < l; ++i)
-				{
-					if (animationIndex > defaultTimelines.length)
-					{
-						defaultTimelines.push(null);
-					}
-				}
-				defaultTimelines[animationIndex] = defTimelines;
-			}
-		}
-		
 		//Starts playing the currently set animation at a specified frame.
 		public function PlayAnimation(startAtFrame:uint):void
 		{
@@ -461,13 +450,14 @@ package ppppu
 			}*/
 		}
 		
-		/*Removes all currently active timelines and adds the default timelines for a specified animation by it's index number.*/
-		public function ChangeDefaultTimelinesUsed(animationIndex:uint):void
+		/*Removes all currently active timelines and adds the base timelines for a specified animation.*/
+		public function ChangeBaseTimelinesUsed(animationIndex:uint):void
 		{
-			if (animationIndex < defaultTimelines.length)
+			var timelines:Vector.<TimelineMax> = timelineLib.GetBaseTimelinesFromLibrary(animationIndex);
+			if (timelines)
 			{
 				ClearTimelines();
-				AddTimelines(defaultTimelines[animationIndex]);
+				AddTimelines(timelines);
 			}
 		}
 		

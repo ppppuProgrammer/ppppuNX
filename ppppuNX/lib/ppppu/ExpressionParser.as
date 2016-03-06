@@ -31,7 +31,7 @@ package ppppu
 			if (definitionLines.length > 0)
 			{
 				var headerParts:Array = definitionLines[0].split(',');
-				if (headerParts.length != 3) { return;}
+				if (headerParts.length != 3) { return null;}
 				//Header
 				var charName:String = headerParts[0];
 				var animName:String = headerParts[1];
