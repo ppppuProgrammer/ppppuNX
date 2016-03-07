@@ -48,7 +48,7 @@ package ppppu
 		
 		private var animationPaused:Boolean = false;
 		
-		private var timelineLib:TimelineLibrary;
+		public var timelineLib:TimelineLibrary;
 		
 		/*public var EyeL:EyeContainer;
 		public var EyeR:EyeContainer;*/

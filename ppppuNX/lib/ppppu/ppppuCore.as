@@ -111,6 +111,8 @@ package ppppu
 			masterTemplate.Initialize(timelineLib);
 			masterTemplate.visible = false;
 			characterList[0].SetID(0);
+			timelineLib.CheckSupplementTimelinesVectorRange(2, 5);
+			timelineLib.CheckSupplementTimelinesVectorRange(0,7);
 			//masterTemplate.
 			
 		}

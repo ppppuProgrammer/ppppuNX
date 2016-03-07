@@ -167,13 +167,17 @@ SaveAnimBtn.width = 140;
 
 		public function SetupPanel(timeline:TimelineMax=null):void
 		{
+			templateInUse.StopAnimation();
+			templateInUse.JumpToFrameAnimation(1);
+			
+			frameSlider.value = 1;
+			mouthSlider.value = 0;
+			mouthSlider.dispatchEvent(new Event(Event.CHANGE));
 			if (!timeline)
 			{
 				timelineWorkingOn = new TimelineMax( { useFrames:true, paused:true,repeat: -1  } );
 				tweenList.removeAll();
-				frameSlider.value = 1;
-				mouthSlider.value = 0;
-				mouthSlider.dispatchEvent(new Event(Event.CHANGE));
+				
 				var firstTween:TweenMax = TweenMax.set(templateInUse.Mouth.ExpressionContainer, SetupTweenVariableObject());
 				timelineWorkingOn.add(firstTween);
 				tweenList.addItem(CreateTweenListItem(firstTween));
@@ -181,7 +185,12 @@ SaveAnimBtn.width = 140;
 			}
 			else
 			{
-				timelineWorkingOn = timeline; 
+				timelineWorkingOn = timeline;
+				if (timelineWorkingOn.getTweensOf(templateInUse.Mouth.ExpressionContainer).length == 0)
+				{
+					var firstTween:TweenMax = TweenMax.set(templateInUse.Mouth.ExpressionContainer, SetupTweenVariableObject());
+					timelineWorkingOn.add(firstTween);
+				}
 				CreateTweenListFromTimeline(timeline);
 			}
 		}

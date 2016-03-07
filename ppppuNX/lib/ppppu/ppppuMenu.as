@@ -32,7 +32,7 @@ package ppppu
 		//private var lipsWorkColorTransform:ColorTransform = new ColorTransform(0, 0, 0, 0, 255, 153, 204, 255);
 		
 		//For panels/windows that need to be accessed by functions
-		private var p_expressionPanel:ExpressionAnimationPanel;
+		
 		private var sp_Menu:SlidingPanel;
 		private var p_ExpressionSelectMenu:ExpressionSelectPanel;
 		//color values for elements with gradient colors
@@ -106,8 +106,7 @@ package ppppu
 			var p_GradientSubMenu:Sprite = new Sprite();
 			//p_GradientSubMenu.setSize(100, 80);
 			
-			p_ExpressionSelectMenu = new ExpressionSelectPanel();
-			p_expressionPanel = new ExpressionAnimationPanel(templateInUse);
+			p_ExpressionSelectMenu = new ExpressionSelectPanel(templateInUse);
 			
 			//Add labels for skin gradients sub menu
 			var l_faceGradient:Label = new Label(p_GradientSubMenu, 0, 0, "Face");
@@ -252,13 +251,6 @@ package ppppu
 		{
 			var core:ppppuCore = this.parent as ppppuCore;
 			p_ExpressionSelectMenu.UpdateLists(core.GetListOfAnimationNames(), core.GetListOfCharacterNames());
-		}
-		
-		private function OpenExpressionEditorHandler(e:MouseEvent):void
-		{
-			templateInUse.StopAnimation();
-			templateInUse.JumpToFrameAnimation(1);
-			p_expressionPanel.SetupPanel();
 		}
 		
 		private function LipsSliderChanged(e:Event):void

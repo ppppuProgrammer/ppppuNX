@@ -26,7 +26,7 @@ package ppppu
 		/*Contains supplementary timelines to add onto the base timelines in an animation.
 		 *Is a vector (animation ids) of vectors (character ids) of vectors (timeline type) of vector<timelineMax>.
 		 *Concise version: vector[anim] > vector[char] > vector[type] > vector[timelines]*/
-		private var supplementTimelinesCollection:Vector.<Vector.<Vector.<Vector.<TimelineMax>>>>;
+		private var supplementTimelinesCollection:Vector.<Vector.<Vector.<Vector.<TimelineMax>>>> = new Vector.<Vector.<Vector.<Vector.<TimelineMax>>>>();
 		
 		public function TimelineLibrary() 
 		{
@@ -96,24 +96,17 @@ package ppppu
 			return timelines;
 		}
 		
-		public function GetSupplementTimelineLibrary(animationID:int, characterID:int, type:int, timelineName:String):TimelineMax
+		public function GetAllSupplementTimelinesOfTypeFromLibrary(animationID:int, characterID:int, type:int):Vector.<TimelineMax>
 		{
+			CheckSupplementTimelinesVectorRange(animationID, characterID);
 			var typeVector:Vector.<TimelineMax> = supplementTimelinesCollection[animationID][characterID][type];
 			
-			var timeline:TimelineMax = null;
-			for (var i:int = 0, l:int = typeVector.length; i < l; ++i )
-			{
-				if (typeVector[i].data == timelineName)
-				{
-					timeline = typeVector[i];
-					break;
-				}
-			}
-			return timeline;
+			return typeVector;
 		}
 		
 		public function GetSupplementTimelineFromLibrary(animationID:int, characterID:int, type:int, timelineName:String):TimelineMax
 		{
+			CheckSupplementTimelinesVectorRange(animationID, characterID);
 			var typeVector:Vector.<TimelineMax> = supplementTimelinesCollection[animationID][characterID][type];
 			
 			var timeline:TimelineMax = null;
@@ -149,14 +142,33 @@ package ppppu
 		public function DoesCharacterSetExists(animationID:int, characterID:int, setName:String):Boolean
 		{
 			var exists:Boolean = false;
-			while (replacementTimelinesCollection.length <= animationID)
+			for (var animIndex:int = 0; animIndex <= animationID; ++animIndex )
+			{
+				//Fill animation vector
+				
+				if (replacementTimelinesCollection.length <= animIndex /*|| supplementTimelinesCollection[animIndex] == undefined*/)
+				{
+					replacementTimelinesCollection[animIndex] = new Vector.<Dictionary>();
+				}
+				
+				//Fill character vector
+				for (var charIndex:int = 0; charIndex <= characterID; ++charIndex )
+				{
+					if (replacementTimelinesCollection[animIndex].length <= charIndex /*|| supplementTimelinesCollection[animIndex][charIndex] == undefined*/)
+					{
+						replacementTimelinesCollection[animIndex][charIndex]  = new Dictionary();
+					}
+				}
+			}
+			
+			/*while (replacementTimelinesCollection.length <= animationID)
 			{
 				replacementTimelinesCollection[replacementTimelinesCollection.length] = null;
 			}
 			while (replacementTimelinesCollection[animationID].length <= characterID)
 			{
-				replacementTimelinesCollection[animationID][replacementTimelinesCollection[animationID].length] = new Dictionary();
-			}
+				replacementTimelinesCollection[animationID][replacementTimelinesCollection[characterID].length] = new Dictionary();
+			}*/
 			var dictionary:Dictionary = replacementTimelinesCollection[animationID][characterID] as Dictionary;
 			if (dictionary[setName] != null)
 			{
@@ -164,6 +176,46 @@ package ppppu
 			}
 			
 			return exists;
+		}
+		
+		//Ensures that the given parameters will not cause a range error to be thrown when accessing the supplement timelines
+		public function CheckSupplementTimelinesVectorRange(animationID:int, characterID:int/*, type:int*/):void
+		{
+			for (var animIndex:int = 0; animIndex <= animationID; ++animIndex )
+			{
+				//Fill animation vector
+				
+				if (supplementTimelinesCollection.length <= animIndex /*|| supplementTimelinesCollection[animIndex] == undefined*/)
+				{
+					supplementTimelinesCollection[animIndex] = new Vector.<Vector.<Vector.<TimelineMax>>>();
+				}
+				
+				//Fill character vector
+				for (var charIndex:int = 0; charIndex <= characterID; ++charIndex )
+				{
+					if (supplementTimelinesCollection[animIndex].length <= charIndex /*|| supplementTimelinesCollection[animIndex][charIndex] == undefined*/)
+					{
+						supplementTimelinesCollection[animIndex][charIndex]  = new Vector.<Vector.<TimelineMax>>();
+						//Fill in the type vectors
+						supplementTimelinesCollection[animIndex][charIndex][TYPE_EXPRESSION] = new Vector.<TimelineMax>();
+						supplementTimelinesCollection[animIndex][charIndex][TYPE_EYE] = new Vector.<TimelineMax>();
+					}
+				}
+			}
+			
+			/*while (supplementTimelinesCollection.length <= animationID)
+			{
+				supplementTimelinesCollection[supplementTimelinesCollection.length] = new Vector.<Vector.<Vector.<TimelineMax>>>();
+			}
+			
+			while (supplementTimelinesCollection[animationID].length <= characterID)
+			{
+				var something:int = supplementTimelinesCollection[animationID].length;
+				
+				supplementTimelinesCollection[animationID][something][TYPE_EXPRESSION] = new Vector.<TimelineMax>();
+				supplementTimelinesCollection[animationID][something][TYPE_EYE] = new Vector.<TimelineMax>();
+				
+			}*/
 		}
 	}
 
